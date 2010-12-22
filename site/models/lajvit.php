@@ -1,0 +1,52 @@
+<?php
+/**
+ * Hello Model for Hello World Component
+ * 
+ * @package    Joomla.Tutorials
+ * @subpackage Components
+ * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_2
+ * @license    GNU/GPL
+ */
+ 
+// No direct access
+ 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
+jimport( 'joomla.application.component.model' );
+
+JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_lajvit'.DS.'tables');
+ 
+/**
+ * Hello Model
+ *
+ * @package    Joomla.Tutorials
+ * @subpackage Components
+ */
+class LajvITModelLajvIT extends JModel {
+    /**
+    * Gets the greeting
+    * @return string The greeting to be displayed to the user
+    */
+    function getGreeting() {
+        return 'Hello, World!';
+    }
+    
+    function &getPerson($userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+    	$row = &JTable::getInstance('lit_person', 'Table');
+    	
+    	if (!$row->load($user->id)) {
+    		$row->_forcenew = true;
+    		$row->id = $user->id;
+    		$names = explode(" ", $user->name);
+    		$row->givenname = $names[0];
+    		$row->surname = implode(" ", array_slice($names, 1));
+    		$row->email = $user->email;
+    	}
+    	
+    	return $row;
+	}
+}
