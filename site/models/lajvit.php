@@ -49,4 +49,44 @@ class LajvITModelLajvIT extends JModel {
     	
     	return $row;
 	}
+	
+	function getEventsForPerson($person = null) {
+    	$user = &JFactory::getUser($person);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_veventsandregistrations WHERE personid IS NULL OR personid='.$user->id.';';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+	}
+	
+	function getCharactersForEvent($event, $person = null) {
+    	$user = &JFactory::getUser($person);
+    	if (!$user || $user->guest)
+    		return false;
+    		
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($event).';';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+	
+	function &getCharacter($charid) {
+		/*
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	*/
+    	
+    	$row = &JTable::getInstance('lit_chara', 'Table');
+    	
+    	$row->load($charid);
+    	    	
+    	return $row;
+	}
 }

@@ -39,6 +39,9 @@ class LajvITViewPerson extends JView {
         $this->assignRef('msn', $person->msn);
         $this->assignRef('skype', $person->skype);
         $this->assignRef('facebook', $person->facebook);
+        $this->assignRef('illness', $person->illness);
+        $this->assignRef('allergies', $person->allergies);
+        $this->assignRef('medicine', $person->medicine);
         $this->assignRef('info', $person->info);
         
         parent::display($tpl);

@@ -17,6 +17,20 @@
  <!-- Note the folder attribute: This attribute describes the folder
       to copy FROM in the package to install therefore files copied
       in this section are copied from /site/ in the package -->
+ <files folder="images">
+  <filename>copy.gif</filename>
+  <filename>cut.gif</filename>
+  <filename>delete.gif</filename>
+  <filename>delete_organizer.gif</filename>
+  <filename>edit.gif</filename>
+  <filename>edit_organizer.gif</filename>
+  <filename>info.gif</filename>
+  <filename>new.gif</filename>
+  <filename>new_organizer.gif</filename>
+  <filename>person.jpg</filename>
+  <filename>roll.jpg</filename>
+ </files>
+ 
  <files folder="site">
   <filename>index.html</filename>
   <filename>lajvit.php</filename>
@@ -40,6 +54,16 @@
   <filename>views/person/view.html.php</filename>
   <filename>views/person/tmpl/edit.php</filename>
   <filename>views/person/tmpl/index.html</filename>
+  
+  <filename>views/mypages/index.html</filename>
+  <filename>views/mypages/view.html.php</filename>
+  <filename>views/mypages/tmpl/default.php</filename>
+  <filename>views/mypages/tmpl/index.html</filename>
+  
+  <filename>views/event/index.html</filename>
+  <filename>views/event/view.html.php</filename>
+  <filename>views/event/tmpl/default.php</filename>
+  <filename>views/event/tmpl/index.html</filename>
  </files>
  
  <administration>
@@ -56,6 +80,7 @@
    
    <filename>tables/index.html</filename>
    <filename>tables/littable.php</filename>
+   <filename>tables/lit_chara.php</filename>
    <filename>tables/lit_person.php</filename>
   </files>
  

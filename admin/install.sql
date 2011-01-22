@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS #__lit_event (
  id int(11) NOT NULL auto_increment,
  shortname text NOT NULL,
  name text NOT NULL,
+ url text NOT NULL,
  firstarrivaldate date,
  preparationdate date,
  startdate date,
@@ -58,6 +59,9 @@ CREATE TABLE IF NOT EXISTS #__lit_person (
  msn text,
  skype text,
  facebook text,
+ illness text,
+ allgergies text,
+ medicine text,
  info text,
  created datetime,
  PRIMARY KEY  (id)
@@ -87,36 +91,22 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
 
 CREATE TABLE IF NOT EXISTS #__lit_registration (
  id int(11) NOT NULL auto_increment,
+ personid int NOT NULL,
+ eventid int NOT NULL,
+ roleid int NOT NULL,
  notes text,
  payment int DEFAULT 0,
  timeofpayment datetime,
  confirmed boolean DEFAULT FALSE,
  timeofconfirmation datetime,
- PRIMARY KEY  (id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
-
--- --------------------------------------------------------
---
--- Structure for table Eventpersonroleregistration
---
-
-CREATE TABLE IF NOT EXISTS #__lit_eventpersonroleregistration (
- id int(11) NOT NULL auto_increment,
- personid int NOT NULL,
- eventid int NOT NULL,
- roleid int NOT NULL,
- registrationid int NOT NULL,
  PRIMARY KEY  (personid, eventid),
- CONSTRAINT eventpersonroleregistration_unique UNIQUE (id),
- CONSTRAINT eventpersonroleregistration_personconstr FOREIGN KEY (personid)
+ CONSTRAINT registration_unique UNIQUE (id),
+ CONSTRAINT registration_personconstr FOREIGN KEY (personid)
  REFERENCES #__lit_person (id) ON DELETE CASCADE,
- CONSTRAINT eventpersonroleregistration_eventconstr FOREIGN KEY (eventid)
+ CONSTRAINT registration_eventconstr FOREIGN KEY (eventid)
  REFERENCES #__lit_event (id) ON DELETE CASCADE,
- CONSTRAINT eventpersonroleregistration_roleconstr FOREIGN KEY (roleid)
- REFERENCES #__lit_role (id) ON DELETE CASCADE,
- CONSTRAINT eventpersonroleregistration_registrationconstr FOREIGN KEY
-(registrationid)
- REFERENCES #__lit_registration (id) ON DELETE CASCADE
+ CONSTRAINT roleregistration_roleconstr FOREIGN KEY (roleid)
+ REFERENCES #__lit_role (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 -- --------------------------------------------------------
@@ -127,7 +117,7 @@ CREATE TABLE IF NOT EXISTS #__lit_eventpersonroleregistration (
 CREATE TABLE IF NOT EXISTS #__lit_characoncept (
  id int(11) NOT NULL auto_increment,
  name text NOT NULL,
- link text,
+ url text,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -173,13 +163,31 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
 -- If conceptid is null then use concepttext as concept.
  concepttext text,
 -- Private info
- privat text,
+ privateinfo text,
 
- statusid int NOT NULL,
  PRIMARY KEY  (id),
  CONSTRAINT chara_conceptconstr FOREIGN KEY (conceptid)
- REFERENCES #__lit_characoncept (id) ON DELETE CASCADE,
- CONSTRAINT chara_statusconstr FOREIGN KEY (statusid)
+ REFERENCES #__lit_characoncept (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table registrationchara
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_registrationchara (
+ id int(11) NOT NULL auto_increment,
+ personid int NOT NULL,
+ eventid int NOT NULL,
+ charaid int NOT NULL,
+ statusid int NOT NULL,
+ PRIMARY KEY  (personid, eventid, charaid),
+ CONSTRAINT registrationchara_unique UNIQUE (id),
+ CONSTRAINT registrationchara_registrationconstr FOREIGN KEY (personid, eventid)
+ REFERENCES #__lit_registration (personid, eventid) ON DELETE CASCADE,
+ CONSTRAINT registrationchara_characonstr FOREIGN KEY (charaid)
+ REFERENCES #__lit_chara (id) ON DELETE CASCADE,
+ CONSTRAINT registrationchara_statusconstr FOREIGN KEY (statusid)
  REFERENCES #__lit_charastatus (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -190,27 +198,49 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
 
 CREATE TABLE IF NOT EXISTS #__lit_charainfo (
  id int(11) NOT NULL auto_increment,
+ charaid int NOT NULL,
  infolevelid int NOT NULL,
  info text NOT NULL,
- PRIMARY KEY (id),
+ PRIMARY KEY  (charaid, infolevelid),
+ CONSTRAINT  charainfo_unique UNIQUE (id),
+ CONSTRAINT charainfo_characonstr FOREIGN KEY (charaid)
+ REFERENCES #__lit_chara (id) ON DELETE CASCADE,
  CONSTRAINT charainfo_infolevelconstr FOREIGN KEY (infolevelid)
  REFERENCES #__lit_infolevel (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
--- --------------------------------------------------------
---
--- Structure for table characharainfo
---
 
-CREATE TABLE IF NOT EXISTS #__lit_characharainfo (
- id int(11) NOT NULL auto_increment,
- charaid int NOT NULL,
- charainfoid int NOT NULL,
- CONSTRAINT  characharainfo_unique UNIQUE (id),
- PRIMARY KEY  (charaid),
- CONSTRAINT characharainfo_characonstr FOREIGN KEY (charaid)
- REFERENCES #__lit_chara (id) ON DELETE CASCADE,
- CONSTRAINT characharainfo_charainfoconstr FOREIGN KEY (charainfoid)
- REFERENCES #__lit_charainfo (id) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
+CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT 
+	#__lit_event.id,
+	#__lit_event.name,
+	#__lit_event.url,
+	#__lit_event.startdate,
+	#__lit_event.enddate,
+	#__lit_registration.personid,
+	#__lit_registration.roleid,
+	#__lit_registration.payment,
+	#__lit_registration.timeofpayment,
+	#__lit_registration.confirmed,
+	#__lit_registration.timeofconfirmation
+	FROM #__lit_event
+	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid
+;
+
+CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
+	#__lit_chara.*,
+	#__lit_characoncept.name AS conceptname,
+	#__lit_characoncept.url AS concepturl
+	FROM #__lit_chara
+	LEFT OUTER JOIN #__lit_characoncept ON #__lit_chara.conceptid = #__lit_characoncept.id
+;
+
+CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
+	#__lit_registrationchara.eventid,
+	#__lit_registrationchara.personid,
+	#__lit_vcharacters.*,
+	#__lit_charastatus.description AS statusdesc
+	FROM #__lit_registrationchara
+	LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
+	LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
+;

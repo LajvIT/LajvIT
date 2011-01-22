@@ -60,4 +60,12 @@ class LajvITController extends JController {
 		}
 	}
 
+
+	function mypages() {
+		JRequest::setVar('view', 'mypages');
+//		JRequest::setVar('layout', 'edit');
+//		JRequest::setVar('hidemainmenu', 1);
+		
+		$this->display();
+	}
 }

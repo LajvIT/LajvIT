@@ -157,6 +157,31 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				<tr>
 
+					<td><label for="info">Eventuella sjukdomar:</label></td>
+
+					<td><textarea name="info" cols="50" rows="10"><? echo $this->illness; ?></textarea></td>
+
+				</tr>
+				
+
+				<tr>
+
+					<td><label for="info">Eventuella allergier:</label></td>
+
+					<td><textarea name="info" cols="50" rows="10"><? echo $this->allergies; ?></textarea></td>
+
+				</tr>
+
+				<tr>
+
+					<td><label for="info">Eventuella mediciner:</label></td>
+
+					<td><textarea name="info" cols="50" rows="10"><? echo $this->medicine; ?></textarea></td>
+
+				</tr>
+
+				<tr>
+
 					<td><label for="info">Beskrivning:</label></td>
 
 					<td><textarea name="info" cols="50" rows="10"><? echo $this->info; ?></textarea></td>
