@@ -159,7 +159,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td><label for="info">Eventuella sjukdomar:</label></td>
 
-					<td><textarea name="info" cols="50" rows="10"><? echo $this->illness; ?></textarea></td>
+					<td><textarea name="illness" cols="50" rows="10"><? echo $this->illness; ?></textarea></td>
 
 				</tr>
 				
@@ -168,7 +168,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td><label for="info">Eventuella allergier:</label></td>
 
-					<td><textarea name="info" cols="50" rows="10"><? echo $this->allergies; ?></textarea></td>
+					<td><textarea name="allergies" cols="50" rows="10"><? echo $this->allergies; ?></textarea></td>
 
 				</tr>
 
@@ -176,7 +176,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td><label for="info">Eventuella mediciner:</label></td>
 
-					<td><textarea name="info" cols="50" rows="10"><? echo $this->medicine; ?></textarea></td>
+					<td><textarea name="medicine" cols="50" rows="10"><? echo $this->medicine; ?></textarea></td>
 
 				</tr>
 

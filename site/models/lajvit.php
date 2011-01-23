@@ -45,6 +45,10 @@ class LajvITModelLajvIT extends JModel {
     		$row->givenname = $names[0];
     		$row->surname = implode(" ", array_slice($names, 1));
     		$row->email = $user->email;
+    		
+    		$row->_nodata = true;
+    	} else {
+    		$row->_nodata = false;
     	}
     	
     	return $row;

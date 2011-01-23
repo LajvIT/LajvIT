@@ -20,7 +20,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<p>Start: <? echo $event->startdate; ?> Slut: <? echo $event->enddate; ?></p>
 		
 <?		if (!$event->registered) { ?>
-<strong><p>Ej Registrerad.&nbsp<a href="registration_confirmnew.html"><img src="components/com_lajvit/new.gif"/></a></p></strong>
+<strong><p>Ej Registrerad.&nbsp<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<? echo $event->id; ?>"><img src="components/com_lajvit/new.gif"/></a></p></strong>
 <?		} else { ?>
 			<strong><p>
 				Betalning: <? echo ($event->confirmed ? 'Godkänd' : 'Ej godkänd'); ?>
@@ -36,12 +36,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				</p></strong>
 				<p><? echo $char->conceptname; ?></p>
 <?			} ?>
+	
+			<strong><p>
+				Lägg till karaktär
+				&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=new&eid=<? echo $event->id; ?>"><img src="components/com_lajvit/new.gif"/></a>
+			</p></strong>
 <?		} ?>
-		
-		<strong><p>
-			Lägg till karaktär
-			&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=new&eid=<? echo $event->id; ?>"><img src="components/com_lajvit/new.gif"/></a>
-		</p></strong>
 <?	} ?>
 
 <!--

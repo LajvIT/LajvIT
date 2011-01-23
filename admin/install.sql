@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS #__lit_person (
  skype text,
  facebook text,
  illness text,
- allgergies text,
+ allergies text,
  medicine text,
  info text,
  created datetime,

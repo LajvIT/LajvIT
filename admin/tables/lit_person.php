@@ -21,6 +21,9 @@ class TableLIT_Person extends LITTable {
 	var $msn = null;
 	var $skype = null;
 	var $facebook = null;
+	var $illnes = null;
+	var $allergies = null;
+	var $medicine = null;
 	var $info = null;
 	var $created = null;
 

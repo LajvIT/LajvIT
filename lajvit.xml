@@ -37,6 +37,7 @@
   
   <filename>controller.php</filename>
   <filename>controllers/index.html</filename>
+  <filename>controllers/event.php</filename>
   <filename>controllers/person.php</filename>
   
   
@@ -63,6 +64,7 @@
   <filename>views/event/index.html</filename>
   <filename>views/event/view.html.php</filename>
   <filename>views/event/tmpl/default.php</filename>
+  <filename>views/event/tmpl/register.php</filename>
   <filename>views/event/tmpl/index.html</filename>
  </files>
  
