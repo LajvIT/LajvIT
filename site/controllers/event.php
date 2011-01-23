@@ -27,7 +27,7 @@ class LajvITControllerEvent extends LajvITController {
 		$data = new stdClass;
 		$data->personid = $person->id;
 		$data->eventid = $eventid;
-		$data->roleid = 100; // Default role. BAD CONSTANT, BAD!
+		$data->roleid = $model->getDefaultRoleId();
 		
 		$db->insertObject('#__lit_registration', $data);
 		

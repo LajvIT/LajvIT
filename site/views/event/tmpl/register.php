@@ -5,7 +5,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 <h1><?php echo $this->greeting; ?></h1>
 
-<form action="index.php" method="post" name="personEditForm">
+<form action="index.php" method="post" name="eventRegisterForm">
 
 <h1>Bekräfta registrering</h1>
 <p>Kontrollera att dina personuppgifter stämmer. I annat fall kan du <a href="index.php?option=com_lajvit&view=person&layout=edit">editera dem</a> här innan du försöker registera dig på nytt.  </p>

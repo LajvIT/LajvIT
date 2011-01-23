@@ -34,12 +34,17 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>"><img src="components/com_lajvit/edit.gif"/></a>
 					&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>"><img src="components/com_lajvit/delete.gif"/></a>
 				</p></strong>
-				<p><? echo $char->conceptname; ?></p>
+				<p>
+					<? echo $char->culturename;?> - <? echo $char->conceptname; ?>
+<?					if (!is_null($char->concepttext)) { ?>
+						(<? echo $char->concepttext; ?>)
+<?					} ?>
+					</p>
 <?			} ?>
 	
 			<strong><p>
 				Lägg till karaktär
-				&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=new&eid=<? echo $event->id; ?>"><img src="components/com_lajvit/new.gif"/></a>
+				&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=create&eid=<? echo $event->id; ?>"><img src="components/com_lajvit/new.gif"/></a>
 			</p></strong>
 <?		} ?>
 <?	} ?>

@@ -111,6 +111,18 @@ CREATE TABLE IF NOT EXISTS #__lit_registration (
 
 -- --------------------------------------------------------
 --
+-- Structure for table Characulture
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_characulture (
+ id int(11) NOT NULL auto_increment,
+ name text NOT NULL,
+ url text,
+ PRIMARY KEY  (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
 -- Structure for table Characoncept
 --
 
@@ -159,6 +171,7 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  bornyear int,
  bornmonth int,
  bornday int,
+ cultureid int,
  conceptid int,
 -- If conceptid is null then use concepttext as concept.
  concepttext text,
@@ -166,6 +179,8 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  privateinfo text,
 
  PRIMARY KEY  (id),
+ CONSTRAINT chara_cultureconstr FOREIGN KEY (cultureid)
+ REFERENCES #__lit_characulture (id) ON DELETE CASCADE,
  CONSTRAINT chara_conceptconstr FOREIGN KEY (conceptid)
  REFERENCES #__lit_characoncept (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
@@ -181,6 +196,7 @@ CREATE TABLE IF NOT EXISTS #__lit_registrationchara (
  eventid int NOT NULL,
  charaid int NOT NULL,
  statusid int NOT NULL,
+ groupleader text,
  PRIMARY KEY  (personid, eventid, charaid),
  CONSTRAINT registrationchara_unique UNIQUE (id),
  CONSTRAINT registrationchara_registrationconstr FOREIGN KEY (personid, eventid)
@@ -229,9 +245,12 @@ CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
 	#__lit_chara.*,
+	#__lit_characulture.name AS culturename,
+	#__lit_characulture.url AS cultureurl,
 	#__lit_characoncept.name AS conceptname,
 	#__lit_characoncept.url AS concepturl
 	FROM #__lit_chara
+	LEFT OUTER JOIN #__lit_characulture ON #__lit_chara.cultureid = #__lit_characulture.id
 	LEFT OUTER JOIN #__lit_characoncept ON #__lit_chara.conceptid = #__lit_characoncept.id
 ;
 

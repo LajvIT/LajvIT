@@ -31,6 +31,42 @@ class LajvITModelLajvIT extends JModel {
         return 'Hello, World!';
     }
     
+    function getDefaultStatusId() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT MIN(id) FROM #__lit_charastatus WHERE id >= 100;';
+		$db->setQuery($query);
+		
+		return $db->loadResult();
+    }
+    
+    function getDefaultRoleId() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT MIN(id) FROM #__lit_role WHERE id >= 100;';
+		$db->setQuery($query);
+		
+		return $db->loadResult();
+    }
+    
+    function getCharacterCultures() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_characulture;';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+    }
+    
+    function getCharacterConcepts() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_characoncept;';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+    }
+    
     function &getPerson($userid = null) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)

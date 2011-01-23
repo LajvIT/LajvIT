@@ -37,6 +37,7 @@
   
   <filename>controller.php</filename>
   <filename>controllers/index.html</filename>
+  <filename>controllers/character.php</filename>
   <filename>controllers/event.php</filename>
   <filename>controllers/person.php</filename>
   
@@ -50,6 +51,12 @@
   <filename>views/anmalan/view.html.php</filename>
   <filename>views/anmalan/tmpl/default.php</filename>
   <filename>views/anmalan/tmpl/index.html</filename>
+  
+  <filename>views/character/index.html</filename>
+  <filename>views/character/view.html.php</filename>
+  <filename>views/character/tmpl/create.php</filename>
+  <filename>views/character/tmpl/default.php</filename>
+  <filename>views/character/tmpl/index.html</filename>
   
   <filename>views/person/index.html</filename>
   <filename>views/person/view.html.php</filename>
