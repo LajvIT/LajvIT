@@ -11,6 +11,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
  
 jimport('joomla.application.component.controller');
+jimport('joomla.filesystem.file');
  
 /**
  * Hello World Component Controller
@@ -67,5 +68,76 @@ class LajvITController extends JController {
 //		JRequest::setVar('hidemainmenu', 1);
 		
 		$this->display();
+	}
+	
+	
+	
+	
+	function saveimage($fieldname) {
+       	switch ($_FILES[$fieldname]['error']) {
+	        case 1:
+		        echo 'File larger than php.ini allows.';
+		        return false;
+			case 2:
+				echo 'File larger than html form allows.';
+				return false;			
+			case 3:
+				echo 'Partial upload.';
+				return false;			
+			case 4:
+				echo 'No file';
+				return false;
+		}
+
+
+		if ($_FILES[$fieldname]['size'] > 2000000) {
+			echo 'File bigger than 2 Mb.';
+			return false;
+		}
+		
+		$filename = $_FILES[$fieldname]['name'];
+		$extension = array_pop(explode('.',$filename));
+		
+		$validextensions = array('jpg', 'jpeg', 'png', 'gif');
+		
+		$extok = false;
+		foreach ($validextensions as $ext) {
+			if (strcasecmp($ext, $extension) == 0){
+				$extok = true;
+				break;
+			}
+		}
+		
+		if (!$extok) {
+			echo 'Invalid file extension.';
+			return false;
+		}
+		
+		$tempfile = $_FILES[$fieldname]['tmp_name'];
+		
+		$imageinfo = getimagesize($tempfile);
+		
+		$validmimetypes = array('image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif');
+		
+		if (!is_int($imageinfo[0]) || !is_int($imageinfo[1]) || !in_array($imageinfo['mime'], $validmimetypes)) {
+			echo 'Invalid file type';
+			return false;
+		}
+		
+		if ($imageinfo[0] > 300 || $imageinfo[1] > 300) {
+			echo 'Image area too big.';
+			return false;
+		}
+		
+		$filename = uniqid('', true).'_'.ereg_replace('[^A-Za-z0-9.]', '_', $filename);
+		$path = 'images'.DS.'stories'.DS.$filename;
+		
+		
+		if (!JFile::upload($tempfile, JPATH_SITE.DS.$path)) {
+			echo 'Error moving file.';
+			return false;
+		}
+		
+		return $path;
 	}
 }

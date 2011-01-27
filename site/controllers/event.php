@@ -14,15 +14,20 @@ class LajvITControllerEvent extends LajvITController {
 */
 	
 	function register() {
-		//$oklink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit';
 		$errlink = 'index.php?option=com_lajvit&view=event';
-		$oklink = $errlink;
+		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		
     	$model = &$this->getModel();
 		$db = &JFactory::getDBO();
     	
     	$person = &$model->getPerson();
 		$eventid = JRequest::getInt('eid', -1);
+		
+		if (!$person->check()) {
+			echo 'Incomplete personal data.';
+//			$this->setRedirect($errlink, 'Incomplete personal data.');
+			return;
+		}
 		
 		$data = new stdClass;
 		$data->personid = $person->id;
@@ -31,6 +36,9 @@ class LajvITControllerEvent extends LajvITController {
 		
 		$db->insertObject('#__lit_registration', $data);
 		
+		
+		$oklink = 'index.php?option=com_lajvit&view=event&layout=registered&eid='.$eventid;
+		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		$this->setRedirect($oklink);
 	}
 	

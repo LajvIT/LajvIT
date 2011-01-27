@@ -12,9 +12,8 @@ class LajvITControllerPerson extends LajvITController {
 	}
 	
 	function save() {
-		$oklink = 'index.php?option=com_lajvit&view=event';
 		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&controller=person&task=edit';
-		//$oklink = $errlink;
+		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		
     	$model = &$this->getModel();
     	
@@ -28,19 +27,22 @@ class LajvITControllerPerson extends LajvITController {
 			return;
 		}
 		
-		// Make sure the record is valid
-		if (!$person->check()) {
-			echo '<h1>check</h1>'.$person->getDBO()->getErrorMsg();
-//			$this->setRedirect($errlink, 'Database check error: ' . $person->getDBO()->getErrorMsg());
-			return;
-		}
-		
 		// Store the record to the database
 		if (!$person->store()) {
 			echo '<h1>store</h1>'.$person->getDBO()->getErrorMsg();
 //			$this->setRedirect($errlink, 'Database store error: ' . $person->getDBO()->getErrorMsg());
 			return;
 		}
+		
+		
+		if (!$person->check()) {
+			$this->setRedirect($errlink);
+			return;
+		}
+		
+		
+		$oklink = 'index.php?option=com_lajvit&view=event';
+		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 
 		$this->setRedirect($oklink);
 	}

@@ -8,20 +8,23 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>Mina personuppgifter</h1>
 <p>Dessa uppgifter kommer användas när du anmäler dig till olika arrangemang. Se till att de hålls uppdaterade.</p>
+<?	if ($this->incomplete_person) { ?>
+	<p style="color:red;">Några obligatoriska fält är inte ifyllda.</p>
+<?	} ?>
 
 <table class="contentpaneopen" >
 
 				<tbody>
 				<tr>
 					<td>Förnamn:</td>
-					<td><input type="text" name="givenname" value="<? echo $this->givenname; ?>" size="25" ></td>
+					<td><input type="text" name="givenname" value="<? echo $this->givenname; ?>" size="25" >*</td>
 				</tr>
 
 				<tr>
 
 					<td><label for="surname">Efternamn:</label></td>
 
-					<td><input type="text" name="surname"  value="<? echo $this->surname; ?>" mosreq="1" moslabel="Efternamn" size="25"></td>
+					<td><input type="text" name="surname"  value="<? echo $this->surname; ?>" mosreq="1" moslabel="Efternamn" size="25">*</td>
 
 				</tr>
 
@@ -29,7 +32,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
                   <td><label for="pnumber" title= >Personnummer:</label></td>
 
-				  <td><input type="text" name="pnumber" value="<? echo $this->pnumber; ?>" mosreq="1" moslabel="E-post" size="25"/>
+				  <td><input type="text" name="pnumber" value="<? echo $this->pnumber; ?>" mosreq="1" moslabel="E-post" size="25"/>*
 				    </td>
 
 				  </tr>
@@ -40,7 +43,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 				  <td id="cbfv_50">
 				  Man<input type="radio" name="sex" title="Man" value="M" <? echo ($this->sex == 'M' ? 'checked="1"' : ""); ?>/>
-				  Kvinna<input type="radio" name="sex" title="Kvinna" value="F" <? echo ($this->sex == 'F' ? 'checked="1"' : ""); ?>/>
+				  Kvinna<input type="radio" name="sex" title="Kvinna" value="F" <? echo ($this->sex == 'F' ? 'checked="1"' : ""); ?>/>*
 
 				     </td>
 
@@ -50,7 +53,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
                   <td><label for="idnum">E-post:</label></td>
 
-				  <td><input type="text" name="email" value="<? echo $this->email; ?>" mosreq="1" moslabel="E-post" size="25"/>
+				  <td><input type="text" name="email" value="<? echo $this->email; ?>" mosreq="1" moslabel="E-post" size="25"/>*
 
 				      </td>
 
@@ -74,7 +77,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
                   <td> Telefon:</td>
 
-				  <td> <input type="text" name="phone1" id="label" value="<? echo $this->phone1; ?>" size="25" />
+				  <td> <input type="text" name="phone1" id="label" value="<? echo $this->phone1; ?>" size="25" />*
 
 				     </td>
 
@@ -98,7 +101,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td> Adress:</label></td>
 
-					<td><input type="text" name="street" value="<? echo $this->street; ?>" size="25" </td>
+					<td><input type="text" name="street" value="<? echo $this->street; ?>" size="25">* </td>
 
 				</tr>
 
@@ -108,7 +111,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td><label for="zip">Postnummer:</label></td>
 
-					<td><input type="text" name="zip" id="zip" value="<? echo $this->zip; ?>" size="25" </td>
+					<td><input type="text" name="zip" id="zip" value="<? echo $this->zip; ?>" size="25">* </td>
 
 				</tr>
 
@@ -118,7 +121,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 					<td>Stad:</label></td>
 
-					<td><input type="text" name="town" value="<? echo $this->town; ?>" size="25"></td>
+					<td><input type="text" name="town" value="<? echo $this->town; ?>" size="25">*</td>
 
 				</tr>
 
@@ -205,5 +208,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <input type="hidden" name="option" value="com_lajvit"/>
 <input type="hidden" name="task" value="save"/>
 <input type="hidden" name="controller" value="person"/>
+<input type="hidden" name="Itemid" value="<? echo $this->itemid; ?>"/>
 
 </form>

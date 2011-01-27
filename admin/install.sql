@@ -10,10 +10,10 @@ CREATE TABLE IF NOT EXISTS #__lit_event (
  url text NOT NULL,
  firstarrivaldate date,
  preparationdate date,
- startdate date,
- enddate date,
+ startdate date NOT NULL,
+ enddate date NOT NULL,
  departuredate date,
- ingameyear int,
+ ingameyear int NOT NULL,
  ingamemonth int,
  ingameday int,
 
@@ -177,6 +177,10 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  concepttext text,
 -- Private info
  privateinfo text,
+ image text,
+ description1 text,
+ description2 text,
+ description3 text,
 
  PRIMARY KEY  (id),
  CONSTRAINT chara_cultureconstr FOREIGN KEY (cultureid)
@@ -228,19 +232,17 @@ CREATE TABLE IF NOT EXISTS #__lit_charainfo (
 
 
 CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT 
-	#__lit_event.id,
-	#__lit_event.name,
-	#__lit_event.url,
-	#__lit_event.startdate,
-	#__lit_event.enddate,
-	#__lit_registration.personid,
+	#__lit_event.*,
+	#__lit_person.id AS personid,
 	#__lit_registration.roleid,
 	#__lit_registration.payment,
 	#__lit_registration.timeofpayment,
 	#__lit_registration.confirmed,
 	#__lit_registration.timeofconfirmation
 	FROM #__lit_event
-	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid
+	INNER JOIN #__lit_person
+	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid AND
+	#__lit_person.id = #__lit_registration.personid
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT

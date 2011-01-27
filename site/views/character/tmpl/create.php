@@ -18,7 +18,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <tr>
 <td><strong>Rollens namn:</strong></td>
-<td><input type="text" name="fullname" value="" size="40" ></td>
+<td><input type="text" name="fullname" value="" size="40" >*</td>
 </tr>
 
 <tr>
@@ -28,24 +28,24 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <? foreach ($this->cultures as $culture) { ?>
 <option value="<?echo $culture->id; ?>"><? echo $culture->name; ?></option>
 <? } ?>
-</select>
+</select>*
 </td>
 </tr>
 
 <tr>
-<td><strong>Rollkoncept*:</strong></td>
+<td><strong>Rollkoncept:</strong></td>
 <td>
 <select name="conceptid" >
 <option value="0" selected="selected">Välj huvudsakligt rollkoncept</option>
 <? foreach ($this->concepts as $concept) { ?>
 <option value="<?echo $concept->id; ?>"><? echo $concept->name; ?></option>
 <? } ?>
-</select>
+</select>*
 </td>
 </tr>
 
 <tr>
-<td><strong>Specialiserat koncept*:</strong></td>
+<td><strong>Specialiserat koncept:</strong></td>
 <td><input type="text" name="concepttext" value="" size="25" ></td>
 </tr>
 
@@ -64,7 +64,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <tr>
 <td colspan="2">
-<p><strong>*Förklaring:</strong></p>
+<p><strong>Förklaring:</strong></p>
 <p>Rollkoncept - Rollens primära rollkoncept. Om du inte hittar ett lämpligt, välj konceptet Annat. </p>
 <p>Specialiserat koncept - Rollens specialiserade rollkoncept. Exempel på rollkoncept med specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat (Dödgrävare) </p>
 </td>
@@ -78,5 +78,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <input type="hidden" name="task" value="create"/>
 <input type="hidden" name="controller" value="character"/>
 <input type="hidden" name="eid" value="<? echo $this->eventid; ?>"/>
+<input type="hidden" name="Itemid" value="<? echo $this->itemid; ?>"/>
 
 </form>

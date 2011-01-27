@@ -24,6 +24,9 @@ class LajvITViewPerson extends JView {
     	
     	$person = &$model->getPerson();
     	
+		$incomplete = !$person->_nodata && !$person->check();
+		$this->assignRef('incomplete_person', $incomplete);
+    	
         $this->assignRef('givenname', $person->givenname);
         $this->assignRef('surname', $person->surname);
         $this->assignRef('pnumber', $person->pnumber);
@@ -43,6 +46,8 @@ class LajvITViewPerson extends JView {
         $this->assignRef('allergies', $person->allergies);
         $this->assignRef('medicine', $person->medicine);
         $this->assignRef('info', $person->info);
+        
+		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
         
         parent::display($tpl);
     }

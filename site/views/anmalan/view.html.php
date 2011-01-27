@@ -24,6 +24,8 @@ class LajvITViewAnmalan extends JView {
 		$greeting = $model->getGreeting();
 		
         $this->assignRef( 'greeting', $greeting );
+        
+		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
  
         parent::display($tpl);
     }

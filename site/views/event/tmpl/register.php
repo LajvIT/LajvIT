@@ -5,10 +5,11 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 <h1><?php echo $this->greeting; ?></h1>
 
-<form action="index.php" method="post" name="eventRegisterForm">
-
 <h1>Bekräfta registrering</h1>
-<p>Kontrollera att dina personuppgifter stämmer. I annat fall kan du <a href="index.php?option=com_lajvit&view=person&layout=edit">editera dem</a> här innan du försöker registera dig på nytt.  </p>
+<p>Kontrollera att dina personuppgifter stämmer. I annat fall kan du <a href="index.php?option=com_lajvit&view=person&layout=edit&Itemid=<? echo $this->itemid; ?>">editera dem</a> här innan du försöker registera dig på nytt.  </p>
+<?	if ($this->incomplete_person) { ?>
+	<p style="color:red;">Några obligatoriska uppgifter saknas.</p>
+<?	} ?>
 <p>Namn: <? echo $this->givenname.' '.$this->surname; ?></p>
 <p>Personummer: <? echo $this->pnumber; ?></p>
 <p>Adress: <? echo $this->street; ?></p>
@@ -22,13 +23,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <p>MSN: <? echo $this->msn; ?></p>
 <p>Skype: <? echo $this->skype; ?></p>
 <p>Facebook: <? echo $this->facebook; ?></p>
+<p></p>
+<p>
+Genom att registrera dig för ett av våra arrangemang och betala deltagaravgiften blir du också medlem i den Sverok-anslutna föreningen <a href="http://www.krigshjarta.com/kh/index.php?option=com_content&view=article&id=4&Itemid=19">Krigshjärtan</a>. Föreningens arrangemang och träffar annonseras på forumet.
+</p>
 
-<strong><p><? echo $this->events[$this->eventid]->name; ?></p></strong>
+<?	if (!$this->incomplete_person) { ?>
+	<form action="index.php" method="post" name="eventRegisterForm">
+		<strong><p><? echo $this->events[$this->eventid]->name; ?></p></strong>
+		<input type="submit" value="Bekräfta registrering"/>
+		
+		<input type="hidden" name="option" value="com_lajvit"/>
+		<input type="hidden" name="task" value="register"/>
+		<input type="hidden" name="controller" value="event"/>
+		<input type="hidden" name="eid" value="<? echo $this->eventid; ?>"/>
+		<input type="hidden" name="Itemid" value="<? echo $this->itemid; ?>"/>
+	</form>
+<?	} ?>
 
-<input type="submit" value="Bekräfta registrering"/>
-<input type="hidden" name="option" value="com_lajvit"/>
-<input type="hidden" name="task" value="register"/>
-<input type="hidden" name="controller" value="event"/>
-<input type="hidden" name="eid" value="<? echo $this->eventid; ?>"/>
-
-</form>

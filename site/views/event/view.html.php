@@ -30,6 +30,9 @@ class LajvITViewEvent extends JView {
     		return;
     	}
     	
+    	$incomplete = !$person->check();
+		$this->assignRef('incomplete_person', $incomplete);
+    	
         $this->assignRef('givenname', $person->givenname);
         $this->assignRef('surname', $person->surname);
         $this->assignRef('pnumber', $person->pnumber);
@@ -54,7 +57,7 @@ class LajvITViewEvent extends JView {
 		$events = $model->getEventsForPerson();
 		
 		foreach ($events as $event) {
-			if (is_null($event->personid)) {
+			if (is_null($event->roleid)) {
 				$event->registered = false;
 			} else {
 				$event->registered = true;
@@ -68,6 +71,9 @@ class LajvITViewEvent extends JView {
 		$eventid = JRequest::getInt('eid', -1);
 		$this->assignRef('eventid', $eventid);
 		// TODO: Check eid in case of action
+		
+		
+		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
         
  
         parent::display($tpl);

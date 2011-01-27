@@ -22,12 +22,13 @@ class LajvITViewCharacter extends JView {
     function display($tpl = null) {
     	$model = &$this->getModel();
     	
+    	$person = &$model->getPerson();
+    	
     	$events = $model->getEventsForPerson();
         $this->assignRef('events', $events);
         
 		$eventid = JRequest::getInt('eid', -1);
 		$this->assignRef('eventid', $eventid);
-		// TODO: Check eid in case of action
 		
 		$cultures = $model->getCharacterCultures();
 		$this->assignRef('cultures', $cultures);
@@ -35,6 +36,33 @@ class LajvITViewCharacter extends JView {
 		$concepts = $model->getCharacterConcepts();
 		$this->assignRef('concepts', $concepts);
 		
+		$charid = JRequest::getInt('cid', -1);
+		if ($charid >= 0) {
+			$this->assignRef('characterid', $charid);
+			
+			$character = $model->getCharacterExtended($charid);
+			
+			if (!is_null($character->bornyear)) {
+				$character->age = $events[$eventid]->ingameyear - $character->bornyear;
+			}
+			
+			$this->assignRef('character', $character);
+		}
+		
+		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
+		
+		if ($this->getLayout() == 'edit') {
+			$reg = $model->getRegistration($person->id, $eventid, $charid);
+			if (!$reg) {
+				$this->setLayout('default');
+/*
+				$link = 'index.php?option=com_lajvit&view=character&eid='.$eventid.'&cid='.$charid;
+				$link.= '&Itemid='.JRequest::getInt('Itemid', 0);
+				$this->setRedirect($link);
+				return;
+*/
+			}
+		}
     	
         parent::display($tpl);
     }

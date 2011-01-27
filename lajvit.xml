@@ -56,6 +56,8 @@
   <filename>views/character/view.html.php</filename>
   <filename>views/character/tmpl/create.php</filename>
   <filename>views/character/tmpl/default.php</filename>
+  <filename>views/character/tmpl/edit.php</filename>
+  <filename>views/character/tmpl/updated.php</filename>
   <filename>views/character/tmpl/index.html</filename>
   
   <filename>views/person/index.html</filename>
@@ -72,6 +74,7 @@
   <filename>views/event/view.html.php</filename>
   <filename>views/event/tmpl/default.php</filename>
   <filename>views/event/tmpl/register.php</filename>
+  <filename>views/event/tmpl/registered.php</filename>
   <filename>views/event/tmpl/index.html</filename>
  </files>
  
@@ -90,6 +93,7 @@
    <filename>tables/index.html</filename>
    <filename>tables/littable.php</filename>
    <filename>tables/lit_chara.php</filename>
+   <filename>tables/lit_event.php</filename>
    <filename>tables/lit_person.php</filename>
   </files>
  

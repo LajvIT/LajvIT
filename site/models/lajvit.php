@@ -90,6 +90,17 @@ class LajvITModelLajvIT extends JModel {
     	return $row;
 	}
 	
+	function getRegistration($userid, $eventid, $charid) {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_registrationchara WHERE personid='.$db->getEscaped($userid).' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$ret = $db->loadObject();
+		return is_null($ret) ? false : $ret;
+	}
+	
 	function getEventsForPerson($person = null) {
     	$user = &JFactory::getUser($person);
     	if (!$user || $user->guest)
@@ -116,6 +127,17 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 	
+	function getCharacterExtended($charid) {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_vcharacters WHERE id='.$db->getEscaped($charid).' LIMIT 1;';
+				
+		$db->setQuery($query);
+
+		$ret = $db->loadObject();		
+		return is_null($ret) ? false : $ret;
+	}
+	
 	function &getCharacter($charid) {
 		/*
     	$user = &JFactory::getUser($userid);
@@ -126,6 +148,20 @@ class LajvITModelLajvIT extends JModel {
     	$row = &JTable::getInstance('lit_chara', 'Table');
     	
     	$row->load($charid);
+    	    	
+    	return $row;
+	}
+	
+	function &getEvent($eventid) {
+		/*
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	*/
+    	
+    	$row = &JTable::getInstance('lit_event', 'Table');
+    	
+    	$row->load($eventid);
     	    	
     	return $row;
 	}
