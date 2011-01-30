@@ -24,6 +24,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
+	<td>Faktion:</td>
+	<td><? echo $this->character->factionname; ?></td>
+</tr>
+
+<tr>
 	<td>Kultur:</td>
 	<td><? echo $this->character->culturename; ?></td>
 </tr>

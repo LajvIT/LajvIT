@@ -14,6 +14,8 @@ class TableLIT_Chara extends LITTable {
 	var $bornyear = null;
 	var $bornmonth = null;
 	var $bornday = null;
+	var $factionid = 0;
+	var $cultureid = 0;
 	var $conceptid = null;
 	var $concepttext = null;
 	var $privateinfo = null;

@@ -30,6 +30,9 @@ class LajvITViewCharacter extends JView {
 		$eventid = JRequest::getInt('eid', -1);
 		$this->assignRef('eventid', $eventid);
 		
+		$factions = $model->getCharacterFactions();
+		$this->assignRef('factions', $factions);
+		
 		$cultures = $model->getCharacterCultures();
 		$this->assignRef('cultures', $cultures);
 		

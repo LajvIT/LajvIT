@@ -49,6 +49,15 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadResult();
     }
     
+    function getCharacterFactions() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_charafaction;';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+    }
+    
     function getCharacterCultures() {
 		$db = &JFactory::getDBO();
 		

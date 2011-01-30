@@ -31,6 +31,7 @@ class LajvITControllerCharacter extends LajvITController {
 		$name = JRequest::getString('fullname');
 		$data->fullname = $name;
 		$data->knownas = $name;
+		$data->factionid = JRequest::getInt('factionid', -1);
 		$data->cultureid = JRequest::getInt('cultureid', -1);
 		$data->conceptid = JRequest::getInt('conceptid', -1);
 		$concepttext = trim(JRequest::getString('concepttext'));

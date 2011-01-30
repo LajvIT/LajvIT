@@ -4,6 +4,28 @@
  
 defined('_JEXEC') or die('Restricted access'); ?>
 
+<script language="javascript"><!--
+	function setConceptOptions(chosen) {
+		var selbox = document.characterCreateForm.conceptid;
+		selbox.options.length = 0;
+		if (chosen == 0) {
+			selbox.options[selbox.options.length] = new Option('Välj kultur först','0');
+		}
+		
+<? 		foreach ($this->cultures as $culture) { ?>
+			if (chosen == '<? echo $culture->id; ?>') {
+				selbox.options[selbox.options.length] = new Option('Välj huvudsakligt rollkoncept','0');
+<?				foreach ($this->concepts as $concept) {
+					if ($concept->cultureid == $culture->id) { ?>
+						selbox.options[selbox.options.length] = new Option('<? echo $concept->name; ?>','<? echo $concept->id; ?>');
+<?					} ?>					
+<?				} ?>
+			}
+<?		} ?>
+	}
+--></script> 
+
+
 <h1><? echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
 
 <form action="index.php" method="post" name="characterCreateForm">
@@ -22,8 +44,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
+<td><strong>Faktion:</strong></td>
+<td><select name="factionid">
+<option value="0" selected="selected">Välj faktion</option>
+<? foreach ($this->factions as $faction) { ?>
+<option value="<?echo $faction->id; ?>"><? echo $faction->name; ?></option>
+<? } ?>
+</select>*
+</td>
+</tr>
+
+<tr>
 <td><strong>Kultur:</strong></td>
-<td><select name="cultureid" >
+<td><select name="cultureid" 
+onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <option value="0" selected="selected">Välj huvudsaklig kultur</option>
 <? foreach ($this->cultures as $culture) { ?>
 <option value="<?echo $culture->id; ?>"><? echo $culture->name; ?></option>
@@ -36,10 +70,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <td><strong>Rollkoncept:</strong></td>
 <td>
 <select name="conceptid" >
-<option value="0" selected="selected">Välj huvudsakligt rollkoncept</option>
-<? foreach ($this->concepts as $concept) { ?>
-<option value="<?echo $concept->id; ?>"><? echo $concept->name; ?></option>
-<? } ?>
+<option value="0" selected="selected">Välj kultur först</option>
 </select>*
 </td>
 </tr>

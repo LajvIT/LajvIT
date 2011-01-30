@@ -111,6 +111,18 @@ CREATE TABLE IF NOT EXISTS #__lit_registration (
 
 -- --------------------------------------------------------
 --
+-- Structure for table Charafaction
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_charafaction (
+ id int(11) NOT NULL auto_increment,
+ name text NOT NULL,
+ url text,
+ PRIMARY KEY  (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
 -- Structure for table Characulture
 --
 
@@ -129,8 +141,11 @@ CREATE TABLE IF NOT EXISTS #__lit_characulture (
 CREATE TABLE IF NOT EXISTS #__lit_characoncept (
  id int(11) NOT NULL auto_increment,
  name text NOT NULL,
+ cultureid int NOT NULL,
  url text,
- PRIMARY KEY  (id)
+ PRIMARY KEY  (id),
+ CONSTRAINT characoncept_cultureconstr FOREIGN KEY (cultureid)
+ REFERENCES #__lit_characulture (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 -- --------------------------------------------------------
@@ -171,6 +186,7 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  bornyear int,
  bornmonth int,
  bornday int,
+ factionid int,
  cultureid int,
  conceptid int,
 -- If conceptid is null then use concepttext as concept.
@@ -183,6 +199,8 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  description3 text,
 
  PRIMARY KEY  (id),
+ CONSTRAINT chara_factionconstr FOREIGN KEY (factionid)
+ REFERENCES #__lit_factionculture (id) ON DELETE CASCADE,
  CONSTRAINT chara_cultureconstr FOREIGN KEY (cultureid)
  REFERENCES #__lit_characulture (id) ON DELETE CASCADE,
  CONSTRAINT chara_conceptconstr FOREIGN KEY (conceptid)
@@ -247,11 +265,14 @@ CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
 	#__lit_chara.*,
+	#__lit_charafaction.name AS factionname,
+	#__lit_charafaction.url AS factionurl,
 	#__lit_characulture.name AS culturename,
 	#__lit_characulture.url AS cultureurl,
 	#__lit_characoncept.name AS conceptname,
 	#__lit_characoncept.url AS concepturl
 	FROM #__lit_chara
+	LEFT OUTER JOIN #__lit_charafaction ON #__lit_chara.factionid = #__lit_charafaction.id
 	LEFT OUTER JOIN #__lit_characulture ON #__lit_chara.cultureid = #__lit_characulture.id
 	LEFT OUTER JOIN #__lit_characoncept ON #__lit_chara.conceptid = #__lit_characoncept.id
 ;
