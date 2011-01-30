@@ -52,6 +52,20 @@ class LajvITViewCharacter extends JView {
 			$this->assignRef('character', $character);
 		}
 		
+		$err = JRequest::getInt('failed', 0);
+		$this->assignRef('failed', $err);
+
+		$fullname = JRequest::getString('fullname', '');
+		$factionid = JRequest::getInt('factionid', 0);
+		$cultureid = JRequest::getInt('cultureid', 0);
+		$conceptid = JRequest::getInt('conceptid', 0);
+		
+		$this->assignRef('fullname', $fullname);
+		$this->assignRef('factionid', $factionid);
+		$this->assignRef('cultureid', $cultureid);
+		$this->assignRef('conceptid', $conceptid);
+		
+		
 		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
 		
 		if ($this->getLayout() == 'edit') {

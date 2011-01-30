@@ -41,5 +41,4 @@ class LajvITControllerEvent extends LajvITController {
 		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		$this->setRedirect($oklink);
 	}
-	
 }

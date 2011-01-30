@@ -3,18 +3,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class LajvITControllerCharacter extends LajvITController {
-/*
-	function edit() {
-		JRequest::setVar('view', 'person');
-		JRequest::setVar('layout', 'edit');
-//		JRequest::setVar('hidemainmenu', 1);
-		
-		parent::display();
-	}
-*/
-
 	function create() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&controller=person&task=edit';
+		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=character&layout=create';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		
     	$model = &$this->getModel();
@@ -23,6 +13,9 @@ class LajvITControllerCharacter extends LajvITController {
     	$person = &$model->getPerson();
 
 		$eventid = JRequest::getInt('eid', -1);
+		if ($eventid > 0) {
+			$errlink.= '&eid='.$eventid;
+		}
 
 		$data = new stdClass;
 		$data->created = date('Y-m-d H:i:s');
@@ -39,12 +32,25 @@ class LajvITControllerCharacter extends LajvITController {
 			$data->concepttext = $concepttext;
 		}
 		
+		if (!is_null($data->fullname) && strlen($data->fullname) > 0) {
+			$errlink.= '&fullname='.$data->fullname;
+		}
+		if ($data->factionid > 0) {
+			$errlink.= '&factionid='.$data->factionid;
+		}
+		if ($data->cultureid > 0) {
+			$errlink.= '&cultureid='.$data->cultureid;
+		}
+		if ($data->conceptid > 0) {
+			$errlink.= '&conceptid='.$data->conceptid;
+		}
+		
 		
 		if (is_null($data->fullname) || strlen($data->fullname) == 0 ||
 			is_null($data->knownas) || strlen($data->knownas) == 0 ||
-			$data->cultureid == 0 || $data->conceptid == 0) {
-			echo '<h1>Missing fields in form.</h1>';
-//			$this->setRedirect($errlink, 'Missing fields in form.');
+			$data->factionid == 0 || $data->cultureid == 0 || $data->conceptid == 0) {
+			$errlink.= '&failed=1';
+			$this->setRedirect($errlink);
 			return;
 		}
 		
@@ -81,7 +87,7 @@ class LajvITControllerCharacter extends LajvITController {
 	
 	
 	function save() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&controller=person&task=edit';
+		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=character&layout=edit';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 
 		
@@ -146,4 +152,44 @@ class LajvITControllerCharacter extends LajvITController {
 		$this->setRedirect($oklink);
 	}
 	
+	function delete() {
+		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=event';
+		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
+
+		
+    	$model = &$this->getModel();
+    	
+    	$person = &$model->getPerson();
+    	
+		$charid = JRequest::getInt('cid', -1);
+    	$character = $model->getCharacterExtended($charid);
+    	
+		$eventid = JRequest::getInt('eid', -1);
+		$event = &$model->getEvent($eventid);
+		
+		
+		$reg = $model->getRegistration($person->id, $eventid, $charid);
+		if (!$reg) {
+			echo '<h1>not registered</h1>';
+//			$this->setRedirect($errlink, 'Not registered';
+			return;
+		}
+		
+		
+		$db = &JFactory::getDBO();
+		
+		$query = 'DELETE FROM #__lit_registrationchara WHERE personid='.$person->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
+		$db->setQuery($query);
+		
+		if (!$db->query()) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+//			$this->setRedirect($errlink, $db->getErrorMsg());
+			return;
+		}
+		
+		
+		$oklink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=event';
+		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
+		$this->setRedirect($oklink);
+	}
 }

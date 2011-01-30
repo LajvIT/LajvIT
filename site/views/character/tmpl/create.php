@@ -18,8 +18,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?				foreach ($this->concepts as $concept) {
 					if ($concept->cultureid == $culture->id) { ?>
 						selbox.options[selbox.options.length] = new Option('<? echo $concept->name; ?>','<? echo $concept->id; ?>');
-<?					} ?>					
-<?				} ?>
+<?					}				
+				} ?>
 			}
 <?		} ?>
 	}
@@ -27,6 +27,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 
 <h1><? echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
+
+<?	if ($this->failed == 1) { ?>
+	<p style="color:red;">Några obligatoriska fält är inte ifyllda.</p>
+<?	} ?>
 
 <form action="index.php" method="post" name="characterCreateForm">
 
@@ -40,28 +44,52 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <tr>
 <td><strong>Rollens namn:</strong></td>
-<td><input type="text" name="fullname" value="" size="40" >*</td>
+<td><input type="text" name="fullname" value="<? echo $this->fullname; ?>" size="40" >*</td>
 </tr>
 
 <tr>
 <td><strong>Faktion:</strong></td>
 <td><select name="factionid">
-<option value="0" selected="selected">Välj faktion</option>
-<? foreach ($this->factions as $faction) { ?>
-<option value="<?echo $faction->id; ?>"><? echo $faction->name; ?></option>
-<? } ?>
+<option value="0"
+<?	if ($this->factionid <= 0) { ?>
+	selected="selected"
+<?	} ?>
+>
+	Välj faktion
+</option>
+<?	foreach ($this->factions as $faction) { ?>
+		<option value="<?echo $faction->id; ?>"
+<?		if ($this->factionid == $faction->id) { ?>
+			selected="selected"
+<?		} ?>
+		>
+			<? echo $faction->name; ?>
+		</option>
+<?	} ?>
 </select>*
 </td>
 </tr>
 
 <tr>
 <td><strong>Kultur:</strong></td>
-<td><select name="cultureid" 
+<td><select name="cultureid"
 onchange="setConceptOptions(this.options[this.selectedIndex].value);">
-<option value="0" selected="selected">Välj huvudsaklig kultur</option>
-<? foreach ($this->cultures as $culture) { ?>
-<option value="<?echo $culture->id; ?>"><? echo $culture->name; ?></option>
-<? } ?>
+<option value="0"
+<?	if ($this->cultureid <= 0) { ?>
+	selected="selected"
+<?	} ?>
+>
+	Välj huvudsaklig kultur
+</option>
+<?	foreach ($this->cultures as $culture) { ?>
+		<option value="<?echo $culture->id; ?>"
+<?		if ($this->cultureid == $culture->id) { ?>
+			selected="selected"
+<?		} ?>
+		>
+			<? echo $culture->name; ?>
+		</option>
+<?	} ?>
 </select>*
 </td>
 </tr>
@@ -69,8 +97,23 @@ onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <tr>
 <td><strong>Rollkoncept:</strong></td>
 <td>
-<select name="conceptid" >
-<option value="0" selected="selected">Välj kultur först</option>
+<select name="conceptid" selected="<? echo $this->conceptid; ?>">
+<?	if ($this->cultureid > 0) { ?>
+		<option value="0">Välj huvudsakligt rollkoncept</option>
+<?		foreach ($this->concepts as $concept) {
+			if ($concept->cultureid == $this->cultureid) { ?>
+				<option value="<?echo $concept->id; ?>"
+<?				if ($this->conceptid == $concept->id) { ?>
+					selected="selected"
+<?				} ?>
+				>
+					<? echo $concept->name; ?>
+				</option>
+<?			}
+		}
+	} else { ?>
+		<option value="0" selected="selected">Välj kultur först</option>
+<?	} ?>
 </select>*
 </td>
 </tr>

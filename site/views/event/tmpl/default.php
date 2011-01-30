@@ -34,7 +34,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						&nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.gif" alt="Info"/></a>
 <?					} ?>
 					&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär"/></a>
-<?					if (false) { ?>					
+<?					if (true) { ?>
 						&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Ta bort karaktär"><img src="components/com_lajvit/delete.gif" alt="Ta bort karaktär"/></a>
 <?					} ?>
 				</p></strong>
