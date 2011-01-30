@@ -48,6 +48,16 @@ class LajvITController extends JController {
 			$view->setModel($model, true);
 		}
 		
+		
+		if ($viewName != 'person' || $viewLayout != 'edit') {
+	    	$person = &$model->getPerson();
+	    	
+	    	if (!$person || $person->_nodata) {
+	    		$this->setRedirect('index.php?option=com_lajvit&view=person&layout=edit&Itemid='.JRequest::getInt('Itemid', 0));
+	    		return;
+	    	}
+		}
+		
 		// Set the layout
 		$view->setLayout($viewLayout);
 		

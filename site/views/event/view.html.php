@@ -25,11 +25,6 @@ class LajvITViewEvent extends JView {
     	
     	$person = &$model->getPerson();
     	
-    	if (!$person || $person->_nodata) {
-    		$this->setRedirect('index.php?option=com_lajvit&controller=person&task=edit');
-    		return;
-    	}
-    	
     	$incomplete = !$person->check();
 		$this->assignRef('incomplete_person', $incomplete);
     	

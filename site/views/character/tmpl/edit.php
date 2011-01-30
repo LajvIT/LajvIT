@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <table>
 <tbody>
 <tr>
-	<td>Rollens namn:</td>
+	<td>Karaktärens namn:</td>
 	<td><? echo $this->character->fullname; ?></td>
 
 	<td rowspan="6">
@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 3**  (Vänner, familj...):</td>
+	<td colspan="3">Beskrivning nivå 3**  (För vänner, familj...):</td>
 </tr>
 <tr>
 	<td colspan="3">
@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 2** (Bekannta, grannar...):</td>
+	<td colspan="3">Beskrivning nivå 2** (För bekanta, grannar...):</td>
 </tr>				
 <tr>
 	<td colspan="3">
@@ -83,7 +83,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 1** (Rykten..):</td>
+	<td colspan="3">Beskrivning nivå 1** (Rykten...):</td>
 </tr>				
 <tr>
 	<td colspan="3">
