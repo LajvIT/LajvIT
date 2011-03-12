@@ -49,6 +49,15 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadResult();
     }
     
+    function getDefaultConfirmationId() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT MIN(id) FROM #__lit_confirmation WHERE id >= 100;';
+		$db->setQuery($query);
+		
+		return $db->loadResult();
+    }
+    
     function getCharacterFactions() {
 		$db = &JFactory::getDBO();
 		
@@ -76,6 +85,24 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList("id");
     }
     
+    function getCharacterStatus() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_charastatus;';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+    }
+    
+    function getConfirmations() {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_confirmation;';
+				
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+    }
+    
     function &getPerson($userid = null) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
@@ -97,6 +124,21 @@ class LajvITModelLajvIT extends JModel {
     	}
     	
     	return $row;
+	}
+	
+	function getRoleForEvent($eventid, $userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_veventroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$ret = $db->loadObject();
+		return is_null($ret) ? false : $ret;
 	}
 	
 	function getRegistration($userid, $eventid, $charid) {
@@ -132,6 +174,15 @@ class LajvITModelLajvIT extends JModel {
 		
 		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($event).';';
 				
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+	
+	function getCharactersForFaction($event, $faction) {
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
+
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

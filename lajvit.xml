@@ -2,7 +2,7 @@
 <install type="component" version="1.5.0">
  <name>LajvIT</name>
  <!-- The following elements are optional and free of formatting constraints -->
- <creationDate>2010-12-21</creationDate>
+ <creationDate>2011-02-15</creationDate>
  <author>Emil Djupfeldt</author>
  <authorEmail>emil@djupfeldt.se</authorEmail>
  <authorUrl>http://www.example.org</authorUrl>
@@ -24,7 +24,8 @@
   <filename>delete_organizer.gif</filename>
   <filename>edit.gif</filename>
   <filename>edit_organizer.gif</filename>
-  <filename>info.gif</filename>
+  <filename>info.png</filename>
+  <filename>list.png</filename>
   <filename>new.gif</filename>
   <filename>new_organizer.gif</filename>
   <filename>person.jpg</filename>
@@ -40,6 +41,7 @@
   <filename>controllers/character.php</filename>
   <filename>controllers/event.php</filename>
   <filename>controllers/person.php</filename>
+  <filename>controllers/registrations.php</filename>
   
   
   <filename>models/index.html</filename>
@@ -63,6 +65,7 @@
   
   <filename>views/person/index.html</filename>
   <filename>views/person/view.html.php</filename>
+  <filename>views/person/tmpl/default.php</filename>
   <filename>views/person/tmpl/edit.php</filename>
   <filename>views/person/tmpl/index.html</filename>
   
@@ -77,6 +80,11 @@
   <filename>views/event/tmpl/register.php</filename>
   <filename>views/event/tmpl/registered.php</filename>
   <filename>views/event/tmpl/index.html</filename>
+  
+  <filename>views/registrations/index.html</filename>
+  <filename>views/registrations/view.html.php</filename>
+  <filename>views/registrations/tmpl/default.php</filename>
+  <filename>views/registrations/tmpl/index.html</filename>
  </files>
  
  <administration>

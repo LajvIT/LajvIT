@@ -35,6 +35,7 @@ class LajvITController extends JController {
 		$user = &JFactory::getUser();
     	if (!$user || $user->guest) {
 			$redirectUrl = 'index.php?option=com_lajvit&view=' . $viewName . '&layout=' . $viewLayout;
+			$redirectUrl.= '&Itemid='.JRequest::getInt('Itemid', 0);
 			$this->setRedirect('index.php?option=com_user&view=login&return=' . base64_encode($redirectUrl));
 			return;
     	}

@@ -4,7 +4,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class LajvITControllerCharacter extends LajvITController {
 	function create() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=character&layout=create';
+		$errlink = 'index.php?option=com_lajvit&view=character&layout=create';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		
     	$model = &$this->getModel();
@@ -87,7 +87,7 @@ class LajvITControllerCharacter extends LajvITController {
 	
 	
 	function save() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=character&layout=edit';
+		$errlink = 'index.php?option=com_lajvit&view=character&layout=edit';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 
 		
@@ -153,7 +153,7 @@ class LajvITControllerCharacter extends LajvITController {
 	}
 	
 	function delete() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=event';
+		$errlink = 'index.php?option=com_lajvit&view=event';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 
 		
@@ -188,7 +188,7 @@ class LajvITControllerCharacter extends LajvITController {
 		}
 		
 		
-		$oklink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&view=event';
+		$oklink = 'index.php?option=com_lajvit&view=event';
 		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		$this->setRedirect($oklink);
 	}

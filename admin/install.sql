@@ -79,10 +79,31 @@ CREATE TABLE IF NOT EXISTS #__lit_person (
 
 CREATE TABLE IF NOT EXISTS #__lit_role (
  id int(11) NOT NULL auto_increment,
- shortname text NOT NULL,
+ name text NOT NULL,
  description text,
+ registration_list boolean NOT NULL DEFAULT FALSE,
+ registration_setstatus boolean NOT NULL DEFAULT FALSE,
+ registration_setrole boolean NOT NULL DEFAULT FALSE,
+ character_list boolean NOT NULL DEFAULT FALSE,
+ character_setstatus boolean NOT NULL DEFAULT FALSE,
+ person_viewcontactinfo boolean NOT NULL DEFAULT FALSE,
+ person_viewmedical boolean NOT NULL DEFAULT FALSE,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+
+
+-- --------------------------------------------------------
+--
+-- Structure for table Registration
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_confirmation (
+ id int(11) NOT NULL auto_increment,
+ name text NOT NULL,
+ PRIMARY KEY  (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
 
 -- --------------------------------------------------------
 --
@@ -97,7 +118,7 @@ CREATE TABLE IF NOT EXISTS #__lit_registration (
  notes text,
  payment int DEFAULT 0,
  timeofpayment datetime,
- confirmed boolean DEFAULT FALSE,
+ confirmationid int NOT NULL,
  timeofconfirmation datetime,
  PRIMARY KEY  (personid, eventid),
  CONSTRAINT registration_unique UNIQUE (id),
@@ -106,7 +127,9 @@ CREATE TABLE IF NOT EXISTS #__lit_registration (
  CONSTRAINT registration_eventconstr FOREIGN KEY (eventid)
  REFERENCES #__lit_event (id) ON DELETE CASCADE,
  CONSTRAINT roleregistration_roleconstr FOREIGN KEY (roleid)
- REFERENCES #__lit_role (id) ON DELETE CASCADE
+ REFERENCES #__lit_role (id) ON DELETE CASCADE,
+ CONSTRAINT confirmationregistration_confitmationconstr FOREIGN KEY (confirmationid)
+ REFERENCES #__lit_confirmation (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 -- --------------------------------------------------------
@@ -155,7 +178,7 @@ CREATE TABLE IF NOT EXISTS #__lit_characoncept (
 
 CREATE TABLE IF NOT EXISTS #__lit_charastatus (
  id int(11) NOT NULL auto_increment,
- description text NOT NULL,
+ name text NOT NULL,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -255,12 +278,22 @@ CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
 	#__lit_registration.roleid,
 	#__lit_registration.payment,
 	#__lit_registration.timeofpayment,
-	#__lit_registration.confirmed,
-	#__lit_registration.timeofconfirmation
+	#__lit_registration.confirmationid,
+	#__lit_registration.timeofconfirmation,
+	#__lit_confirmation.name AS confirmationname
 	FROM #__lit_event
 	INNER JOIN #__lit_person
 	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid AND
 	#__lit_person.id = #__lit_registration.personid
+	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
+;
+
+CREATE OR REPLACE VIEW #__lit_veventroles AS SELECT
+	#__lit_registration.eventid,
+	#__lit_registration.personid,
+	#__lit_role.*
+	FROM #__lit_registration
+	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
@@ -281,8 +314,20 @@ CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
 	#__lit_registrationchara.eventid,
 	#__lit_registrationchara.personid,
 	#__lit_vcharacters.*,
-	#__lit_charastatus.description AS statusdesc
+	#__lit_registrationchara.statusid,
+	#__lit_charastatus.name AS statusname,
+	#__lit_registration.roleid,
+	#__lit_role.name AS rolename,
+	#__lit_registration.payment,
+	#__lit_registration.confirmationid,
+	#__lit_confirmation.name AS confirmationname,
+	CONCAT(#__lit_person.givenname, ' ', #__lit_person.surname) AS personname,
+	#__lit_person.pnumber
 	FROM #__lit_registrationchara
 	LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
 	LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
+	LEFT OUTER JOIN #__lit_registration ON #__lit_registrationchara.eventid = #__lit_registration.eventid AND #__lit_registrationchara.personid = #__lit_registration.personid
+	LEFT OUTER JOIN #__lit_person ON #__lit_registrationchara.personid = #__lit_person.id
+	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
+	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
 ;

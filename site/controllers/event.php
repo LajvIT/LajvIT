@@ -3,16 +3,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class LajvITControllerEvent extends LajvITController {
-/*
-	function edit() {
-		JRequest::setVar('view', 'person');
-		JRequest::setVar('layout', 'edit');
-//		JRequest::setVar('hidemainmenu', 1);
-		
-		parent::display();
-	}
-*/
-	
 	function register() {
 		$errlink = 'index.php?option=com_lajvit&view=event';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
@@ -33,6 +23,7 @@ class LajvITControllerEvent extends LajvITController {
 		$data->personid = $person->id;
 		$data->eventid = $eventid;
 		$data->roleid = $model->getDefaultRoleId();
+		$data->confirmationid = $model->getDefaultConfirmationId();
 		
 		$db->insertObject('#__lit_registration', $data);
 		

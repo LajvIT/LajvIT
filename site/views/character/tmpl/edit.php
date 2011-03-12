@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 3**  (För vänner, familj...):</td>
+	<td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
 </tr>
 <tr>
 	<td colspan="3">
@@ -74,7 +74,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 2** (För bekanta, grannar...):</td>
+	<td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
 </tr>				
 <tr>
 	<td colspan="3">
@@ -83,7 +83,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Beskrivning nivå 1** (Rykten...):</td>
+	<td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
 </tr>				
 <tr>
 	<td colspan="3">
@@ -106,6 +106,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<td>
 		<input type="submit" value="Spara ändringar" title="save" />
 	</td>
+</tr>
+
+<tr>
+<td colspan="2">
+<p><strong>Förklaring:</strong></p>
+<p>Ålder - Din karaktärs ålder</p>
+<p>Beskrivning nivå 3 - Den mest detaljerade beskrivningen av din karaktär. Det som dina närmaste vänner och familj känner till.</p>
+<p>Beskrivning nivå 2 - Det som dina bekanta och grannar känner till.</p>
+<p>Beskrivning nivå 1 - Din karaktärs rykte, eller det som man mycket lätt kan ta reda på genom att fråga folk i trakten. Bör vara mycket kortfattat. Denna information kommer vara synlig för nästan alla spelare.</p>
+<p>Notera att varje nivå måste vara självförklarande.</p>
+<p>Privat information (För spelaren och arrangören) - Här skriver du information som du inte vill att någon annan spelare ska läsa, men som kan vara bra för arrangören att känna till om din karaktär. Här kan du också skriva eventuella intrigförslag.</p>
+<p>Beskriv viktiga saker kring din karaktär. Men skriv överlag kort och koncist för både dina arrangörers och medspelares skull.</p>
+</td>
 </tr>
 
 </tbody>

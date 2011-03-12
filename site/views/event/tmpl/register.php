@@ -25,7 +25,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <p>Facebook: <? echo $this->facebook; ?></p>
 <p></p>
 <p>
-Genom att registrera dig för ett av våra arrangemang och betala deltagaravgiften blir du också medlem i den Sverok-anslutna föreningen <a href="http://www.krigshjarta.com/kh/index.php?option=com_content&view=article&id=4&Itemid=19">Krigshjärtan</a>. Föreningens arrangemang och träffar annonseras på forumet.
+Genom att registrera dig för ett av våra arrangemang och betala medlemsavgiften blir du också medlem i den Sverok-anslutna föreningen <a href="http://www.krigshjarta.com/kh/index.php?option=com_content&view=article&id=4&Itemid=19">Krigshjärtan</a>. Föreningens arrangemang och träffar annonseras på forumet.
 </p>
 
 <?	if (!$this->incomplete_person) { ?>

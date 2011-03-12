@@ -22,7 +22,19 @@ class LajvITViewPerson extends JView {
     function display($tpl = null) {
     	$model = &$this->getModel();
     	
-    	$person = &$model->getPerson();
+		$eventid = JRequest::getInt('eid', -1); 
+    	$role = $model->getRoleForEvent($eventid);
+		$this->assignRef('role', $role);
+    	
+		$personid = JRequest::getInt('pid', -1);
+    	
+    	if ($personid < 0 || $this->getLayout() == 'edit') {
+	    	$person = &$model->getPerson();
+    	} else {
+		    $person = &$model->getPerson($personid);
+    	}
+    	
+    	$personid = $person->id;
     	
 		$incomplete = !$person->_nodata && !$person->check();
 		$this->assignRef('incomplete_person', $incomplete);

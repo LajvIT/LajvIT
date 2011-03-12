@@ -12,7 +12,7 @@ class LajvITControllerPerson extends LajvITController {
 	}
 	
 	function save() {
-		$errlink = 'http://emil.djupfeldt.se/kh_anmalan/index.php?option=com_lajvit&controller=person&task=edit';
+		$errlink = 'index.php?option=com_lajvit&controller=person&task=edit';
 		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
 		
     	$model = &$this->getModel();

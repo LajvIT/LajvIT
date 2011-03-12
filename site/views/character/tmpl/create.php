@@ -139,8 +139,11 @@ onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <tr>
 <td colspan="2">
 <p><strong>Förklaring:</strong></p>
-<p>Rollkoncept - Rollens primära rollkoncept. Om du inte hittar ett lämpligt, välj konceptet Annat. </p>
-<p>Specialiserat koncept - Rollens specialiserade rollkoncept. Exempel på rollkoncept med specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat (Dödgrävare) </p>
+<p>Faktion - Den huvudfaktion du anser att din karaktär tillhör.</p>
+<p>Kultur - Din karaktärs kulturella bakgrund. Ofta den region där karaktären vuxit upp.</p>
+<p>Rollkoncept - Karaktärens primära rollkoncept. Om du inte hittar ett lämpligt, välj konceptet Annat.</p>
+<p>Specialiserat koncept - Karaktärens specialiserade rollkoncept. Exempel på rollkoncept med specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat (Dödgrävare)</p>
+<p>Gruppsamordnare - Om karaktären tillhör en offgrupp, ange namnet på gruppens kontaktperson/samordnare här.</p>
 </td>
 </tr>
 
