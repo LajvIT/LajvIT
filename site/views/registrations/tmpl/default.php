@@ -40,11 +40,11 @@ $personrow = array();
 			<tr>
 				<td colspan="5">Sortering: &nbsp;<a href="<?php echo getLink($this->event->id, $this->itemid, "knownas", $knownasSortOrder, null, null)?>"
 					title="Karaktär">Karaktär</a> &nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, "culture", $cultureSortOrder, null, null)?>" title="Kultur">Kultur</a> &nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, "concept", $conceptSortOrder, null, null)?>" title="Koncept">Koncept</a> &nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, "personname", $personSortOrder, null, null)?>" title="Spelare">Spelare</a> &nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, "created", $createdSortOrder, null, null)?>" title="Skapad">Skapad</a> &nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, "updated", $updatedSortOrder, null, null)?>" title="Ändrad">Ändrad</a>
+					href="<?php echo getLink($this->event->id, $this->itemid, "culture", $cultureSortOrder, $this->characterStatus, $this->confirmation)?>" title="Kultur">Kultur</a> &nbsp;<a
+					href="<?php echo getLink($this->event->id, $this->itemid, "concept", $conceptSortOrder, $this->characterStatus, $this->confirmation)?>" title="Koncept">Koncept</a> &nbsp;<a
+					href="<?php echo getLink($this->event->id, $this->itemid, "personname", $personSortOrder, $this->characterStatus, $this->confirmation)?>" title="Spelare">Spelare</a> &nbsp;<a
+					href="<?php echo getLink($this->event->id, $this->itemid, "created", $createdSortOrder, $this->characterStatus, $this->confirmation)?>" title="Skapad">Skapad</a> &nbsp;<a
+					href="<?php echo getLink($this->event->id, $this->itemid, "updated", $updatedSortOrder, $this->characterStatus, $this->confirmation)?>" title="Ändrad">Ändrad</a>
 				</td>
 			</tr>
 			<tr>
@@ -59,7 +59,7 @@ $personrow = array();
 					Rollstatus:
 					<?php
 					foreach ($this->status as $status) { ?>
-						<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $status->id, null)?>" title="<?php echo $status->name?>"><?php echo $status->name?></a>
+						<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $status->id, $this->confirmation)?>" title="<?php echo $status->name?>"><?php echo $status->name?></a>
 					<?php
 					}
 					?>
@@ -71,7 +71,7 @@ $personrow = array();
 					Betalning:
 					<?php
 					foreach ($this->confirmations as $confirmation) { ?>
-						<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, null, $confirmation->id)?>" title="<?php echo $confirmation->name?>"><?php echo $confirmation->name?></a>
+						<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $confirmation->id)?>" title="<?php echo $confirmation->name?>"><?php echo $confirmation->name?></a>
 					<?php
 					}
 					?>

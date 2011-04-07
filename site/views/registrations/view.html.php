@@ -29,7 +29,9 @@ class LajvITViewRegistrations extends JView {
 		$this->assignRef('role', $role);
 
 		$characterStatus = JRequest::getInt('charstatus', null);
+		$this->assignRef('characterStatus', $characterStatus);
 		$confirmation = JRequest::getInt('confirmation', null);
+		$this->assignRef('confirmation', $confirmation);
 
 		$queries = array();
 		if ($role->registration_list || $role->character_list) {
