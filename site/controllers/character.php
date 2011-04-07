@@ -165,20 +165,25 @@ class LajvITControllerCharacter extends LajvITController {
 		$eventid = JRequest::getInt('eid', -1);
 		$event = &$model->getEvent($eventid);
 
+		$role = &$model->getRoleForEvent($eventid);
+
 		$redirect = JRequest::getString('redirect', '');
 
-
 		$reg = $model->getRegistration($person->id, $eventid, $charid);
+		$db = &JFactory::getDBO();
 		if (!$reg) {
-			echo '<h1>not registered</h1>';
-			//			$this->setRedirect($errlink, 'Not registered';
-			return;
+			if ($role->registration_setstatus || $role->character_setstatus) {
+				echo '<h1>admin</h1>';
+				$query = 'DELETE FROM #__lit_registrationchara WHERE eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
+			} else {
+				echo '<h1>not registered</h1>';
+				//			$this->setRedirect($errlink, 'Not registered';
+				return;
+			}
+		} else {
+			$query = 'DELETE FROM #__lit_registrationchara WHERE personid='.$person->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
 		}
 
-
-		$db = &JFactory::getDBO();
-
-		$query = 'DELETE FROM #__lit_registrationchara WHERE personid='.$person->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
 		$db->setQuery($query);
 
 		if (!$db->query()) {
@@ -186,7 +191,6 @@ class LajvITControllerCharacter extends LajvITController {
 			//			$this->setRedirect($errlink, $db->getErrorMsg());
 			return;
 		}
-
 
 		if ($redirect == 'registrations' && $eventid > 0) {
 			$oklink = 'index.php?option=com_lajvit&view=registrations';
