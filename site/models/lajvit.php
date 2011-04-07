@@ -178,7 +178,7 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus) {
+	function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus, $confirmation) {
     $db = &JFactory::getDBO();
 
     $query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
@@ -186,6 +186,10 @@ function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $c
     if (is_numeric($characterStatus) ) {
     	$query .= " AND statusid = " . $db->getEscaped($characterStatus);
     }
+    if (is_numeric($confirmation)) {
+    	$query .= " AND confirmationid = " . $db->getEscaped($confirmation);
+    }
+
     switch ($orderBy) {
       case 'knownas':
         $query .= " ORDER BY knownas";

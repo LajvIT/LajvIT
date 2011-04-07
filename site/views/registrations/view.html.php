@@ -29,6 +29,7 @@ class LajvITViewRegistrations extends JView {
 		$this->assignRef('role', $role);
 
 		$characterStatus = JRequest::getInt('charstatus', null);
+		$confirmation = JRequest::getInt('confirmation', null);
 
 		$queries = array();
 		if ($role->registration_list || $role->character_list) {
@@ -39,7 +40,7 @@ class LajvITViewRegistrations extends JView {
 
 			$factions = $model->getCharacterFactions();
 			foreach ($factions as $faction) {
-				$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus);
+				$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus, $confirmation);
 			}
 		} else {
 			$factions = array();
