@@ -28,10 +28,18 @@ class LajvITViewRegistrations extends JView {
 		$role = $model->getRoleForEvent($eventid);
 		$this->assignRef('role', $role);
 
+		$characterStatus = JRequest::getInt('charstatus', null);
+
+		$queries = array();
 		if ($role->registration_list || $role->character_list) {
+			$orderBy = JRequest::getString('orderby', '');
+			$sortorder = JRequest::getString('sortorder', 'ASC');
+			$this->assignRef('sortOrder', $sortorder);
+			$this->assignRef('orderBy', $orderBy);
+
 			$factions = $model->getCharacterFactions();
 			foreach ($factions as $faction) {
-				$faction->characters = $model->getCharactersForFaction($eventid, $faction->id);
+				$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus);
 			}
 		} else {
 			$factions = array();

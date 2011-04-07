@@ -178,14 +178,43 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getCharactersForFaction($event, $faction) {
-		$db = &JFactory::getDBO();
+function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus) {
+    $db = &JFactory::getDBO();
 
-		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
+    $query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
 
-		$db->setQuery($query);
-		return $db->loadObjectList();
-	}
+    if (is_numeric($characterStatus) ) {
+    	$query .= " AND statusid = " . $db->getEscaped($characterStatus);
+    }
+    switch ($orderBy) {
+      case 'knownas':
+        $query .= " ORDER BY knownas";
+        break;
+      case 'culture':
+        $query .= " ORDER BY culturename";
+        break;
+      case 'concept':
+        $query .= " ORDER BY conceptname";
+        break;
+      case 'personname':
+        $query .= " ORDER BY personname";
+        break;
+      case 'created':
+        $query .= " ORDER BY created";
+        break;
+      case 'updated':
+        $query .= " ORDER BY updated";
+        break;
+      default:
+        break;
+    }
+    if ( $orderDirection != '' && ($orderDirection == 'DESC' || $orderDirection == 'DESC')) {
+      $query .= " " . $orderDirection;
+    }
+
+    $db->setQuery($query);
+    return $db->loadObjectList();
+  }
 
 	function getCharacterExtended($charid) {
 		$db = &JFactory::getDBO();
