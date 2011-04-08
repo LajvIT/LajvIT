@@ -39,6 +39,9 @@ class LajvITViewCharacter extends JView {
 		$concepts = $model->getCharacterConcepts();
 		$this->assignRef('concepts', $concepts);
 
+    	$role = $model->getRoleForEvent($eventid);
+		$this->assignRef('role', $role);
+		
 		$charid = JRequest::getInt('cid', -1);
 		if ($charid >= 0) {
 			$this->assignRef('characterid', $charid);

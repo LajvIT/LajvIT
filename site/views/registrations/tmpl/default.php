@@ -98,9 +98,7 @@ $personrow = array();
 							echo " (" . $char->concepttext . ")";
 						} ?>
 					</strong> <?
-					if (false) { ?>
 					&nbsp; <a href="index.php?option=com_lajvit&view=character&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /> </a>
-<?         } ?>
 <?          if (false) { ?>
 					&nbsp; <a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär" /></a>
 <?          } ?>
