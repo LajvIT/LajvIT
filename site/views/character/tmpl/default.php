@@ -50,14 +50,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<td></td>
 </tr>
 
-<tr>
-	<td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
-</tr>
-<tr>
-	<td colspan="3">
-		<textarea name="description3" cols="70" rows="20" disabled="disabled"><? echo $this->character->description3; ?></textarea>
-	</td>
-</tr>
+<?	if ($this->role->character_list) { ?>
+	<tr>
+		<td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<textarea name="description3" cols="70" rows="20" disabled="disabled"><? echo $this->character->description3; ?></textarea>
+		</td>
+	</tr>
+<?	} ?>
 
 <?	if ($this->role->character_list) { ?>
 		<tr>
@@ -70,7 +72,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 <?	} ?>
 
-<?	if ($this->role->character_list) { ?>
+<?	if (true) { ?>
 	<tr>
 		<td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
 	</tr>				

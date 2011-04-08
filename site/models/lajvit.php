@@ -141,6 +141,22 @@ class LajvITModelLajvIT extends JModel {
 		return is_null($ret) ? false : $ret;
 	}
 
+	function getRoleForConcept($eventid, $cultureid, $conceptid, $userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_veventroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND cultureid='.$db->getEscaped($cultureid).' AND conceptid='.$db->getEscaped($conceptid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$ret = $db->loadObject();
+		return is_null($ret) ? false : $ret;
+		#__lit_rolecharaconcept
+	}
+	
 	function getRegistration($userid, $eventid, $charid) {
 		$db = &JFactory::getDBO();
 

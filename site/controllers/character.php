@@ -172,6 +172,7 @@ class LajvITControllerCharacter extends LajvITController {
 		$reg = $model->getRegistration($person->id, $eventid, $charid);
 		$db = &JFactory::getDBO();
 		if (!$reg) {
+			// TODO: Distinct priviliege for deleting?
 			if ($role->registration_setstatus || $role->character_setstatus) {
 				echo '<h1>admin</h1>';
 				$query = 'DELETE FROM #__lit_registrationchara WHERE eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';

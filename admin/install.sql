@@ -171,6 +171,37 @@ CREATE TABLE IF NOT EXISTS #__lit_characoncept (
  REFERENCES #__lit_characulture (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
+
+-- --------------------------------------------------------
+--
+-- Structure for table Rolecharaconcept
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_registrationcharaconceptrole (
+ id int(11) NOT NULL auto_increment,
+ personid int NOT NULL,
+ eventid int NOT NULL,
+ cultureid int NOT NULL,
+ conceptid int NOT NULL,
+ roleid int NOT NULL,
+ PRIMARY KEY  (personid, eventid, cultureid, conceptid, roleid),
+ CONSTRAINT rolecharaconcept_unique UNIQUE (id),
+ CONSTRAINT rolecharaconcept_personconstr FOREIGN KEY (personid)
+ REFERENCES #__lit_registration (personid) ON DELETE CASCADE,
+ CONSTRAINT rolecharaconcept_eventconstr FOREIGN KEY (eventid)
+ REFERENCES #__lit_registration (eventid) ON DELETE CASCADE,
+ CONSTRAINT rolecharaconcept_cultureconstr FOREIGN KEY (cultureid)
+ REFERENCES #__lit_characoncept (cultureid) ON DELETE CASCADE,
+ CONSTRAINT rolecharaconcept_conceptconstr FOREIGN KEY (conceptid)
+ REFERENCES #__lit_characoncept (id) ON DELETE CASCADE,
+ CONSTRAINT rolecharaconcept_roleconstr FOREIGN KEY (roleid)
+ REFERENCES #__lit_role (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+
+
+
+
 -- --------------------------------------------------------
 --
 -- Structure for table Charastatus
@@ -223,9 +254,9 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
 
  PRIMARY KEY  (id),
  CONSTRAINT chara_factionconstr FOREIGN KEY (factionid)
- REFERENCES #__lit_factionculture (id) ON DELETE CASCADE,
+ REFERENCES #__lit_charafaction (id) ON DELETE CASCADE,
  CONSTRAINT chara_cultureconstr FOREIGN KEY (cultureid)
- REFERENCES #__lit_characulture (id) ON DELETE CASCADE,
+ REFERENCES #__lit_characoncept (cultureid) ON DELETE CASCADE,
  CONSTRAINT chara_conceptconstr FOREIGN KEY (conceptid)
  REFERENCES #__lit_characoncept (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
