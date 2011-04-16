@@ -11,9 +11,11 @@ class LajvITControllerRegistrations extends LajvITController {
 		$db = &JFactory::getDBO();
 
 		$eventid = JRequest::getInt('eid', -1);
-		$role = $model->getRoleForEvent($eventid);
+		$eventrole = $model->getRoleForEvent($eventid);
 
 		$characterlist = split(',', JRequest::getString('cid', ''));
+		
+		echo JRequest::getString('cid', '') . "<br>";
 
 		foreach ($characterlist as $charidstr) {
 			$charid = (int) $charidstr;
@@ -22,9 +24,17 @@ class LajvITControllerRegistrations extends LajvITController {
 			}
 
 			$personid = JRequest::getInt('pid_'.$charid, -1);
-			if ($personid <= 0) {
-				continue;
+			
+			
+			$crole = $model->getRoleForChara($eventid, $charid);
+			$role = $model->mergeRoles($eventrole, $crole);
+			
+
+			echo $charid . " {";
+			foreach (get_object_vars($role) as $k => $v) {
+				echo $k . ": " . ($v ? 1 : 0) . " ";
 			}
+			echo "}<br>";
 
 
 			$statusid = JRequest::getInt('characterstatus_'.$charid, -1);
@@ -41,7 +51,7 @@ class LajvITControllerRegistrations extends LajvITController {
 			}
 
 			$payment = JRequest::getInt('payment_'.$charid, -1);
-			if ($role->registration_setstatus && $payment >= 0) {
+			if ($eventrole->registration_setstatus && $personid > 0 && $payment >= 0) {
 				$query = 'UPDATE #__lit_registration SET payment='.$db->getEscaped($payment).', timeofpayment=NOW() WHERE eventid='.$db->getEscaped($eventid).' AND personid='.$db->getEscaped($personid).";\n";
 
 				$db->setQuery($query);
@@ -54,7 +64,7 @@ class LajvITControllerRegistrations extends LajvITController {
 			}
 
 			$confirmationid = JRequest::getInt('confirmationid_'.$charid, -1);
-			if ($role->registration_setstatus && $confirmationid > 0) {
+			if ($eventrole->registration_setstatus && $personid > 0 && $confirmationid > 0) {
 				$query = 'UPDATE #__lit_registration SET confirmationid='.$db->getEscaped($confirmationid).', timeofconfirmation=NOW() WHERE eventid='.$db->getEscaped($eventid).' AND personid='.$db->getEscaped($personid).";\n";
 
 				$db->setQuery($query);

@@ -122,8 +122,32 @@ class LajvITModelLajvIT extends JModel {
 		} else {
 			$row->_nodata = false;
 		}
+		
+		$row->_username = $user->username;
 
 		return $row;
+	}
+	
+	function mergeRoles($a, $b) {
+		$ret = new stdClass;
+		
+		if (is_null($a) || !$a) {
+			return $b;
+		}
+		
+		if (is_null($b) || !$b) {
+			return $a;
+		}
+		
+		foreach (get_object_vars($a) as $k => $v) {
+			$ret->$k = $v;
+		}
+		
+		foreach (get_object_vars($b) as $k => $v) {
+			$ret->$k = ($ret->$k || $v);
+		}
+		
+		return $ret;
 	}
 
 	function getRoleForEvent($eventid, $userid = null) {
@@ -148,13 +172,58 @@ class LajvITModelLajvIT extends JModel {
     	
 		$db = &JFactory::getDBO();
 		
-		$query = 'SELECT * FROM #__lit_veventroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND cultureid='.$db->getEscaped($cultureid).' AND conceptid='.$db->getEscaped($conceptid).' LIMIT 1;';
+		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND cultureid='.$db->getEscaped($cultureid).' AND conceptid='.$db->getEscaped($conceptid).' LIMIT 1;';
 
 		$db->setQuery($query);
 		
 		$ret = $db->loadObject();
 		return is_null($ret) ? false : $ret;
-		#__lit_rolecharaconcept
+	}
+
+	function getRoleForChara($eventid, $charaid, $userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_vcharaconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$ret = $db->loadObject();
+		return is_null($ret) ? false : $ret;
+	}
+	
+	function getAllRolesMerged($eventid, $userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		
+		$ret = $this->getRoleForEvent($eventid, $user->id);
+		$eventname = $ret->eventname;
+		$name = $ret->name;
+		
+		
+		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
+
+		$db->setQuery($query);
+		
+		$croles = $db->loadObjectList("id");
+		
+		foreach($croles as $role) {
+			$ret = $this->mergeRoles($ret, $role);
+			$name.= ", ".$role->name." (".$role->culturename.": ".$role->conceptname.")";
+		}
+		
+		
+		$ret->eventname = $eventname;
+		$ret->name = $name;
+		
+		return $ret;
 	}
 	
 	function getRegistration($userid, $eventid, $charid) {

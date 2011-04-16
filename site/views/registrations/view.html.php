@@ -30,23 +30,35 @@ class LajvITViewRegistrations extends JView {
 
 		$characterStatus = JRequest::getInt('charstatus', null);
 		$this->assignRef('characterStatus', $characterStatus);
-		$confirmation = JRequest::getInt('confirmation', null);
+		$confirmation = $role->registration_list ? JRequest::getInt('confirmation', null) : null;
 		$this->assignRef('confirmation', $confirmation);
 
 		$queries = array();
-		if ($role->registration_list || $role->character_list) {
-			$orderBy = JRequest::getString('orderby', '');
-			$sortorder = JRequest::getString('sortorder', 'ASC');
-			$this->assignRef('sortOrder', $sortorder);
-			$this->assignRef('orderBy', $orderBy);
+		
+		$orderBy = JRequest::getString('orderby', '');
+		$sortorder = JRequest::getString('sortorder', 'ASC');
+		$this->assignRef('sortOrder', $sortorder);
+		$this->assignRef('orderBy', $orderBy);
+		
 
-			$factions = $model->getCharacterFactions();
-			foreach ($factions as $faction) {
-				$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus, $confirmation);
+		$mergedrole = $role;
+		$factions = $model->getCharacterFactions();
+		
+		foreach ($factions as $faction) {
+			$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus, $confirmation);
+			
+			foreach ($faction->characters as $i => $char) {
+				$crole = $model->getRoleForConcept($eventid, $char->cultureid, $char->conceptid);
+				$mergedrole = $model->mergeRoles($mergedrole, $crole);
+				$char->role = $model->mergeRoles($role, $crole);
+				
+				if (!$char->role->registration_list && !$char->role->character_list) {
+					unset($faction->characters[$i]);
+				}
 			}
-		} else {
-			$factions = array();
-		}
+		}		
+		
+		$this->assignRef('mergedrole', $mergedrole);
 		$this->assignRef('factions', $factions);
 
 		$event = $model->getEvent($eventid);

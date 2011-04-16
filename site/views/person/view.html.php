@@ -59,6 +59,14 @@ class LajvITViewPerson extends JView {
         $this->assignRef('medicine', $person->medicine);
         $this->assignRef('info', $person->info);
         
+        if ($role->registration_list) {
+        	$this->assignRef('username', $person->_username);
+        	
+        	$personroles = $model->getAllRolesMerged($eventid, $personid);
+        	$this->assignRef('eventname', $personroles->eventname);
+	        $this->assignRef('personrolenames', $personroles->name);
+        }
+        
 		$this->assignRef('itemid', JRequest::getInt('Itemid', 0));
         
         parent::display($tpl);

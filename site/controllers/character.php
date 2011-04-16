@@ -165,19 +165,20 @@ class LajvITControllerCharacter extends LajvITController {
 		$eventid = JRequest::getInt('eid', -1);
 		$event = &$model->getEvent($eventid);
 
-		$role = &$model->getRoleForEvent($eventid);
+		$erole = &$model->getRoleForEvent($eventid);
+		$crole = $model->getRoleForChara($eventid, $charid);
+		$role = $model->mergeRoles($erole, $crole);
 
 		$redirect = JRequest::getString('redirect', '');
 
 		$reg = $model->getRegistration($person->id, $eventid, $charid);
 		$db = &JFactory::getDBO();
 		if (!$reg) {
-			// TODO: Distinct priviliege for deleting?
-			if ($role->registration_setstatus || $role->character_setstatus) {
+			if ($role->character_delete) {
 				echo '<h1>admin</h1>';
 				$query = 'DELETE FROM #__lit_registrationchara WHERE eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
 			} else {
-				echo '<h1>not registered</h1>';
+				echo 'Access denied';
 				//			$this->setRedirect($errlink, 'Not registered';
 				return;
 			}

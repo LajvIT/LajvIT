@@ -40,7 +40,6 @@ class LajvITViewCharacter extends JView {
 		$this->assignRef('concepts', $concepts);
 
     	$role = $model->getRoleForEvent($eventid);
-		$this->assignRef('role', $role);
 		
 		$charid = JRequest::getInt('cid', -1);
 		if ($charid >= 0) {
@@ -53,7 +52,12 @@ class LajvITViewCharacter extends JView {
 			}
 
 			$this->assignRef('character', $character);
+			
+			$crole = $model->getRoleForChara($eventid, $charid);
+			$role = $model->mergeRoles($role, $crole);
 		}
+		
+		$this->assignRef('role', $role);
 
 		$err = JRequest::getInt('failed', 0);
 		$this->assignRef('failed', $err);

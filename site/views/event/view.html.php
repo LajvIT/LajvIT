@@ -57,7 +57,7 @@ class LajvITViewEvent extends JView {
 			} else {
 				$event->registered = true;
 				$event->characters = $model->getCharactersForEvent($event->id, $event->personid);
-				$event->role = $model->getRoleForEvent($event->id);
+				$event->role = $model->getAllRolesMerged($event->id);
 			}
 		}
 		

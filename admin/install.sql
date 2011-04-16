@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  registration_setrole boolean NOT NULL DEFAULT FALSE,
  character_list boolean NOT NULL DEFAULT FALSE,
  character_setstatus boolean NOT NULL DEFAULT FALSE,
+ character_delete boolean NOT NULL DEFAULT FALSE,
  person_viewcontactinfo boolean NOT NULL DEFAULT FALSE,
  person_viewmedical boolean NOT NULL DEFAULT FALSE,
  PRIMARY KEY  (id)
@@ -302,10 +303,18 @@ CREATE TABLE IF NOT EXISTS #__lit_charainfo (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
+CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
+	#__lit_person.*,
+	#__users.username
+	FROM #__lit_person
+	LEFT OUTER JOIN #__users ON #__lit_person.id = #__users.id
+;
+
 
 CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT 
 	#__lit_event.*,
-	#__lit_person.id AS personid,
+	#__lit_vperson.id AS personid,
+	#__lit_vperson.username,
 	#__lit_registration.roleid,
 	#__lit_registration.payment,
 	#__lit_registration.timeofpayment,
@@ -313,18 +322,46 @@ CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
 	#__lit_registration.timeofconfirmation,
 	#__lit_confirmation.name AS confirmationname
 	FROM #__lit_event
-	INNER JOIN #__lit_person
+	INNER JOIN #__lit_vperson
 	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid AND
-	#__lit_person.id = #__lit_registration.personid
+	#__lit_vperson.id = #__lit_registration.personid
 	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_veventroles AS SELECT
 	#__lit_registration.eventid,
 	#__lit_registration.personid,
+	#__lit_event.name AS eventname,
 	#__lit_role.*
 	FROM #__lit_registration
 	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
+	LEFT OUTER JOIN #__lit_event ON #__lit_registration.eventid = #__lit_event.id
+;
+
+CREATE OR REPLACE VIEW #__lit_vconceptroles AS SELECT
+	#__lit_registrationcharaconceptrole.eventid,
+	#__lit_registrationcharaconceptrole.personid,
+	#__lit_registrationcharaconceptrole.cultureid,
+	#__lit_registrationcharaconceptrole.conceptid,
+	#__lit_characulture.name AS culturename,
+	#__lit_characoncept.name AS conceptname,
+	#__lit_role.*
+	FROM #__lit_registrationcharaconceptrole
+	LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
+	LEFT OUTER JOIN #__lit_characulture ON #__lit_registrationcharaconceptrole.cultureid = #__lit_characulture.id
+	LEFT OUTER JOIN #__lit_characoncept ON #__lit_registrationcharaconceptrole.conceptid = #__lit_characoncept.id
+;
+
+CREATE OR REPLACE VIEW #__lit_vcharaconceptroles AS SELECT
+	#__lit_chara.id AS charaid,
+	#__lit_registrationcharaconceptrole.eventid,
+	#__lit_registrationcharaconceptrole.personid,
+	#__lit_registrationcharaconceptrole.cultureid,
+	#__lit_registrationcharaconceptrole.conceptid,
+	#__lit_role.*
+	FROM #__lit_chara
+	LEFT OUTER JOIN #__lit_registrationcharaconceptrole ON #__lit_chara.cultureid = #__lit_registrationcharaconceptrole.cultureid AND #__lit_chara.conceptid = #__lit_registrationcharaconceptrole.conceptid
+	LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
@@ -352,13 +389,14 @@ CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
 	#__lit_registration.payment,
 	#__lit_registration.confirmationid,
 	#__lit_confirmation.name AS confirmationname,
-	CONCAT(#__lit_person.givenname, ' ', #__lit_person.surname) AS personname,
-	#__lit_person.pnumber
+	CONCAT(#__lit_vperson.givenname, ' ', #__lit_vperson.surname) AS personname,
+	#__lit_vperson.pnumber,
+	#__lit_vperson.username 
 	FROM #__lit_registrationchara
 	LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
 	LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
 	LEFT OUTER JOIN #__lit_registration ON #__lit_registrationchara.eventid = #__lit_registration.eventid AND #__lit_registrationchara.personid = #__lit_registration.personid
-	LEFT OUTER JOIN #__lit_person ON #__lit_registrationchara.personid = #__lit_person.id
+	LEFT OUTER JOIN #__lit_vperson ON #__lit_registrationchara.personid = #__lit_vperson.id
 	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
 	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
 ;
