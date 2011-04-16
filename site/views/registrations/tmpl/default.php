@@ -148,7 +148,10 @@ $personrow = array();
 										<a name="person_<? echo $char->personid; ?>"></a>
 <?									} ?>
 									<input type="hidden" name="pid_<? echo $char->id; ?>" value="<? echo $char->personid; ?>" />
-									<? echo $char->personname; ?> - <? echo $char->pnumber; ?> (<? echo $char->username; ?>)
+									<? echo $char->personname; ?>
+<?									if ($this->role->person_viewcontactinfo) { ?>
+										- <? echo $char->pnumber; ?> (<? echo $char->username; ?>)
+<?									} ?>
 									&nbsp;<a href="index.php?option=com_lajvit&view=person&pid=<? echo $char->personid; ?>&eid=<? echo $this->event->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a>
 								</td>
 								<td>
@@ -187,7 +190,10 @@ $personrow = array();
 							<tr>
 								<td></td>
 								<td></td>
-								<td colspan="3"><? echo $char->username; ?></td>
+								<td colspan="3">
+									<? echo $char->username; ?>
+									&nbsp;<a href="index.php?option=com_lajvit&view=person&pid=<? echo $char->personid; ?>&eid=<? echo $this->event->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a>
+								</td>
 							</tr>
 <?						}
 					}
