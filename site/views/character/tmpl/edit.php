@@ -92,7 +92,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </tr>
 
 <tr>
-	<td colspan="3">Privat information (För spelaren och arrangören):</td>
+	<td colspan="3">Privat information (För Spelaren/Arrangören/Rollcoachen):</td>
 </tr>				
 <tr>
 	<td colspan="3">

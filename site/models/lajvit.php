@@ -212,7 +212,7 @@ class LajvITModelLajvIT extends JModel {
 
 		$db->setQuery($query);
 		
-		$croles = $db->loadObjectList("id");
+		$croles = $db->loadObjectList();
 		
 		foreach($croles as $role) {
 			$ret = $this->mergeRoles($ret, $role);
