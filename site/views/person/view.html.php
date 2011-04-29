@@ -36,6 +36,16 @@ class LajvITViewPerson extends JView {
     	
     	$personid = $person->id;
     	
+    	
+    	if ($eventid != -1) {
+    		$chars = &$model->getCharactersForEvent($eventid, $personid);
+    		foreach ($chars as $char) {
+    			$crole = $model->getRoleForConcept($eventid, $char->cultureid, $char->conceptid);
+	    		$role = $model->mergeRoles($role, $crole);
+    		}
+    	}
+    	
+    	
 		$incomplete = !$person->_nodata && !$person->check();
 		$this->assignRef('incomplete_person', $incomplete);
     	
@@ -59,9 +69,9 @@ class LajvITViewPerson extends JView {
         $this->assignRef('medicine', $person->medicine);
         $this->assignRef('info', $person->info);
         
+        $this->assignRef('username', $person->_username);
+        
         if ($role->registration_list) {
-        	$this->assignRef('username', $person->_username);
-        	
         	$personroles = $model->getAllRolesMerged($eventid, $personid);
         	$this->assignRef('eventname', $personroles->eventname);
 	        $this->assignRef('personrolenames', $personroles->name);

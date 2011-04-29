@@ -100,11 +100,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<td>Beskrivning:</td>
 		<td><? echo $this->info; ?></td>
 	</tr>
-<?	if ($this->role->registration_list) { ?>
+<?	if ($this->role->person_viewcontactinfo || $this->role->registration_list) { ?>
 		<tr>
 			<td>Användarnamn:</td>
 			<td><? echo $this->username; ?></td>
 		</tr>
+<?	}
+	if ($this->role->registration_list) { ?>
 		<tr>
 			<td>Roller <? echo $this->eventname; ?>:</td>
 			<td><? echo $this->personrolenames; ?></td>

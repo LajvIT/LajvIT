@@ -139,6 +139,8 @@ class LajvITModelLajvIT extends JModel {
 			return $a;
 		}
 		
+		$name = $a->name.','.$b->name;
+		
 		foreach (get_object_vars($a) as $k => $v) {
 			$ret->$k = $v;
 		}
@@ -146,6 +148,8 @@ class LajvITModelLajvIT extends JModel {
 		foreach (get_object_vars($b) as $k => $v) {
 			$ret->$k = ($ret->$k || $v);
 		}
+		
+		$ret->name = $name;
 		
 		return $ret;
 	}
