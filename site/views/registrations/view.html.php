@@ -39,6 +39,10 @@ class LajvITViewRegistrations extends JView {
 		$sortorder = JRequest::getString('sortorder', 'ASC');
 		$this->assignRef('sortOrder', $sortorder);
 		$this->assignRef('orderBy', $orderBy);
+
+
+		$page = JRequest::getInt('page', 0);
+		$this->assignRef('page', $page);
 		
 
 		$mergedrole = $role;
