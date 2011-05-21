@@ -16,6 +16,8 @@ class LajvITControllerCharacter extends LajvITController {
 		if ($eventid > 0) {
 			$errlink.= '&eid='.$eventid;
 		}
+		
+		$factionid = JRequest::getInt('factionid', -1);
 
 		$data = new stdClass;
 		$data->created = date('Y-m-d H:i:s');
@@ -24,7 +26,7 @@ class LajvITControllerCharacter extends LajvITController {
 		$name = JRequest::getString('fullname');
 		$data->fullname = $name;
 		$data->knownas = $name;
-		$data->factionid = JRequest::getInt('factionid', -1);
+		$data->factionid = $factionid;
 		$data->cultureid = JRequest::getInt('cultureid', -1);
 		$data->conceptid = JRequest::getInt('conceptid', -1);
 		$concepttext = trim(JRequest::getString('concepttext'));
@@ -77,7 +79,10 @@ class LajvITControllerCharacter extends LajvITController {
 			//			$this->setRedirect($errlink, $db->getErrorMsg());
 			return;
 		}
-
+		
+		
+		$froleid = $model->getDefaultFactionRoleId();
+		$x = $model->addFactionRole($person->id, $eventid, $factionid, $froleid);
 
 
 		$oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid='.$eventid.'&cid='.$charid;

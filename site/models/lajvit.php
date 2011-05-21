@@ -34,7 +34,7 @@ class LajvITModelLajvIT extends JModel {
 	function getDefaultStatusId() {
 		$db = &JFactory::getDBO();
 
-		$query = 'SELECT MIN(id) FROM #__lit_charastatus WHERE id >= 100;';
+		$query = 'SELECT statusid FROM #__lit_defaultvalues LIMIT 1;';
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -43,7 +43,16 @@ class LajvITModelLajvIT extends JModel {
 	function getDefaultRoleId() {
 		$db = &JFactory::getDBO();
 
-		$query = 'SELECT MIN(id) FROM #__lit_role WHERE id >= 100;';
+		$query = 'SELECT roleid FROM #__lit_defaultvalues LIMIT 1;';
+		$db->setQuery($query);
+
+		return $db->loadResult();
+	}
+
+	function getDefaultFactionRoleId() {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT factionroleid FROM #__lit_defaultvalues LIMIT 1;';
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -52,7 +61,7 @@ class LajvITModelLajvIT extends JModel {
 	function getDefaultConfirmationId() {
 		$db = &JFactory::getDBO();
 
-		$query = 'SELECT MIN(id) FROM #__lit_confirmation WHERE id >= 100;';
+		$query = 'SELECT confirmationid FROM #__lit_defaultvalues LIMIT 1;';
 		$db->setQuery($query);
 
 		return $db->loadResult();
@@ -184,6 +193,21 @@ class LajvITModelLajvIT extends JModel {
 		return is_null($ret) ? false : $ret;
 	}
 
+	function getRoleForFaction($eventid, $faction, $userid = null) {
+    	$user = &JFactory::getUser($userid);
+    	if (!$user || $user->guest)
+    		return false;
+    	
+		$db = &JFactory::getDBO();
+		
+		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND factionid='.$db->getEscaped($factionid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$ret = $db->loadObject();
+		return is_null($ret) ? false : $ret;
+	}
+
 	function getRoleForChara($eventid, $charaid, $userid = null) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
@@ -191,11 +215,22 @@ class LajvITModelLajvIT extends JModel {
     	
 		$db = &JFactory::getDBO();
 		
+		
 		$query = 'SELECT * FROM #__lit_vcharaconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
 
 		$db->setQuery($query);
 		
-		$ret = $db->loadObject();
+		$crole = $db->loadObject();
+				
+		
+		$query = 'SELECT * FROM #__lit_vcharafactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
+
+		$db->setQuery($query);
+		
+		$frole = $db->loadObject();
+		
+		$ret = $this->mergeRoles($crole, $frole);
+		
 		return is_null($ret) ? false : $ret;
 	}
 	
@@ -210,6 +245,18 @@ class LajvITModelLajvIT extends JModel {
 		$ret = $this->getRoleForEvent($eventid, $user->id);
 		$eventname = $ret->eventname;
 		$name = $ret->name;
+		
+		
+		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
+
+		$db->setQuery($query);
+		
+		$froles = $db->loadObjectList();
+		
+		foreach($froles as $role) {
+			$ret = $this->mergeRoles($ret, $role);
+			$name.= ", ".$role->name." (".$role->factionname.")";
+		}
 		
 		
 		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
@@ -268,46 +315,47 @@ class LajvITModelLajvIT extends JModel {
 	}
 
 	function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus, $confirmation) {
-    $db = &JFactory::getDBO();
+		$db = &JFactory::getDBO();
 
-    $query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
-
-    if (is_numeric($characterStatus) ) {
-    	$query .= " AND statusid = " . $db->getEscaped($characterStatus);
-    }
-    if (is_numeric($confirmation)) {
-    	$query .= " AND confirmationid = " . $db->getEscaped($confirmation);
-    }
-
-    switch ($orderBy) {
-      case 'knownas':
-        $query .= " ORDER BY knownas";
-        break;
-      case 'culture':
-        $query .= " ORDER BY culturename";
-        break;
-      case 'concept':
-        $query .= " ORDER BY conceptname";
-        break;
-      case 'personname':
-        $query .= " ORDER BY personname";
-        break;
-      case 'created':
-        $query .= " ORDER BY created";
-        break;
-      case 'updated':
-        $query .= " ORDER BY updated";
-        break;
-      default:
-        break;
-    }
-    if ( $orderDirection != '' && ($orderDirection == 'DESC' || $orderDirection == 'DESC')) {
-      $query .= " " . $orderDirection;
-    }
-
-    $db->setQuery($query);
-    return $db->loadObjectList();
-  }
+		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
+		
+		if (is_numeric($characterStatus) ) {
+			$query .= " AND statusid = " . $db->getEscaped($characterStatus);
+		}
+		if (is_numeric($confirmation)) {
+			$query .= " AND confirmationid = " . $db->getEscaped($confirmation);
+		}
+		
+		switch ($orderBy) {
+			case 'knownas':
+				$query .= " ORDER BY knownas";
+				break;
+			case 'culture':
+				$query .= " ORDER BY culturename";
+				break;
+			case 'concept':
+				$query .= " ORDER BY conceptname";
+				break;
+			case 'personname':
+				$query .= " ORDER BY personname";
+				break;
+			case 'created':
+				$query .= " ORDER BY created";
+				break;
+			case 'updated':
+				$query .= " ORDER BY updated";
+				break;
+			default:
+				break;
+		}
+		
+		if ( $orderDirection != '' && ($orderDirection == 'DESC' || $orderDirection == 'DESC')) {
+			$query .= " " . $orderDirection;
+		}
+		
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
 
 	function getCharacterExtended($charid) {
 		$db = &JFactory::getDBO();
@@ -346,5 +394,37 @@ class LajvITModelLajvIT extends JModel {
 		$row->load($eventid);
 
 		return $row;
+	}
+	
+	
+	
+	
+	
+	
+	function addFactionRole($personid, $eventid, $factionid, $roleid) {
+		$db = &JFactory::getDBO();
+		
+		$data = new stdClass;
+		$data->personid = $personid;
+		$data->eventid = $eventid;
+		$data->factionid = $factionid;
+		$data->roleid = $roleid;
+
+		$db->insertObject('#__lit_registrationfactionrole', $data);
+		return $db->getErrorNum() == 0;
+	}
+	
+	
+	function fixDefaultFactionRoleForChara($personid, $eventid, $charid) {
+		if (!$this->getRegistration($personid, $eventid, $charid)) {
+			return false;
+		}
+		
+		$chara = &$this->getCharacter($charid);
+		if (!$chara) {
+			return false;
+		}
+		
+		return $this->addFactionRole($personid, $eventid, $chara->factionid, $this->getDefaultFactionRoleId());
 	}
 }

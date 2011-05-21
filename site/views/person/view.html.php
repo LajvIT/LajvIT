@@ -40,7 +40,7 @@ class LajvITViewPerson extends JView {
     	if ($eventid != -1) {
     		$chars = &$model->getCharactersForEvent($eventid, $personid);
     		foreach ($chars as $char) {
-    			$crole = $model->getRoleForConcept($eventid, $char->cultureid, $char->conceptid);
+    			$crole = $model->getRoleForChara($eventid, $char->id);
 	    		$role = $model->mergeRoles($role, $crole);
     		}
     	}

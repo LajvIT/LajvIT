@@ -85,6 +85,7 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  registration_setstatus boolean NOT NULL DEFAULT FALSE,
  registration_setrole boolean NOT NULL DEFAULT FALSE,
  character_list boolean NOT NULL DEFAULT FALSE,
+ character_list_hidden boolean NOT NULL DEFAULT FALSE,
  character_setstatus boolean NOT NULL DEFAULT FALSE,
  character_delete boolean NOT NULL DEFAULT FALSE,
  character_view_lvl1 boolean NOT NULL DEFAULT FALSE,
@@ -190,20 +191,43 @@ CREATE TABLE IF NOT EXISTS #__lit_registrationcharaconceptrole (
  conceptid int NOT NULL,
  roleid int NOT NULL,
  PRIMARY KEY  (personid, eventid, cultureid, conceptid, roleid),
- CONSTRAINT rolecharaconcept_unique UNIQUE (id),
- CONSTRAINT rolecharaconcept_personconstr FOREIGN KEY (personid)
+ CONSTRAINT registrationcharaconceptrole_unique UNIQUE (id),
+ CONSTRAINT registrationcharaconceptrole_personconstr FOREIGN KEY (personid)
  REFERENCES #__lit_registration (personid) ON DELETE CASCADE,
- CONSTRAINT rolecharaconcept_eventconstr FOREIGN KEY (eventid)
+ CONSTRAINT registrationcharaconceptrole_eventconstr FOREIGN KEY (eventid)
  REFERENCES #__lit_registration (eventid) ON DELETE CASCADE,
- CONSTRAINT rolecharaconcept_cultureconstr FOREIGN KEY (cultureid)
+ CONSTRAINT registrationcharaconceptrole_cultureconstr FOREIGN KEY (cultureid)
  REFERENCES #__lit_characoncept (cultureid) ON DELETE CASCADE,
- CONSTRAINT rolecharaconcept_conceptconstr FOREIGN KEY (conceptid)
+ CONSTRAINT registrationcharaconceptrole_conceptconstr FOREIGN KEY (conceptid)
  REFERENCES #__lit_characoncept (id) ON DELETE CASCADE,
- CONSTRAINT rolecharaconcept_roleconstr FOREIGN KEY (roleid)
+ CONSTRAINT registrationcharaconceptrole_roleconstr FOREIGN KEY (roleid)
  REFERENCES #__lit_role (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
+
+-- --------------------------------------------------------
+--
+-- Structure for table Registrationfactionrole
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_registrationfactionrole (
+ id int(11) NOT NULL auto_increment,
+ personid int NOT NULL,
+ eventid int NOT NULL,
+ factionid int NOT NULL,
+ roleid int NOT NULL,
+ PRIMARY KEY  (personid, eventid, factionid, roleid),
+ CONSTRAINT registrationfactionrole_unique UNIQUE (id),
+ CONSTRAINT registrationfactionrole_personconstr FOREIGN KEY (personid)
+ REFERENCES #__lit_registration (personid) ON DELETE CASCADE,
+ CONSTRAINT registrationfactionrole_eventconstr FOREIGN KEY (eventid)
+ REFERENCES #__lit_registration (eventid) ON DELETE CASCADE,
+ CONSTRAINT registrationfactionrole_factionconstr FOREIGN KEY (factionid)
+ REFERENCES #__lit_charafaction (id) ON DELETE CASCADE,
+ CONSTRAINT registrationfactionrole_roleconstr FOREIGN KEY (roleid)
+ REFERENCES #__lit_role (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
 
@@ -215,6 +239,7 @@ CREATE TABLE IF NOT EXISTS #__lit_registrationcharaconceptrole (
 CREATE TABLE IF NOT EXISTS #__lit_charastatus (
  id int(11) NOT NULL auto_increment,
  name text NOT NULL,
+ hidden boolean NOT NULL DEFAULT TRUE,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -307,6 +332,28 @@ CREATE TABLE IF NOT EXISTS #__lit_charainfo (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
+
+-- --------------------------------------------------------
+--
+-- Structure for table defaultvalues
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_defaultvalues (
+	statusid int,
+	roleid int,
+	factionroleid int,
+	confirmationid int,
+	CONSTRAINT defaultvalues_statusconstr FOREIGN KEY (statusid)
+	REFERENCES #__lit_charastatus (id) ON DELETE SET NULL,
+	CONSTRAINT defaultvalues_roleconstr FOREIGN KEY (roleid)
+	REFERENCES #__lit_role (id) ON DELETE SET NULL,
+	CONSTRAINT defaultvalues_factionroleconstr FOREIGN KEY (factionroleid)
+	REFERENCES #__lit_role (id) ON DELETE SET NULL,
+	CONSTRAINT defaultvalues_confirmationconstr FOREIGN KEY (confirmationid)
+	REFERENCES #__lit_confirmation (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+
 CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
 	#__lit_person.*,
 	#__users.username
@@ -368,6 +415,30 @@ CREATE OR REPLACE VIEW #__lit_vcharaconceptroles AS SELECT
 	LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
 ;
 
+CREATE OR REPLACE VIEW #__lit_vfactionroles AS SELECT
+	#__lit_registrationfactionrole.eventid,
+	#__lit_registrationfactionrole.personid,
+	#__lit_registrationfactionrole.factionid,
+	#__lit_charafaction.name AS factionname,
+	#__lit_role.*
+	FROM #__lit_registrationfactionrole
+	LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
+	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id
+;
+
+CREATE OR REPLACE VIEW #__lit_vcharafactionroles AS SELECT
+	#__lit_chara.id AS charaid,
+	#__lit_registrationfactionrole.eventid,
+	#__lit_registrationfactionrole.personid,
+	#__lit_registrationfactionrole.factionid,
+	#__lit_charafaction.name AS factionname,
+	#__lit_role.*
+	FROM #__lit_chara
+	LEFT OUTER JOIN #__lit_registrationfactionrole ON #__lit_chara.factionid = #__lit_registrationfactionrole.factionid
+	LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
+	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id	
+;
+
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
 	#__lit_chara.*,
 	#__lit_charafaction.name AS factionname,
@@ -388,6 +459,7 @@ CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
 	#__lit_vcharacters.*,
 	#__lit_registrationchara.statusid,
 	#__lit_charastatus.name AS statusname,
+	#__lit_charastatus.hidden AS hidden,
 	#__lit_registration.roleid,
 	#__lit_role.name AS rolename,
 	#__lit_registration.payment,

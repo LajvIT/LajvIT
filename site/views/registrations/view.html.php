@@ -52,15 +52,29 @@ class LajvITViewRegistrations extends JView {
 			$faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy, $sortorder, $characterStatus, $confirmation);
 			
 			foreach ($faction->characters as $i => $char) {
-				$crole = $model->getRoleForConcept($eventid, $char->cultureid, $char->conceptid);
+				$crole = $model->getRoleForChara($eventid, $char->id);
 				$mergedrole = $model->mergeRoles($mergedrole, $crole);
 				$char->role = $model->mergeRoles($role, $crole);
 				
-				if (!$char->role->registration_list && !$char->role->character_list) {
+				if (!$char->role->registration_list &&
+					!($char->role->character_list && !$char->hidden) &&
+					!$char->role->character_list_hidden) {
 					unset($faction->characters[$i]);
 				}
 			}
 		}		
+		
+		
+		if (JRequest::getInt('fixdb', 0) == 1) {
+			$user = &JFactory::getUser($person);
+			if ($user && !$user->guest) {
+				foreach ($factions as $faction) {
+					foreach ($faction->characters as $char) {
+						$model->fixDefaultFactionRoleForChara($char->personid, $char->eventid, $char->id);
+					}
+				}
+			}
+		}
 		
 		$this->assignRef('mergedrole', $mergedrole);
 		$this->assignRef('factions', $factions);
