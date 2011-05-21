@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	<td></td>
 </tr>
 
-<?	if ($this->role->character_list) { ?>
+<?	if ($this->role->character_view_lvl3) { ?>
 	<tr>
 		<td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
 	</tr>
@@ -61,7 +61,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</tr>
 <?	} ?>
 
-<?	if ($this->role->character_list) { ?>
+<?	if ($this->role->character_view_lvl2) { ?>
 		<tr>
 			<td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
 		</tr>				
@@ -72,7 +72,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		</tr>
 <?	} ?>
 
-<?	if (true) { ?>
+<?	if ($this->role->character_view_lvl1) { ?>
 	<tr>
 		<td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
 	</tr>				
@@ -83,9 +83,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	</tr>
 <?	} ?>
 
-<?	if ($this->role->character_list) { ?>
+<?	if ($this->role->character_view_private) { ?>
 	<tr>
-		<td colspan="3">Privat information (För spelaren och arrangören):</td>
+		<td colspan="3">Privat information (För spelaren, arrangörer och rollcoach):</td>
 	</tr>				
 	<tr>
 		<td colspan="3">

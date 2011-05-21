@@ -87,6 +87,10 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  character_list boolean NOT NULL DEFAULT FALSE,
  character_setstatus boolean NOT NULL DEFAULT FALSE,
  character_delete boolean NOT NULL DEFAULT FALSE,
+ character_view_lvl1 boolean NOT NULL DEFAULT FALSE,
+ character_view_lvl2 boolean NOT NULL DEFAULT FALSE,
+ character_view_lvl3 boolean NOT NULL DEFAULT FALSE,
+ character_view_private boolean NOT NULL DEFAULT FALSE,
  person_viewcontactinfo boolean NOT NULL DEFAULT FALSE,
  person_viewmedical boolean NOT NULL DEFAULT FALSE,
  PRIMARY KEY  (id)
@@ -175,7 +179,7 @@ CREATE TABLE IF NOT EXISTS #__lit_characoncept (
 
 -- --------------------------------------------------------
 --
--- Structure for table Rolecharaconcept
+-- Structure for table Registrationcharaconceptrole
 --
 
 CREATE TABLE IF NOT EXISTS #__lit_registrationcharaconceptrole (
