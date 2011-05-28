@@ -9,106 +9,149 @@ $personrow = array();
 ?>
 
 <h1>Sökresultat - Karaktärer</h1>
+<h2>
+<? echo $this->event->name; ?>
+	&nbsp;<a href="<? echo $this->event->url; ?>" title="Info"><img
+		src="components/com_lajvit/info.png" alt="Info" /> </a>
+</h2>
+<?php
+$knownasSortOrder = $this->orderBy == 'knownas' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+$cultureSortOrder = $this->orderBy == 'culture' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+$conceptSortOrder = $this->orderBy == 'concept' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+$personSortOrder = $this->orderBy == 'personname' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+$createdSortOrder = $this->orderBy == 'created' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+$updatedSortOrder = $this->orderBy == 'updated' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+
+function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirmation, $page, $faction) {
+	$link = "index.php?option=com_lajvit&view=registrations";
+	$link .= "&eid=" . $event;
+	$link .= "&Itemid=" . $item;
+	$link .= "&orderby=" . $orderBy;
+	$link .= "&sortorder=" . $sortOrder;
+	if ($characterStatus != NULL) { $link .= "&charstatus=" . $characterStatus; }
+	if ($confirmation != NULL) { $link .= "&confirmation=" . $confirmation; }
+	$link .= "&page=" . $page;
+	if ($faction != NULL) { $link .= "&factionid=" . $faction; }
+	return $link;
+}
+?>
+
+<table>
+	<tbody>
+<?		if ($this->mergedrole->character_list) { ?>
+		<tr>
+			<td colspan="5">Sortering: &nbsp;
+				<a href="<?php echo getLink($this->event->id, $this->itemid, "knownas", $knownasSortOrder, null, null, $this->page)?>" title="Karaktär">Karaktär</a> &nbsp;
+				<a href="<?php echo getLink($this->event->id, $this->itemid, "culture", $cultureSortOrder, $this->characterStatus, $this->confirmation, $this->page, $this->factionid)?>" title="Kultur">Kultur</a> &nbsp;<a href="<?php echo getLink($this->event->id, $this->itemid, "concept", $conceptSortOrder, $this->characterStatus, $this->confirmation, $this->page, $this->factionid)?>" title="Koncept">Koncept</a> &nbsp;
+				<a href="<?php echo getLink($this->event->id, $this->itemid, "personname", $personSortOrder, $this->characterStatus, $this->confirmation, $this->page, $this->factionid)?>" title="Spelare">Spelare</a> &nbsp;
+				<a href="<?php echo getLink($this->event->id, $this->itemid, "created", $createdSortOrder, $this->characterStatus, $this->confirmation, $this->page, $this->factionid)?>" title="Skapad">Skapad</a> &nbsp;
+				<a href="<?php echo getLink($this->event->id, $this->itemid, "updated", $updatedSortOrder, $this->characterStatus, $this->confirmation, $this->page, $this->factionid)?>" title="Ändrad">Ändrad</a>
+			</td>
+		</tr>
+<?		} ?>
+		<tr>
+			<td colspan="5">Filtrering:&nbsp;
+				<a href="<?php echo getLink($this->event->id,
+																 $this->itemid,
+																 $this->orderBy,
+																 $this->sortOrder,
+																 null,
+																 null,
+																 $this->page,
+																 null)?>" title="Ingen">Ingen</a>
+			</td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="4">
+				Faktion:
+				<?php
+				foreach ($this->factions as $faction) { ?>
+					<a href="<?php echo getLink($this->event->id,
+																 $this->itemid,
+																 $this->orderBy,
+																 $this->sortOrder,
+																 $this->characterStatus,
+																 $this->confirmation,
+																 $this->page,
+																 $faction->id)?>" title="<?php echo $faction->name?>"><?php echo $faction->name?></a>
+				<?php
+				}
+				?>
+			</td>
+		</tr>
+<?	if ($this->mergedrole->character_list) { ?>
+		<tr>
+			<td></td>
+			<td colspan="4">
+				Rollstatus:
+				<?php
+				foreach ($this->status as $status) { ?>
+					<a href="<?php echo getLink($this->event->id,
+																 $this->itemid,
+																 $this->orderBy,
+																 $this->sortOrder,
+																 $status->id,
+																 $this->confirmation,
+																 $this->page,
+																 $this->factionid)?>" title="<?php echo $status->name?>"><?php echo $status->name?></a>
+				<?php
+				}
+				?>
+			</td>
+		</tr>
+<?	}
+		if ($this->role->registration_list) { ?>
+		<tr>
+			<td></td>
+			<td colspan="4">
+				Betalning:
+				<?php
+				foreach ($this->confirmations as $confirmation) { ?>
+					<a href="<?php echo getLink($this->event->id,
+																 $this->itemid,
+																 $this->orderBy,
+																 $this->sortOrder,
+																 $this->characterStatus,
+																 $confirmation->id,
+																 $this->page,
+																 $this->factionid)?>" title="<?php echo $confirmation->name?>"><?php echo $confirmation->name?></a>
+				<?php
+				}
+				?>
+			</td>
+		</tr>
+<?	}
+
+		$uglypagecnt = 0;
+		$lastpage = 0;
+		foreach ($this->factions as $faction) {
+			$lastpage+= count($faction->characters);
+		} ?>
+		<tr>
+			<td colspan="5">
+				Sida:
+<?			foreach ($this->factions as $faction) {
+				foreach ($faction->characters as $char) {
+					if ($uglypagecnt % $pagesz == 0) {
+						$linktxt = ($uglypagecnt+1)."-".min($uglypagecnt+$pagesz, $lastpage);
+						if ($uglypagecnt / $pagesz == $this->page / $pagesz) {
+							echo $linktxt." ";
+						} else { ?>
+							<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $this->confirmation, $uglypagecnt)?>" title="<?php echo $linktext; ?>"><?php echo $linktxt; ?></a>
+<?					}
+					}
+					$uglypagecnt++;
+				}
+			} ?>
+			</td>
+		</tr>
+	</tbody>
+</table>
 
 <form action="index.php" method="post" enctype="multipart/form-data" name="registrationsDefaultForm">
-
-	<h2>
-	<? echo $this->event->name; ?>
-		&nbsp;<a href="<? echo $this->event->url; ?>" title="Info"><img
-			src="components/com_lajvit/info.png" alt="Info" /> </a>
-	</h2>
-	<?php
-	$knownasSortOrder = $this->orderBy == 'knownas' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-	$cultureSortOrder = $this->orderBy == 'culture' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-	$conceptSortOrder = $this->orderBy == 'concept' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-	$personSortOrder = $this->orderBy == 'personname' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-	$createdSortOrder = $this->orderBy == 'created' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-	$updatedSortOrder = $this->orderBy == 'updated' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-
-	function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirmation, $page) {
-		$link = "index.php?option=com_lajvit&view=registrations";
-		$link .= "&eid=" . $event;
-		$link .= "&Itemid=" . $item;
-		$link .= "&orderby=" . $orderBy;
-		$link .= "&sortorder=" . $sortOrder;
-		if ($characterStatus != NULL) { $link .= "&charstatus=" . $characterStatus; }
-		if ($confirmation != NULL) { $link .= "&confirmation=" . $confirmation; }
-		$link .= "&page=" . $page;
-		return $link;
-	}
-	?>
-
 	<table>
 		<tbody>
-<?      	if ($this->mergedrole->character_list) { ?>
-				<tr>
-					<td colspan="5">Sortering: &nbsp;<a href="<?php echo getLink($this->event->id, $this->itemid, "knownas", $knownasSortOrder, null, null, $this->page)?>"
-						title="Karaktär">Karaktär</a> &nbsp;<a
-						href="<?php echo getLink($this->event->id, $this->itemid, "culture", $cultureSortOrder, $this->characterStatus, $this->confirmation, $this->page)?>" title="Kultur">Kultur</a> &nbsp;<a
-						href="<?php echo getLink($this->event->id, $this->itemid, "concept", $conceptSortOrder, $this->characterStatus, $this->confirmation, $this->page)?>" title="Koncept">Koncept</a> &nbsp;<a
-						href="<?php echo getLink($this->event->id, $this->itemid, "personname", $personSortOrder, $this->characterStatus, $this->confirmation, $this->page)?>" title="Spelare">Spelare</a> &nbsp;<a
-						href="<?php echo getLink($this->event->id, $this->itemid, "created", $createdSortOrder, $this->characterStatus, $this->confirmation, $this->page)?>" title="Skapad">Skapad</a> &nbsp;<a
-						href="<?php echo getLink($this->event->id, $this->itemid, "updated", $updatedSortOrder, $this->characterStatus, $this->confirmation, $page)?>" title="Ändrad">Ändrad</a>
-					</td>
-				</tr>
-<?			} ?>
-			<tr>
-				<td colspan="5">Filtrering:&nbsp;<a
-					href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, null, null, $this->page)?>"
-					title="Ingen">Ingen</a>
-				</td>
-			</tr>
-<?      	if ($this->mergedrole->character_list) { ?>
-				<tr>
-					<td></td>
-					<td colspan="4">
-						Rollstatus:
-						<?php
-						foreach ($this->status as $status) { ?>
-							<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $status->id, $this->confirmation, $this->page)?>" title="<?php echo $status->name?>"><?php echo $status->name?></a>
-						<?php
-						}
-						?>
-					</td>
-				</tr>
-<?			}
-			if ($this->role->registration_list) { ?>
-				<tr>
-					<td></td>
-					<td colspan="4">
-						Betalning:
-						<?php
-						foreach ($this->confirmations as $confirmation) { ?>
-							<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $confirmation->id, $this->page)?>" title="<?php echo $confirmation->name; ?>"><?php echo $confirmation->name; ?></a>
-<?						} ?>
-					</td>
-				</tr>
-<?			}
-
-			$uglypagecnt = 0;
-			$lastpage = 0;
-			foreach ($this->factions as $faction) {
-				$lastpage+= count($faction->characters);
-			} ?>
-			<tr>
-				<td colspan="5">
-					Sida:
-<?					foreach ($this->factions as $faction) {
-						foreach ($faction->characters as $char) {
-							if ($uglypagecnt % $pagesz == 0) {
-								$linktxt = ($uglypagecnt+1)."-".min($uglypagecnt+$pagesz, $lastpage);
-								if ($uglypagecnt / $pagesz == $this->page / $pagesz) {
-									echo $linktxt." ";
-								} else { ?>
-									<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $this->confirmation, $uglypagecnt)?>" title="<?php echo $linktext; ?>"><?php echo $linktxt; ?></a>
-<?								}
-							}
-							$uglypagecnt++;
-						}
-					} ?>
-				</td>
-			</tr>
-
 			<tr>
 				<td>&nbsp;</td>
 				<td>&nbsp;</td>
@@ -142,9 +185,9 @@ $personrow = array();
 										echo " (" . $char->concepttext . ")";
 									} ?>
 								</strong>
-								&nbsp; <a href="index.php?option=com_lajvit&view=character&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /> </a>
+								&nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a>
 <?								if (false) { ?>
-									&nbsp; <a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär" /></a>
+									&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär" /></a>
 <?								}
 								if ($char->role->character_delete) { ?>
 									&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<? echo $this->event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>&redirect=registrations" title="Ta bort karaktär"><img src="components/com_lajvit/delete.gif" alt="Ta bort karaktär" /></a>
@@ -215,7 +258,7 @@ $personrow = array();
 										<input type="text" name="payment_<? echo $char->id; ?>" value="<? echo $char->payment; ?>" size="3">&nbsp;kr
 <?									} ?>
 								</td>
-								
+
 							</tr>
 <?							$personrow[$char->personid] = true;
 						} else { ?>
