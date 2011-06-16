@@ -84,6 +84,7 @@
   <filename>views/registrations/index.html</filename>
   <filename>views/registrations/view.html.php</filename>
   <filename>views/registrations/tmpl/default.php</filename>
+  <filename>views/registrations/tmpl/export.php</filename>
   <filename>views/registrations/tmpl/index.html</filename>
  </files>
  

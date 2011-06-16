@@ -465,6 +465,7 @@ CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
 	#__lit_registration.payment,
 	#__lit_registration.confirmationid,
 	#__lit_confirmation.name AS confirmationname,
+	#__lit_registration.timeofconfirmation,
 	CONCAT(#__lit_vperson.givenname, ' ', #__lit_vperson.surname) AS personname,
 	#__lit_vperson.pnumber,
 	#__lit_vperson.username 
