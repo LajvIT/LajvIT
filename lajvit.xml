@@ -85,6 +85,9 @@
   <filename>views/plot/index.html</filename>
   <filename>views/plot/view.html.php</filename>
   <filename>views/plot/tmpl/default.php</filename>
+  <filename>views/plot/tmpl/editplot.php</filename>
+  <filename>views/plot/tmpl/editsubplot.php</filename>
+  <filename>views/plot/tmpl/addsubplotrelation.php</filename>
   <filename>views/plot/tmpl/index.html</filename>
   
   <filename>views/registrations/index.html</filename>

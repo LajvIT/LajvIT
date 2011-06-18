@@ -22,14 +22,14 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 				foreach ($this->plotObjects as $plotObject) {
-					printPlotObjectHeaderAndDescription($plotObject, $eventId);
-					printPlotObjectRelations($plotObject, $eventId);
+					printPlotObjectHeaderAndDescription($plotObject, $this->eventId);
+					printPlotObjectRelations($plotObject, $this->eventId);
 				}
 ?>
 			<tr><td></td></tr>
 			<tr>
 				<td>
-					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=subplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
+					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
 				</td>
 			</tr>
 			<tr><td></td></tr>
@@ -57,7 +57,7 @@ defined('_JEXEC') or die('Restricted access');
 function printPlotObjectHeaderAndDescription($plotObject, $eventId) {
 	echo "				<tr>\n";
 	echo '					<td><h3>' . $plotObject->heading . '</h3>';
-	echo '<a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->id .'&layout=subplot" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+	echo '<a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
 	echo "</td>\n";
 	echo "				</tr>\n";
 	echo "				<tr>\n";

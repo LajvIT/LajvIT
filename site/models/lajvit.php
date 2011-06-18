@@ -112,6 +112,15 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList("id");
 	}
 
+	function getCharacterConcept($conceptId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_characoncept WHERE id = '. $conceptId .';';
+
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+	}
+
 	function &getPerson($userid = null) {
 		$user = &JFactory::getUser($userid);
 		if (!$user || $user->guest)
@@ -314,6 +323,19 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
+	function getAllCharactersForEvent($event, $person = null) {
+		$user = &JFactory::getUser($person);
+		if (!$user || $user->guest)
+			return false;
+
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event).';';
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
 	function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus, $confirmation) {
 		$db = &JFactory::getDBO();
 
@@ -430,9 +452,95 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotObjectsForPlot($plotId) {
 		$db = &JFactory::getDBO();
-		$query = 'SELECT * FROM #__lit_plotobjects WHERE plotid='.$db->getEscaped($plotId).' LIMIT 1;';
+		$query = 'SELECT * FROM #__lit_plotobject WHERE plotid ='.$db->getEscaped($plotId).';';
 		$db->setQuery($query);
 		return $db->loadObjectList();
+	}
+
+	function getPlotObject($plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT * FROM #__lit_plotobject WHERE id ='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		return $db->loadObject();
+	}
+
+	function getPlotObjectCharacterRelatations($plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT #__lit_chara.id as id, #__lit_chara.fullname AS name
+		FROM #__lit_plotobject
+		INNER JOIN #__lit_plotobjectrelchara ON #__lit_plotobject.id = plotobjectid
+		INNER JOIN #__lit_chara ON #__lit_chara.id = charaid
+		WHERE #__lit_plotobject.id ='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectConceptRelatations($plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT #__lit_characoncept.id as id, #__lit_characoncept.name AS name
+		FROM #__lit_plotobject
+		INNER JOIN #__lit_plotobjectrelconcept ON #__lit_plotobject.id = plotobjectid
+		INNER JOIN #__lit_characoncept ON #__lit_characoncept.id = conceptid
+		WHERE #__lit_plotobject.id ='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectCultureRelatations($plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT #__lit_characulture.id as id, #__lit_characulture.name AS name
+		FROM #__lit_plotobject
+		INNER JOIN #__lit_plotobjectrelculture ON #__lit_plotobject.id = plotobjectid
+		INNER JOIN #__lit_characulture ON #__lit_characulture.id = cultureid
+		WHERE #__lit_plotobject.id ='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectFactionRelatations($plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT #__lit_charafaction.id as id, #__lit_charafaction.name AS name
+		FROM #__lit_plotobject
+		INNER JOIN #__lit_plotobjectrelfaction ON #__lit_plotobject.id = plotobjectid
+		INNER JOIN #__lit_charafaction ON #__lit_charafaction.id = factionid
+		WHERE #__lit_plotobject.id ='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function deleteSubPlotCharacterRelation($relId, $plotObjectId) {
+		$db = &JFactory::getDBO();
+		$query = 'DELETE FROM #__lit_plotobjectrelchara WHERE charaid ='.$db->getEscaped($relId).' AND plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+		echo $query;
+
+		if (!$db->query() ) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+		}
+	}
+
+	function addSubPlotRelationToCharacter($plotObjectId, $characterId) {
+		$db = &JFactory::getDBO();
+		$query = 'INSERT INTO #__lit_plotobjectrelchara SET charaid ='.$db->getEscaped($characterId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+
+		if (!$db->query() ) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+			return false;
+		}
+		return true;
+	}
+
+	function addSubPlotRelationToConcept($plotObjectId, $conceptId) {
+		$db = &JFactory::getDBO();
+		$query = 'INSERT INTO #__lit_plotobjectrelconcept SET conceptid ='.$db->getEscaped($conceptId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+
+		if (!$db->query() ) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+			return false;
+		}
+		return true;
 	}
 
 	function addFactionRole($personid, $eventid, $factionid, $roleid) {

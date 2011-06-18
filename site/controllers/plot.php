@@ -6,7 +6,20 @@ class LajvITControllerPlot extends LajvITController {
 	var $model = null;
 	var $db = null;
 	var $person = null;
+	var $eventId = 1;
+		var $heading = 2;
+		var $description = 3;
+		var $statusId = 4;
+		var $plotCreator = 5;
+		var $plotObjectId = 7;
+		var $plotId = null;
 
+	function __construct()
+	{
+		parent::__construct();
+		//Register Extra tasks
+		$this->registerTask( 'save', 'savePlotObject' );
+	}
 
 	function save() {
 		$errlink = 'index.php?option=com_lajvit&view=plot';
@@ -35,10 +48,45 @@ class LajvITControllerPlot extends LajvITController {
 			}
 		}
 
-		$oklink = 'index.php?option=com_lajvit&view=plot&eid='.$this->eventId.'&pid='.$plotId;
+		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
 		echo $oklink;
 		$this->setRedirect($oklink);
+	}
 
+	function savePlotObject() {
+		$errlink = 'index.php?option=com_lajvit&view=plot';
+
+		$this->model = &$this->getModel();
+		$this->db = &JFactory::getDBO();
+
+		$this->plotId = JRequest::getInt('pid', -1);
+		$this->getPlotData($this->plotId);
+
+		$this->plotObjectId = JRequest::getInt('poid', -1);
+		$this->getPlotObjectData($this->plotObjectId);
+
+		$eventrole = $this->model->getRoleForEvent($this->eventId);
+		$this->person = &$this->model->getPerson();
+
+		if ($this->plotObjectId > 0) {
+			if ($role->character_setstatus || $this->plotCreator == $person->id) {
+				if (!$this->savePlot($plotId, $this->heading, $this->description, $this->statusId)) {
+					return;
+				}
+			} else {
+				// doesn't have rights to save plot
+			}
+		} else {
+			$this->plotObjectId = $this->createPlotObject($this->heading, $this->description, $this->plotId);
+			if ($this->plotObjectId <= 0) {
+				return;
+			}
+		}
+
+		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
+		//$oklink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid=5&poid='. $this->plotObjectId;
+		echo $oklink;
+		$this->setRedirect($oklink);
 	}
 
 	private function getPlotData($plotId) {
@@ -69,6 +117,10 @@ class LajvITControllerPlot extends LajvITController {
 			return false;
 		}
 		return true;
+	}
+
+	private function getPlotObjectData($plotObjectId) {
+		//$this->plotCreator = $this->getPlotCreator($plotId);
 
 	}
 
@@ -96,6 +148,21 @@ class LajvITControllerPlot extends LajvITController {
 		return $this->db->insertid();
 	}
 
+	private function createPlotObject($heading, $description, $plotId) {
+		$data = new stdClass();
+		$data->heading = $heading;
+		$data->description = $description;
+		$data->plotId = $plotId;
+		$this->db->insertObject('#__lit_plotobject', $data);
+		if ($this->db->getErrorNum() != 0) {
+			echo '<h1>'.$this->db->getErrorMsg().'</h1>';
+			//			$this->setRedirect($errlink, $db->getErrorMsg());
+			return;
+		}
+		return $this->db->insertid();
+	}
+
+/*
 	function foo() {
 
 	if ($role->character_setstatus && $statusid > 0) {
@@ -110,4 +177,5 @@ class LajvITControllerPlot extends LajvITController {
 		}
 	}
 	}
+	*/
 }
