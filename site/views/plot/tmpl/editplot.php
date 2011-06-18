@@ -23,7 +23,7 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 				foreach ($this->plotObjects as $plotObject) {
 					printPlotObjectHeaderAndDescription($plotObject, $this->eventId);
-					printPlotObjectRelations($plotObject, $this->eventId);
+					printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations);
 				}
 ?>
 			<tr><td></td></tr>
@@ -33,6 +33,13 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 			</tr>
 			<tr><td></td></tr>
+			<tr>
+				<td>
+					<a href="index.php?option=com_lajvit&view=plot&layout=listplots&eid=<?php echo $this->eventId; ?>">
+						Tillbaka
+					</a>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -41,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 	<input type="submit" value="Spara ändringar" />
 	<input type="hidden" name="option" value="com_lajvit" />
-	<input type="hidden" name="task" value="save" />
+	<input type="hidden" name="task" value="savePlot" />
 	<input type="hidden" name="controller" value="plot" />
 	<input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
 	<input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
@@ -56,44 +63,44 @@ defined('_JEXEC') or die('Restricted access');
 
 function printPlotObjectHeaderAndDescription($plotObject, $eventId) {
 	echo "				<tr>\n";
-	echo '					<td><h3>' . $plotObject->heading . '</h3>';
-	echo '<a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
-	echo "</td>\n";
+	echo "					<td><h3>" . $plotObject->heading;
+	echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+	echo "</h3></td>\n";
 	echo "				</tr>\n";
 	echo "				<tr>\n";
 	echo "					<td>" . htmlentities($plotObject->description) . "</td>\n";
 	echo "				</tr>\n";
 }
 
-function printPlotObjectRelations($plotObject) {
-	$characterRelations = array();
-	$conceptRelations = array();
-	$cultureRelations = array();
-	$factionRelations = array();
 
+function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations) {
 	$characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
 	$cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
-	echo "<tr><td><h4>Karaktär</h4></td><td><h4>Koncept</h4></td></tr>\n";
+	echo "<tr><td><h4>Karaktär";
+	echo "</h4></td><td><h4>Koncept";
+	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $characterAndConceptHeight; $i++) {
 		echo "				<tr><td>";
 		if (array_key_exists($i, $characterRelations)) {
-			echo $characterRelations[$i];
+			echo $characterRelations[$i]->name;
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $conceptRelations)) {
-			echo $conceptRelations[$i];
+			echo $conceptRelations[$i]->name;
 		}
 		echo "</td></tr>\n";
 	}
-	echo "<tr><td><h4>Kultur</h4></td><td><h4>Faktion</h4></td></tr>\n";
+	echo "<tr><td><h4>Kultur";
+	echo "</h4></td><td><h4>Faktion";
+	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $cultureAndFactionHeight; $i++) {
 		echo "				<tr><td>";
 		if (array_key_exists($i, $cultureRelations)) {
-			echo $cultureRelations[$i];
+			echo $cultureRelations[$i]->name;
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $factionRelations)) {
-			echo $factionRelations[$i];
+			echo $factionRelations[$i]->name;
 		}
 		echo "</td></tr>\n";
 	}

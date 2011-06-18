@@ -38,11 +38,16 @@ class LajvITViewPlot extends JView {
 			}
 		}
 
-		if ($layout == 'editplot') {
+		if ($layout == 'listplots') {
+			$this->displayListPlots($model, $eventId);
+		} elseif ($layout == 'editplot') {
 			$this->displayEditPlot($model, $event, $plotId);
 		} elseif ($layout == 'editsubplot') {
 			$this->displayEditSubPlot($model, $event, $plotId);
 		}
+
+		$person = &$model->getPerson();
+		$this->assignRef('person', $person);
 
 		$role = $model->getRoleForEvent($eventId);
 		$this->assignRef('role', $role);
@@ -53,8 +58,11 @@ class LajvITViewPlot extends JView {
 		parent::display($tpl);
 	}
 
+	private function displayListPlots($model, $eventId) {
+		$plots = $model->getPlotsForEvent($eventId);
+		$this->assignRef('plots', $plots);
+	}
 	private function displayEditPlot($model, $event, $plotId) {
-
 		$heading = $model->getPlotHeading($plotId);
 		$description = $model->getPlotDescription($plotId);
 		// TODO: get statusid from database
@@ -64,6 +72,12 @@ class LajvITViewPlot extends JView {
 		$this->assignRef('statusId', $statusId);
 
 		$plotObjects = $model->getPlotObjectsForPlot($plotId);
+		foreach ($plotObjects as $plotObject) {
+			$plotObject->characterRelations = $model->getPlotObjectCharacterRelations($plotObject->id);
+			$plotObject->conceptRelations = $model->getPlotObjectConceptRelations($plotObject->id);
+			$plotObject->cultureRelations = $model->getPlotObjectCultureRelations($plotObject->id);
+			$plotObject->factionRelations = $model->getPlotObjectFactionRelations($plotObject->id);
+		}
 		$this->assignRef('plotObjects', $plotObjects);
 	}
 
@@ -77,10 +91,10 @@ class LajvITViewPlot extends JView {
 		$this->assignRef('plotObject', $plotObject);
 		$this->assignRef('plotObjectId', $plotObjectId);
 
-		$this->assignRef('characterRelations', $model->getPlotObjectCharacterRelatations($plotObjectId));
-		$this->assignRef('conceptRelations', $model->getPlotObjectConceptRelatations($plotObjectId));
-		$this->assignRef('cultureRelations', $model->getPlotObjectCultureRelatations($plotObjectId));
-		$this->assignRef('factionRelations', $model->getPlotObjectFactionRelatations($plotObjectId));
+		$this->assignRef('characterRelations', $model->getPlotObjectCharacterRelations($plotObjectId));
+		$this->assignRef('conceptRelations', $model->getPlotObjectConceptRelations($plotObjectId));
+		$this->assignRef('cultureRelations', $model->getPlotObjectCultureRelations($plotObjectId));
+		$this->assignRef('factionRelations', $model->getPlotObjectFactionRelations($plotObjectId));
 	}
 
 	private function deleteSubPlotRelation($model) {

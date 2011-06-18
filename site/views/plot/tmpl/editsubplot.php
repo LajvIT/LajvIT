@@ -37,6 +37,14 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 					printPlotObjectRelations($this->plotId, $this->plotObject, $this->eventId, $this->characterRelations, $this->conceptRelations, $this->cultureRelations, $this->factionRelations);
 ?>
+			<tr><td colspan="2"></td></tr>
+			<tr>
+				<td colspan="2">
+					<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>">
+						Tillbaka
+					</a>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 </form>

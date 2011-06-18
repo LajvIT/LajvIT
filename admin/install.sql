@@ -352,6 +352,7 @@ CREATE TABLE IF NOT EXISTS #__lit_plot (
  heading text NOT NULL,
  description text NOT NULL,
  statusid int NOT NULL,
+ eventid int NOT NULL,
  creatorpersonid int,
  created datetime NOT NULL,
  updated datetime,
@@ -360,6 +361,8 @@ CREATE TABLE IF NOT EXISTS #__lit_plot (
  PRIMARY KEY (id),
  CONSTRAINT plot_creator FOREIGN KEY (creatorpersonid)
  REFERENCES #__lit_person (id) ON DELETE SET NULL,
+ CONSTRAINT plot_event FOREIGN KEY (eventid)
+ REFERENCES #__lit_event (id) ON DELETE CASCADE,
  CONSTRAINT plot_lockedby FOREIGN KEY (lockedbypersonid)
  REFERENCES #__lit_person (id) ON DELETE SET NULL,
  CONSTRAINT plot_status FOREIGN KEY (statusid)

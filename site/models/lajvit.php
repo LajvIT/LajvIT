@@ -468,6 +468,13 @@ class LajvITModelLajvIT extends JModel {
 		return $ret;
 	}
 
+	function getPlotsForEvent($eventId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT * FROM #__lit_plot WHERE eventid ='.$db->getEscaped($eventId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
 	function getPlotObjectsForPlot($plotId) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT * FROM #__lit_plotobject WHERE plotid ='.$db->getEscaped($plotId).';';
@@ -482,7 +489,7 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObject();
 	}
 
-	function getPlotObjectCharacterRelatations($plotObjectId) {
+	function getPlotObjectCharacterRelations($plotObjectId) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT #__lit_chara.id as id, #__lit_chara.fullname AS name
 		FROM #__lit_plotobject
@@ -493,7 +500,7 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getPlotObjectConceptRelatations($plotObjectId) {
+	function getPlotObjectConceptRelations($plotObjectId) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT #__lit_characoncept.id as id, #__lit_characoncept.name AS name
 		FROM #__lit_plotobject
@@ -504,7 +511,7 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getPlotObjectCultureRelatations($plotObjectId) {
+	function getPlotObjectCultureRelations($plotObjectId) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT #__lit_characulture.id as id, #__lit_characulture.name AS name
 		FROM #__lit_plotobject
@@ -515,7 +522,7 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getPlotObjectFactionRelatations($plotObjectId) {
+	function getPlotObjectFactionRelations($plotObjectId) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT #__lit_charafaction.id as id, #__lit_charafaction.name AS name
 		FROM #__lit_plotobject

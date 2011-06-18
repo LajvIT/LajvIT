@@ -14,6 +14,7 @@ class TableLIT_Plot extends LITTable {
 	var $updated = NULL;
 	var $lockedByPersonId = NULL;
 	var $lockedAt = NULL;
+	var $eventId = NULL;
 
 	function __construct(&$db) {
 		parent::__construct('#__lit_plot', 'id', $db);
@@ -31,6 +32,9 @@ class TableLIT_Plot extends LITTable {
 		}
 
 		if (is_null($this->statusId)) {
+			return false;
+		}
+	if (is_null($this->eventId)) {
 			return false;
 		}
 

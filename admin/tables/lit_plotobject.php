@@ -8,7 +8,7 @@ class TableLIT_PlotObject extends LITTable {
 	var $id = 0;
 	var $heading = '';
 	var $description = '';
-	var $plotId = NULL;
+	var $plotid = NULL;
 
 	function __construct(&$db) {
 		parent::__construct('#__lit_plotobject', 'id', $db);
@@ -19,7 +19,7 @@ class TableLIT_PlotObject extends LITTable {
 			return false;
 		}
 
-		if (is_null($this->plotId) || $this->plotId <= 0) {
+		if (is_null($this->$plotid) || $this->$plotid <= 0) {
 			return false;
 		}
 		return true;
