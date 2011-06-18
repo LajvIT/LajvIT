@@ -131,35 +131,35 @@ class LajvITModelLajvIT extends JModel {
 		} else {
 			$row->_nodata = false;
 		}
-		
+
 		$row->_username = $user->username;
 
 		return $row;
 	}
-	
+
 	function mergeRoles($a, $b) {
 		$ret = new stdClass;
-		
+
 		if (is_null($a) || !$a) {
 			return $b;
 		}
-		
+
 		if (is_null($b) || !$b) {
 			return $a;
 		}
-		
+
 		$name = $a->name.','.$b->name;
-		
+
 		foreach (get_object_vars($a) as $k => $v) {
 			$ret->$k = $v;
 		}
-		
+
 		foreach (get_object_vars($b) as $k => $v) {
 			$ret->$k = ($ret->$k || $v);
 		}
-		
+
 		$ret->name = $name;
-		
+
 		return $ret;
 	}
 
@@ -182,13 +182,13 @@ class LajvITModelLajvIT extends JModel {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
     		return false;
-    	
+
 		$db = &JFactory::getDBO();
-		
+
 		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND cultureid='.$db->getEscaped($cultureid).' AND conceptid='.$db->getEscaped($conceptid).' LIMIT 1;';
 
 		$db->setQuery($query);
-		
+
 		$ret = $db->loadObject();
 		return is_null($ret) ? false : $ret;
 	}
@@ -197,13 +197,13 @@ class LajvITModelLajvIT extends JModel {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
     		return false;
-    	
+
 		$db = &JFactory::getDBO();
-		
+
 		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND factionid='.$db->getEscaped($factionid).' LIMIT 1;';
 
 		$db->setQuery($query);
-		
+
 		$ret = $db->loadObject();
 		return is_null($ret) ? false : $ret;
 	}
@@ -212,71 +212,71 @@ class LajvITModelLajvIT extends JModel {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
     		return false;
-    	
+
 		$db = &JFactory::getDBO();
-		
-		
+
+
 		$query = 'SELECT * FROM #__lit_vcharaconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
 
 		$db->setQuery($query);
-		
+
 		$crole = $db->loadObject();
-				
-		
+
+
 		$query = 'SELECT * FROM #__lit_vcharafactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
 
 		$db->setQuery($query);
-		
+
 		$frole = $db->loadObject();
-		
+
 		$ret = $this->mergeRoles($crole, $frole);
-		
+
 		return is_null($ret) ? false : $ret;
 	}
-	
+
 	function getAllRolesMerged($eventid, $userid = null) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
     		return false;
-    	
+
 		$db = &JFactory::getDBO();
-		
-		
+
+
 		$ret = $this->getRoleForEvent($eventid, $user->id);
 		$eventname = $ret->eventname;
 		$name = $ret->name;
-		
-		
+
+
 		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
 
 		$db->setQuery($query);
-		
+
 		$froles = $db->loadObjectList();
-		
+
 		foreach($froles as $role) {
 			$ret = $this->mergeRoles($ret, $role);
 			$name.= ", ".$role->name." (".$role->factionname.")";
 		}
-		
-		
+
+
 		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
 
 		$db->setQuery($query);
-		
+
 		$croles = $db->loadObjectList();
-		
+
 		foreach($croles as $role) {
 			$ret = $this->mergeRoles($ret, $role);
 			$name.= ", ".$role->name." (".$role->culturename.": ".$role->conceptname.")";
 		}
-		
-		
+
+
 		$ret->eventname = $eventname;
 		$ret->name = $name;
-		
+
 		return $ret;
 	}
-	
+
 	function getRegistration($userid, $eventid, $charid) {
 		$db = &JFactory::getDBO();
 
@@ -318,14 +318,14 @@ class LajvITModelLajvIT extends JModel {
 		$db = &JFactory::getDBO();
 
 		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid='.$db->getEscaped($event). ' AND factionid='.$db->getEscaped($faction);
-		
+
 		if (is_numeric($characterStatus) ) {
 			$query .= " AND statusid = " . $db->getEscaped($characterStatus);
 		}
 		if (is_numeric($confirmation)) {
 			$query .= " AND confirmationid = " . $db->getEscaped($confirmation);
 		}
-		
+
 		switch ($orderBy) {
 			case 'knownas':
 				$query .= " ORDER BY knownas";
@@ -348,11 +348,11 @@ class LajvITModelLajvIT extends JModel {
 			default:
 				break;
 		}
-		
+
 		if ( $orderDirection != '' && ($orderDirection == 'DESC' || $orderDirection == 'DESC')) {
 			$query .= " " . $orderDirection;
 		}
-		
+
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
@@ -395,15 +395,49 @@ class LajvITModelLajvIT extends JModel {
 
 		return $row;
 	}
-	
-	
-	
-	
-	
-	
+
+	function getPlotHeading($plotId) {
+		$plot = $this->getPlot($plotId);
+		if (is_null($plot)) {
+			return null;
+		} else {
+			return $plot->heading;
+		}
+	}
+
+	function getPlotDescription($plotId) {
+		$plot = $this->getPlot($plotId);
+		if (is_null($plot)) {
+			return null;
+		} else {
+			return $plot->description;
+		}
+	}
+
+	function getPlotCreator($plotId) {
+		$plot = $this->getPlot($plotId);
+		return 330;
+		//return is_null($plot) ? null : $plot->creatorpersonid;
+	}
+
+	function getPlot($plotId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT * FROM #__lit_plot WHERE id='.$db->getEscaped($plotId).' LIMIT 1;';
+		$db->setQuery($query);
+		$ret = $db->loadObject();
+		return $ret;
+	}
+
+	function getPlotObjectsForPlot($plotId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT * FROM #__lit_plotobjects WHERE plotid='.$db->getEscaped($plotId).' LIMIT 1;';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
 	function addFactionRole($personid, $eventid, $factionid, $roleid) {
 		$db = &JFactory::getDBO();
-		
+
 		$data = new stdClass;
 		$data->personid = $personid;
 		$data->eventid = $eventid;
@@ -413,18 +447,18 @@ class LajvITModelLajvIT extends JModel {
 		$db->insertObject('#__lit_registrationfactionrole', $data);
 		return $db->getErrorNum() == 0;
 	}
-	
-	
+
+
 	function fixDefaultFactionRoleForChara($personid, $eventid, $charid) {
 		if (!$this->getRegistration($personid, $eventid, $charid)) {
 			return false;
 		}
-		
+
 		$chara = &$this->getCharacter($charid);
 		if (!$chara) {
 			return false;
 		}
-		
+
 		return $this->addFactionRole($personid, $eventid, $chara->factionid, $this->getDefaultFactionRoleId());
 	}
 }

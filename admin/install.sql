@@ -331,6 +331,115 @@ CREATE TABLE IF NOT EXISTS #__lit_charainfo (
  REFERENCES #__lit_infolevel (id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
+-- --------------------------------------------------------
+--
+-- Structure for table plotstatus
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotstatus (
+ id int(11) NOT NULL auto_increment,
+ name text NOT NULL,
+ PRIMARY KEY (id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plot
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plot (
+ id int(11) NOT NULL auto_increment,
+ heading text NOT NULL,
+ description text NOT NULL,
+ statusid int NOT NULL,
+ creatorpersonid int,
+ created datetime NOT NULL,
+ updated datetime,
+ lockedbypersonid int,
+ lockedat datetime,
+ PRIMARY KEY (id),
+ CONSTRAINT plot_creator FOREIGN KEY (creatorpersonid)
+ REFERENCES #__lit_person (id) ON DELETE SET NULL,
+ CONSTRAINT plot_lockedby FOREIGN KEY (lockedbypersonid)
+ REFERENCES #__lit_person (id) ON DELETE SET NULL,
+ CONSTRAINT plot_status FOREIGN KEY (statusid)
+ REFERENCES #__lit_plotstatus (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plotobject
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotobject (
+ id int(11) NOT NULL auto_increment,
+ plotid int NOT NULL,
+ heading text NOT NULL,
+ description text NOT NULL,
+ PRIMARY KEY (id),
+ CONSTRAINT plotobject_plot FOREIGN KEY (plotid)
+ REFERENCES #__lit_plot (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plotobjectrelchara
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotobjectrelchara (
+ plotobjectid int NOT NULL,
+ charaid int,
+ PRIMARY KEY (plotobjectid, charaid),
+ CONSTRAINT plotobjrelchara_plotobject FOREIGN KEY (plotobjectid)
+ REFERENCES #__lit_plotobject (id) ON DELETE CASCADE,
+ CONSTRAINT plotobjrelchara_chara FOREIGN KEY (charaid)
+ REFERENCES #__lit_chara (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plotobjectrelconcept
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotobjectrelconcept (
+ plotobjectid int NOT NULL,
+ conceptid int,
+ PRIMARY KEY (plotobjectid, conceptid),
+ CONSTRAINT plotobjrelconcept_plotobject FOREIGN KEY (plotobjectid)
+ REFERENCES #__lit_plotobject (id) ON DELETE CASCADE,
+ CONSTRAINT plotobjrelconcept_concept FOREIGN KEY (conceptid)
+ REFERENCES #__lit_characoncept (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plotobjectrelculture
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotobjectrelculture (
+ plotobjectid int NOT NULL,
+ cultureid int,
+ PRIMARY KEY (plotobjectid, cultureid),
+ CONSTRAINT plotobjrelculture_plotobject FOREIGN KEY (plotobjectid)
+ REFERENCES #__lit_plotobject (id) ON DELETE CASCADE,
+ CONSTRAINT plotobjrelculture_culture FOREIGN KEY (cultureid)
+ REFERENCES #__lit_characulture (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
+
+-- --------------------------------------------------------
+--
+-- Structure for table plotobjectrelfaction
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_plotobjectrelfaction (
+ plotobjectid int NOT NULL,
+ factionid int,
+ PRIMARY KEY (plotobjectid, factionid),
+ CONSTRAINT plotobjrelfaction_plotobject FOREIGN KEY (plotobjectid)
+ REFERENCES #__lit_plotobject (id) ON DELETE CASCADE,
+ CONSTRAINT plotobjrelfaction_faction FOREIGN KEY (factionid)
+ REFERENCES #__lit_charafaction (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
 -- --------------------------------------------------------

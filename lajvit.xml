@@ -41,6 +41,7 @@
   <filename>controllers/character.php</filename>
   <filename>controllers/event.php</filename>
   <filename>controllers/person.php</filename>
+  <filename>controllers/plot.php</filename>
   <filename>controllers/registrations.php</filename>
   
   
@@ -81,6 +82,11 @@
   <filename>views/event/tmpl/registered.php</filename>
   <filename>views/event/tmpl/index.html</filename>
   
+  <filename>views/plot/index.html</filename>
+  <filename>views/plot/view.html.php</filename>
+  <filename>views/plot/tmpl/default.php</filename>
+  <filename>views/plot/tmpl/index.html</filename>
+  
   <filename>views/registrations/index.html</filename>
   <filename>views/registrations/view.html.php</filename>
   <filename>views/registrations/tmpl/default.php</filename>
@@ -105,6 +111,7 @@
    <filename>tables/lit_chara.php</filename>
    <filename>tables/lit_event.php</filename>
    <filename>tables/lit_person.php</filename>
+   <filename>tables/lit_plot.php</filename>
   </files>
  
  </administration>
