@@ -121,6 +121,24 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList("id");
 	}
 
+	function getCharacterCulture($cultureId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_characulture WHERE id = '. $cultureId .';';
+
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+	}
+
+	function getCharacterFaction($factionId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_charafaction WHERE id = '. $factionId .';';
+
+		$db->setQuery($query);
+		return $db->loadObjectList("id");
+	}
+
 	function &getPerson($userid = null) {
 		$user = &JFactory::getUser($userid);
 		if (!$user || $user->guest)
@@ -509,10 +527,25 @@ class LajvITModelLajvIT extends JModel {
 	}
 
 	function deleteSubPlotCharacterRelation($relId, $plotObjectId) {
+		$this->deleteSubPlotRelation($relId, $plotObjectId, 'chara', 'charaid');
+	}
+
+	function deleteSubPlotConceptRelation($relId, $plotObjectId) {
+		$this->deleteSubPlotRelation($relId, $plotObjectId, 'concept', 'conceptid');
+	}
+
+	function deleteSubPlotCultureRelation($relId, $plotObjectId) {
+		$this->deleteSubPlotRelation($relId, $plotObjectId, 'culture', 'cultureid');
+	}
+
+	function deleteSubPlotFactionRelation($relId, $plotObjectId) {
+		$this->deleteSubPlotRelation($relId, $plotObjectId, 'faction', 'factionid');
+	}
+
+	private function deleteSubPlotRelation($relId, $plotObjectId, $relation, $columnName) {
 		$db = &JFactory::getDBO();
-		$query = 'DELETE FROM #__lit_plotobjectrelchara WHERE charaid ='.$db->getEscaped($relId).' AND plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'DELETE FROM #__lit_plotobjectrel' . $relation . ' WHERE ' . $columnName . ' ='.$db->getEscaped($relId).' AND plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
-		echo $query;
 
 		if (!$db->query() ) {
 			echo '<h1>'.$db->getErrorMsg().'</h1>';
@@ -542,6 +575,31 @@ class LajvITModelLajvIT extends JModel {
 		}
 		return true;
 	}
+
+	function addSubPlotRelationToCulture($plotObjectId, $cultureId) {
+		$db = &JFactory::getDBO();
+		$query = 'INSERT INTO #__lit_plotobjectrelculture SET cultureid ='.$db->getEscaped($cultureId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+
+		if (!$db->query() ) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+			return false;
+		}
+		return true;
+	}
+
+	function addSubPlotRelationToFaction($plotObjectId, $factionId) {
+		$db = &JFactory::getDBO();
+		$query = 'INSERT INTO #__lit_plotobjectrelfaction SET factionid ='.$db->getEscaped($factionId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$db->setQuery($query);
+
+		if (!$db->query() ) {
+			echo '<h1>'.$db->getErrorMsg().'</h1>';
+			return false;
+		}
+		return true;
+	}
+
 
 	function addFactionRole($personid, $eventid, $factionid, $roleid) {
 		$db = &JFactory::getDBO();

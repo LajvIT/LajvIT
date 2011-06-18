@@ -24,16 +24,17 @@ class LajvITViewPlot extends JView {
 		$this->assignRef('event', $event);
 		$plotId = JRequest::getInt('pid', -1);
 		$this->assignRef('plotId', $plotId);
+		$app = &JFactory::getApplication();
 
 		if ($layout == 'deletesubplotrelation') {
 			$this->deleteSubPlotRelation($model);
-			$layout = 'editsubplot';
-			$this->setLayout($layout);
+			$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
+			$app->redirect($redirectLink);
 		} elseif ($layout == 'addsubplotrelation') {
 			$redirectToEditSubPlot = $this->subPlotRelation($model, $event, $plotId);
 			if ($redirectToEditSubPlot) {
-				$layout = 'editsubplot';
-				$this->setLayout($layout);
+				$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
+				$app->redirect($redirectLink);
 			}
 		}
 
@@ -85,13 +86,19 @@ class LajvITViewPlot extends JView {
 	private function deleteSubPlotRelation($model) {
 		$relationType = JRequest::getString('rel', '');
 		$relId = JRequest::getInt('relid', -1);
-		$plotObjectId = JRequest::getInt('poid', -1);
+		$this->plotObjectId = JRequest::getInt('poid', -1);
 		switch ($relationType) {
 			case "char":
-				$model->deleteSubPlotCharacterRelation($relId, $plotObjectId);
+				$model->deleteSubPlotCharacterRelation($relId, $this->plotObjectId);
 				break;
 			case "concept":
-
+				$model->deleteSubPlotConceptRelation($relId, $this->plotObjectId);
+				break;
+			case "culture":
+				$model->deleteSubPlotCultureRelation($relId, $this->plotObjectId);
+				break;
+			case "faction":
+				$model->deleteSubPlotFactionRelation($relId, $this->plotObjectId);
 				break;
 			default:
 				break;
@@ -100,7 +107,7 @@ class LajvITViewPlot extends JView {
 
 	private function subPlotRelation($model, $event, $plotId) {
 		$relationType = JRequest::getString('rel', '');
-		$plotObjectId = JRequest::getInt('poid', -1);
+		$this->plotObjectId = JRequest::getInt('poid', -1);
 		$relationObjectId = JRequest::getInt('oid', -1);
 		switch ($relationType) {
 			case "char":
@@ -120,9 +127,9 @@ class LajvITViewPlot extends JView {
 		}
 		$this->assignRef('relationType', $relationType);
 		$this->assignRef('relationObjects', $relationObjects);
-		$this->assignRef('plotObjectId', $plotObjectId);
+		$this->assignRef('plotObjectId', $this->plotObjectId);
 		if ($relationObjectId > 0) {
-			$this->addSubPlotRelation($model, $event, $plotId, $plotObjectId, $relationObjectId, $relationType);
+			$this->addSubPlotRelation($model, $event, $plotId, $this->plotObjectId, $relationObjectId, $relationType);
 			return TRUE;
 		}
 
@@ -151,6 +158,24 @@ class LajvITViewPlot extends JView {
 				}
 				$concept = $model->getCharacterConcept($relationObjectId);
 				$relationName = $concept->name;
+				break;
+			case "culture":
+				if ($model->addSubPlotRelationToCulture($plotObjectId, $relationObjectId)) {
+					$errorMsg = FALSE;
+				} else {
+					$errorMsg = TRUE;
+				}
+				$culture = $model->getCharacterCulture($relationObjectId);
+				$relationName = $culture->name;
+				break;
+			case "faction":
+				if ($model->addSubPlotRelationToFaction($plotObjectId, $relationObjectId)) {
+					$errorMsg = FALSE;
+				} else {
+					$errorMsg = TRUE;
+				}
+				$faction = $model->getCharacterFaction($relationObjectId);
+				$relationName = $faction->name;
 				break;
 			default:
 				break;
