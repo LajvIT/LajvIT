@@ -44,14 +44,22 @@ class LajvITViewPlot extends JView {
 		}
 
 		if ($layout == 'deletesubplotrelation') {
+			if ($this->isAdminUser($mergedRole)) {
 			$this->deleteSubPlotRelation($model);
 			$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
 			$app->redirect($redirectLink);
+			} else {
+				$this->redirectToList($eventId, $app);
+			}
 		} elseif ($layout == 'addsubplotrelation') {
-			$redirectToEditSubPlot = $this->subPlotRelation($model, $event, $plotId);
-			if ($redirectToEditSubPlot) {
-				$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
-				$app->redirect($redirectLink);
+			if ($this->isAdminUser($mergedRole)) {
+				$redirectToEditSubPlot = $this->subPlotRelation($model, $event, $plotId);
+				if ($redirectToEditSubPlot) {
+					$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
+					$app->redirect($redirectLink);
+				}
+			} else {
+				$this->redirectToList($eventId, $app);
 			}
 		}
 
@@ -100,6 +108,7 @@ class LajvITViewPlot extends JView {
 		$plots = $model->getPlotsForEvent($eventId);
 		$this->assignRef('plots', $plots);
 	}
+
 	private function displayEditPlot($model, $event, $plotId, $person) {
 		if ($plotId > 0) {
 			$heading = $model->getPlotHeading($plotId);
@@ -110,6 +119,7 @@ class LajvITViewPlot extends JView {
 			$heading = "";
 			$description = "";
 			$status = $model->getPlotStatuses(100);
+			$status = $status[0];
 			$plotCreatorPersonId = $person->id;
 		}
 		$plotStatuses = $model->getPlotStatuses();
@@ -136,17 +146,26 @@ class LajvITViewPlot extends JView {
 	private function displayEditSubPlot($model, $event, $plotId) {
 		$plotObjectId = JRequest::getInt('poid', -1);
 		$plotObject = $model->getPlotObject($plotObjectId);
+		$plotStatus = $model->getPlotStatus($plotId);
+		if ($plotStatus->id == 100 || $plotStatus->id == 101) {
+			$plotEditableByCreator = 1;
+		} else {
+			$plotEditableByCreator = 0;
+		}
 		$heading = $plotObject->heading;
 		$description = $plotObject->description;
 		$this->assignRef('heading', $heading);
 		$this->assignRef('description', $description);
 		$this->assignRef('plotObject', $plotObject);
 		$this->assignRef('plotObjectId', $plotObjectId);
+		$this->assignRef('statusId', $plotStatus->id);
+
 
 		$this->assignRef('characterRelations', $model->getPlotObjectCharacterRelations($plotObjectId));
 		$this->assignRef('conceptRelations', $model->getPlotObjectConceptRelations($plotObjectId));
 		$this->assignRef('cultureRelations', $model->getPlotObjectCultureRelations($plotObjectId));
 		$this->assignRef('factionRelations', $model->getPlotObjectFactionRelations($plotObjectId));
+		$this->assignRef('plotEditableByCreator', $plotEditableByCreator);
 	}
 
 	private function deleteSubPlotRelation($model) {

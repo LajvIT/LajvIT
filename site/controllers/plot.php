@@ -37,21 +37,21 @@ class LajvITControllerPlot extends LajvITController {
 		if ($plotId > 0) {
 			if ($this->isCreatedByUserAndEditableOrAdmin($eventrole, $this->person)) {
 				if (!$this->updatePlot($plotId, $this->heading, $this->description, $this->statusId, $this->eventId)) {
-					return;
+					$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
 				}
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
 			} else {
-				$this->setRedirect('index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId);
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
 			}
 		} else {
 			$plotId = $this->createPlot($this->heading, $this->description, $this->statusId, $this->person->id, $this->eventId);
 			if ($plotId <= 0) {
-				return;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+			} else {
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
 			}
 		}
-
-		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
-		echo $oklink;
-		$this->setRedirect($oklink);
+		$this->setRedirect($redirect);
 	}
 
 	function savePlotObject() {
@@ -73,30 +73,34 @@ class LajvITControllerPlot extends LajvITController {
 		if ($this->plotObjectId > 0) {
 			//echo "plotobjectid:" . $this->plotObjectId;
 			if ($this->isCreatedByUserAndEditableOrAdmin($eventrole, $this->person)) {
-				//echo "may update ";
+				echo "may update ";
 				if (!$this->updatePlotObject($this->plotObjectId, $this->heading, $this->description, $this->statusId)) {
-					//echo "update complete ";
-					return;
+					echo "update complete ";
+					//return;
 				}
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
 			} else {
-				//echo "may not update ";
-				$this->setRedirect('index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId);
+				echo "may not update ";
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
 			}
 		} else {
-			//echo " creating plotobject ";
+			echo " creating plotobject ";
 			$this->plotObjectId = $this->createPlotObject($this->heading, $this->description, $this->plotId);
 			if ($this->plotObjectId <= 0) {
-				//echo "creation complete ";
-				return;
+				echo "creation complete ";
+				//return;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+			} else {
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
 			}
 		}
 
-		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
-		//echo $oklink;
-		$this->setRedirect($oklink);
+		$this->setRedirect($redirect);
 	}
 
 	private function isCreatedByUserAndEditableOrAdmin($eventRole, $person) {
+		echo "isCreatedByUserAndEditableOrAdmin";
+		echo $person->id . "," . $this->plotCreator .",(".$this->statusId.")";
 		if ($eventRole->character_setstatus || $eventRole->registration_setstatus || $eventRole->registration_setrole) {
 			return true;
 		} elseif ($person->id == $this->plotCreator && ($this->statusId == 100 || $this->statusId == 101)) {
@@ -190,7 +194,7 @@ class LajvITControllerPlot extends LajvITController {
 		$query = 'UPDATE #__lit_plotobject SET heading = "' . $this->db->getEscaped($heading) . '",
 							description = "' . $this->db->getEscaped($description) . '"
 		    			WHERE id=' . $this->db->getEscaped($plotObjectId) . ';';
-echo $query;
+
 		$this->db->setQuery($query);
 
 		if (!$this->db->query()) {
