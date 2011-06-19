@@ -17,21 +17,78 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<td><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
 			</tr>
+			<tr>
+				<td>Status: <?php
+	if ( ( $this->mergedrole->character_setstatus ||
+					$this->mergedrole->registration_setstatus ||
+					$this->mergedrole->registration_setrole ) ||
+				$this->statusId == 100 || $this->statusId == 101 ) {
+?>
+					<select name="statusId">
+<?php
+		foreach ($this->status as $status) {
+			if ($status->id == 100 || $status->id == 101 ||
+						 ( $this->mergedrole->character_setstatus || $this->mergedrole->registration_setstatus || $this->mergedrole->registration_setrole ) ) {
+	?>
+						<option value="<?echo $status->id; ?>" <?php if ($this->statusId == $status->id) { ?> selected="selected" <?php } ?> >
+<?php												echo $status->name; ?>
+						</option>
+<?php
+			}
+		}
+		?>
+					</select>
+<?php
+	} else {
+		echo $this->statusName;
+	}
+?>
+				</td>
+			</tr>
+			<tr>
+					<td>
+
+			<?php
+	if ( ($this->mergedrole->character_setstatus ||
+					$this->mergedrole->registration_setstatus ||
+					$this->mergedrole->registration_setrole ) ||
+				$this->statusId == 100 || $this->statusId == 101 ) {
+
+?>
+					<input type="submit" value="Spara ändringar" />
+					<input type="hidden" name="option" value="com_lajvit" />
+					<input type="hidden" name="task" value="savePlot" />
+					<input type="hidden" name="controller" value="plot" />
+					<input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
+					<input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
+
+<?php
+	}
+?>
+				</td>
+			</tr>
 			<tr><td></td></tr>
 			<tr><td><h2>Delintriger</h2></td></tr>
 
 <?php
 				foreach ($this->plotObjects as $plotObject) {
-					printPlotObjectHeaderAndDescription($plotObject, $this->eventId);
+					printPlotObjectHeaderAndDescription($plotObject, $this->eventId, $this->mergedrole, $this->statusId);
 					printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations);
 				}
 ?>
-			<tr><td></td></tr>
+			<tr><td></td></tr><?php
+				if ( ($this->mergedrole->character_setstatus ||
+						$this->mergedrole->registration_setstatus ||
+						$this->mergedrole->registration_setrole ) ||
+					$this->statusId == 100 || $this->statusId == 101 ) {
+			?>
 			<tr>
 				<td>
 					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
 				</td>
-			</tr>
+			</tr><?php
+				}
+				?>
 			<tr><td></td></tr>
 			<tr>
 				<td>
@@ -43,28 +100,21 @@ defined('_JEXEC') or die('Restricted access');
 		</tbody>
 	</table>
 
-<?php
-	if ($this->mergedrole->character_setstatus || $this->mergedrole->registration_setstatus || $this->mergedrole->registration_setrole) {
-?>
-	<input type="submit" value="Spara ändringar" />
-	<input type="hidden" name="option" value="com_lajvit" />
-	<input type="hidden" name="task" value="savePlot" />
-	<input type="hidden" name="controller" value="plot" />
-	<input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
-	<input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
-	<input type="hidden" name="statusId" value="<? echo $this->statusId; ?>" />
-<?php
-	}
-?>
+
 
 </form>
 
 <?php
 
-function printPlotObjectHeaderAndDescription($plotObject, $eventId) {
+function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole, $statusId) {
 	echo "				<tr>\n";
 	echo "					<td><h3>" . $plotObject->heading;
-	echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+	if ( ($mergedrole->character_setstatus ||
+					$mergedrole->registration_setstatus ||
+					$mergedrole->registration_setrole ) ||
+				$statusId == 100 || $statusId == 101 ) {
+		echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+	}
 	echo "</h3></td>\n";
 	echo "				</tr>\n";
 	echo "				<tr>\n";

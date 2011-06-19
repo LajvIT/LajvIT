@@ -18,13 +18,30 @@ class LajvITViewPlot extends JView {
 		$layout = $this->getLayout();
 		$model = &$this->getModel();
 
+		$person = &$model->getPerson();
+		$this->assignRef('person', $person);
+
 		$eventId = JRequest::getInt('eid', -1);
 		$this->assignRef('eventId', $eventId);
+		$role = $model->getRoleForEvent($eventId);
+		$this->assignRef('role', $role);
+
+		$mergedRole = $role;
+		$this->assignRef('mergedrole', $mergedRole);
 		$event = $model->getEvent($eventId);
 		$this->assignRef('event', $event);
 		$plotId = JRequest::getInt('pid', -1);
 		$this->assignRef('plotId', $plotId);
 		$app = &JFactory::getApplication();
+
+		if ($this->isRestrictedAccessAndNotCreatedByUser($mergedRole, $layout, $person, $plotId, $model)) {
+			$this->redirectToList($eventId, $app);
+		}
+		if ($this->isRestrictedModificationsByCreatorUser($mergedRole, $plotId, $model)) {
+			if ($layout != 'listplots' && $layout != 'editplot') {
+				$this->redirectToList($eventId, $app);
+			}
+		}
 
 		if ($layout == 'deletesubplotrelation') {
 			$this->deleteSubPlotRelation($model);
@@ -39,37 +56,72 @@ class LajvITViewPlot extends JView {
 		}
 
 		if ($layout == 'listplots') {
-			$this->displayListPlots($model, $eventId);
+			$this->displayListPlots($model, $eventId, $person);
 		} elseif ($layout == 'editplot') {
 			$this->displayEditPlot($model, $event, $plotId);
 		} elseif ($layout == 'editsubplot') {
 			$this->displayEditSubPlot($model, $event, $plotId);
 		}
-
-		$person = &$model->getPerson();
-		$this->assignRef('person', $person);
-
-		$role = $model->getRoleForEvent($eventId);
-		$this->assignRef('role', $role);
-
-		$mergedrole = $role;
-		$this->assignRef('mergedrole', $mergedrole);
-
 		parent::display($tpl);
+	}
+
+	private function isRestrictedAccessAndNotCreatedByUser($mergedRole, $layout, $person, $plotId, $model) {
+		if ($this->isAdminUser($mergedRole) || $plotId <= 0) {
+			return false;
+		}
+		$plotCreatorId = &$model->getPlotCreator($plotId);
+		if ($layout != 'listplots' && $person->id != $plotCreatorId) {
+			return true;
+		}
+		return false;
+	}
+
+	private function isAdminUser($mergedRole) {
+		if ($mergedRole->character_setstatus || $mergedRole->registration_setstatus || $mergedRole->registration_setrole) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private function isRestrictedModificationsByCreatorUser($mergedRole, $plotId, $model) {
+		if ($this->isAdminUser($mergedRole) || $plotId <= 0) {
+			return false;
+		}
+		$plotStatus = $model->getPlotStatus($plotId);
+		if ($plotStatus->id == 100 || $plotStatus->id == 101) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 
 	private function displayListPlots($model, $eventId) {
 		$plots = $model->getPlotsForEvent($eventId);
 		$this->assignRef('plots', $plots);
 	}
-	private function displayEditPlot($model, $event, $plotId) {
-		$heading = $model->getPlotHeading($plotId);
-		$description = $model->getPlotDescription($plotId);
-		// TODO: get statusid from database
-		$statusId = 100;
+	private function displayEditPlot($model, $event, $plotId, $person) {
+		if ($plotId > 0) {
+			$heading = $model->getPlotHeading($plotId);
+			$description = $model->getPlotDescription($plotId);
+			$status = $model->getPlotStatus($plotId);
+			$plotCreatorPersonId = &$model->getPlotCreator($plotId);
+		} else {
+			$heading = "";
+			$description = "";
+			$status = $model->getPlotStatuses(100);
+			$plotCreatorPersonId = $person->id;
+		}
+		$plotStatuses = $model->getPlotStatuses();
+		$statusId = $status->id;
+		$statusName = $status->name;
+
 		$this->assignRef('heading', $heading);
 		$this->assignRef('description', $description);
 		$this->assignRef('statusId', $statusId);
+		$this->assignRef('statusName', $statusName);
+		$this->assignRef('status', $plotStatuses);
+		$this->assignRef('plotCreatorPersonId', $plotCreatorPersonId);
 
 		$plotObjects = $model->getPlotObjectsForPlot($plotId);
 		foreach ($plotObjects as $plotObject) {
@@ -196,5 +248,10 @@ class LajvITViewPlot extends JView {
 		}
 		$this->assignRef('relationAddedName', $relationName);
 		$this->assignRef('errorMsg', $errorMsg);
+	}
+
+	private function redirectToList($eventId, $app) {
+		$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$eventId;
+		$app->redirect($redirectLink);
 	}
 }

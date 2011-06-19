@@ -21,41 +21,8 @@ class LajvITControllerPlot extends LajvITController {
 		$this->registerTask( 'savePlot', 'savePlot' );
 		$this->registerTask( 'savePlotObject', 'savePlotObject' );
 	}
-/*
-	function save() {
-		$errlink = 'index.php?option=com_lajvit&view=plot';
 
-		$this->model = &$this->getModel();
-		$this->db = &JFactory::getDBO();
-
-		$plotId = JRequest::getInt('pid', -1);
-		$this->getPlotData($plotId);
-
-		$eventrole = $this->model->getRoleForEvent($this->eventId);
-		$this->person = &$this->model->getPerson();
-
-		if ($plotId > 0) {
-			if ($role->character_setstatus || $this->plotCreator == $person->id) {
-				if (!$this->savePlot($plotId, $this->heading, $this->description, $this->statusId, $this->eventId)) {
-					return;
-				}
-			} else {
-				// doesn't have rights to save plot
-			}
-		} else {
-			$plotId = $this->createPlot($this->heading, $this->description, $this->statusId, $this->person->id, $this->eventId);
-			if ($plotId <= 0) {
-				return;
-			}
-		}
-
-		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
-		echo $oklink;
-		$this->setRedirect($oklink);
-	}
-*/
 	function savePlot() {
-		echo " savePlot ";
 		$errlink = 'index.php?option=com_lajvit&view=plot&layout=editplot';
 
 		$this->model = &$this->getModel();
@@ -68,12 +35,12 @@ class LajvITControllerPlot extends LajvITController {
 		$this->person = &$this->model->getPerson();
 
 		if ($plotId > 0) {
-			if ($eventrole->character_setstatus || $this->plotCreator == $person->id) {
+			if ($this->isCreatedByUserAndEditableOrAdmin($eventrole, $this->person)) {
 				if (!$this->updatePlot($plotId, $this->heading, $this->description, $this->statusId, $this->eventId)) {
 					return;
 				}
 			} else {
-				// doesn't have rights to save plot
+				$this->setRedirect('index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId);
 			}
 		} else {
 			$plotId = $this->createPlot($this->heading, $this->description, $this->statusId, $this->person->id, $this->eventId);
@@ -105,7 +72,7 @@ class LajvITControllerPlot extends LajvITController {
 
 		if ($this->plotObjectId > 0) {
 			//echo "plotobjectid:" . $this->plotObjectId;
-			if ($eventrole->character_setstatus || $this->plotCreator == $this->person->id) {
+			if ($this->isCreatedByUserAndEditableOrAdmin($eventrole, $this->person)) {
 				//echo "may update ";
 				if (!$this->updatePlotObject($this->plotObjectId, $this->heading, $this->description, $this->statusId)) {
 					//echo "update complete ";
@@ -127,6 +94,15 @@ class LajvITControllerPlot extends LajvITController {
 		$oklink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
 		//echo $oklink;
 		$this->setRedirect($oklink);
+	}
+
+	private function isCreatedByUserAndEditableOrAdmin($eventRole, $person) {
+		if ($eventRole->character_setstatus || $eventRole->registration_setstatus || $eventRole->registration_setrole) {
+			return true;
+		} elseif ($person->id == $this->plotCreator && ($this->statusId == 100 || $this->statusId == 101)) {
+			return true;
+		}
+		return false;
 	}
 
 	private function getPlotData($plotId) {

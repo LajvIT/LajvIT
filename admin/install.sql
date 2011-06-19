@@ -339,6 +339,7 @@ CREATE TABLE IF NOT EXISTS #__lit_charainfo (
 CREATE TABLE IF NOT EXISTS #__lit_plotstatus (
  id int(11) NOT NULL auto_increment,
  name text NOT NULL,
+ useravailable tinyint(1) NOT NULL DEFAULT '0',
  PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 

@@ -193,14 +193,13 @@ class LajvITModelLajvIT extends JModel {
 	function getRoleForEvent($eventid, $userid = null) {
 		$user = &JFactory::getUser($userid);
 		if (!$user || $user->guest)
-		return false;
+			return false;
 
 		$db = &JFactory::getDBO();
 
 		$query = 'SELECT * FROM #__lit_veventroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' LIMIT 1;';
 
 		$db->setQuery($query);
-
 		$ret = $db->loadObject();
 		return is_null($ret) ? false : $ret;
 	}
@@ -456,8 +455,28 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotCreator($plotId) {
 		$plot = $this->getPlot($plotId);
-		return 330;
-		//return is_null($plot) ? null : $plot->creatorpersonid;
+		return is_null($plot) ? null : $plot->creatorpersonid;
+	}
+
+	function getPlotStatus($plotId) {
+		$plot = $this->getPlot($plotId);
+		if (is_null($plot)) {
+			return null;
+		} else {
+			$ret = $this->getPlotStatuses($plot->statusid);
+			return $ret[0];
+		}
+	}
+
+	function getPlotStatuses($statusId = null) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT * FROM #__lit_plotstatus';
+		if ($statusId != null) {
+			$query .= " WHERE id = ". $db->getEscaped($statusId);
+		}
+		$query .= ';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 	function getPlot($plotId) {
