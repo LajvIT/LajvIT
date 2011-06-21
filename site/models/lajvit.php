@@ -353,6 +353,18 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
+	function getCharacterRegistrationForEvent($event, $characterId, $person = null) {
+		$user = &JFactory::getUser($person);
+		if (!$user || $user->guest)
+		return false;
+
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($event).' AND id = '.$db->getEscaped($characterId).';';
+		$db->setQuery($query);
+		return $db->loadObject();
+	}
+
 	function getCharactersForFaction($event, $faction, $orderBy, $orderDirection, $characterStatus, $confirmation) {
 		$db = &JFactory::getDBO();
 
@@ -489,7 +501,52 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotsForEvent($eventId) {
 		$db = &JFactory::getDBO();
-		$query = 'SELECT * FROM #__lit_plot WHERE eventid ='.$db->getEscaped($eventId).';';
+		$query = 'SELECT #__lit_plot.*, #__lit_plotstatus.name as statusname FROM #__lit_plot ';
+		$query .= 'INNER JOIN #__lit_plotstatus ON statusid = #__lit_plotstatus.id WHERE eventid ='.$db->getEscaped($eventId).';';
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectsDistributedForEventOnCharacter($eventId, $characterId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
+		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
+		$query .= 'INNER JOIN #__lit_plotobjectrelchara as chararel ON chararel.plotobjectid = plotobject.id AND chararel.charaid = ' . $db->getEscaped($characterId) . " ";
+		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectsDistributedForEventOnCulture($eventId, $cultureId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
+		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
+		$query .= 'INNER JOIN #__lit_plotobjectrelculture as culturerel ON culturerel.plotobjectid = plotobject.id AND culturerel.cultureid = ' . $db->getEscaped($cultureId) . " ";
+		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectsDistributedForEventOnConcept($eventId, $conceptId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
+		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
+		$query .= 'INNER JOIN #__lit_plotobjectrelconcept as conceptrel ON conceptrel.plotobjectid = plotobject.id AND conceptrel.conceptid = ' . $db->getEscaped($conceptId) . " ";
+		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+
+		$db->setQuery($query);
+		return $db->loadObjectList();
+	}
+
+	function getPlotObjectsDistributedForEventOnFaction($eventId, $factionId) {
+		$db = &JFactory::getDBO();
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
+		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
+		$query .= 'INNER JOIN #__lit_plotobjectrelfaction as factionrel ON factionrel.plotobjectid = plotobject.id AND factionrel.factionid = ' . $db->getEscaped($factionId) . " ";
+		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}

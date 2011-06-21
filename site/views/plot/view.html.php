@@ -17,6 +17,8 @@ class LajvITViewPlot extends JView {
 	function display($tpl = null) {
 		$layout = $this->getLayout();
 		$model = &$this->getModel();
+		$debug = JRequest::getInt('debug', 0);
+		$this->assignRef('debug', $debug);
 
 		$person = &$model->getPerson();
 		$this->assignRef('person', $person);
@@ -69,6 +71,9 @@ class LajvITViewPlot extends JView {
 			$this->displayEditPlot($model, $event, $plotId);
 		} elseif ($layout == 'editsubplot') {
 			$this->displayEditSubPlot($model, $event, $plotId);
+		} elseif ($layout == 'listdistributedplots') {
+			$characterId = JRequest::getInt('cid', -1);
+			$this->displayListDistributedPlots($model, $eventId, $person, $characterId);
 		}
 		parent::display($tpl);
 	}
@@ -107,6 +112,21 @@ class LajvITViewPlot extends JView {
 	private function displayListPlots($model, $eventId) {
 		$plots = $model->getPlotsForEvent($eventId);
 		$this->assignRef('plots', $plots);
+	}
+
+	private function displayListDistributedPlots($model, $eventId, $person, $characterId) {
+		$characterRegistration = $model->getCharacterRegistrationForEvent($eventId, $characterId, $person->id);
+		$cultureId = $characterRegistration->cultureid;
+		$conceptId = $characterRegistration->conceptid;
+		$factionId = $characterRegistration->factionid;
+		$characterPlots = $model->getPlotObjectsDistributedForEventOnCharacter($eventId, $characterId);
+		$culturePlots = $model->getPlotObjectsDistributedForEventOnCulture($eventId, $cultureId);
+		$conceptPlots = $model->getPlotObjectsDistributedForEventOnConcept($eventId, $conceptId);
+		$factionPlots = $model->getPlotObjectsDistributedForEventOnFaction($eventId, $factionId);
+		$this->assignRef('plotObjectsCharacter', $characterPlots);
+		$this->assignRef('plotObjectsCulture', $culturePlots);
+		$this->assignRef('plotObjectsConcept', $conceptPlots);
+		$this->assignRef('plotObjectsFaction', $factionPlots);
 	}
 
 	private function displayEditPlot($model, $event, $plotId, $person) {

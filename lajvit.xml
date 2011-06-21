@@ -89,6 +89,7 @@
   <filename>views/plot/tmpl/editplot.php</filename>
   <filename>views/plot/tmpl/editsubplot.php</filename>
   <filename>views/plot/tmpl/listplots.php</filename>
+  <filename>views/plot/tmpl/listdistributedplots.php</filename>
   <filename>views/plot/tmpl/index.html</filename>
   
   <filename>views/registrations/index.html</filename>
