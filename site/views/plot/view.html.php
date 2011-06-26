@@ -112,8 +112,7 @@ class LajvITViewPlot extends JView {
 
 	private function displayListDistributedPlots($model, $eventId, $person, $characterId) {
 		$characterPlots = $culturePlots = $conceptPlots = $factionPlots = array();
-		$charactersForPerson = $model->getCharactersOnEventForPerson($eventId, $person->id);
-		if($model->isCharacterOwnedByPerson($characterId, $person->id)) {
+		if($model->isCharacterOwnedByPerson($characterId, $person->id) && $model->hasCharacterPastFirstStatusCheck($characterId)) {
 			$characterRegistration = $model->getCharacterRegistrationForEvent($eventId, $characterId, $person->id);
 			$cultureId = $characterRegistration->cultureid;
 			$conceptId = $characterRegistration->conceptid;
@@ -135,13 +134,15 @@ class LajvITViewPlot extends JView {
 			$description = $model->getPlotDescription($plotId);
 			$status = $model->getPlotStatus($plotId);
 			$plotCreatorPersonId = &$model->getPlotCreator($plotId);
+			$plotCreator = &$model->getPerson($plotCreatorPersonId);
+			$plotCreatorPersonName = $plotCreator->givenname . " " . $plotCreator->surname;
 		} else {
 			$heading = "";
 			$description = "";
 			$status = $model->getPlotStatuses(100);
 			$status = $status[0];
 			$plotCreatorPersonId = $person->id;
-			$plotCreatorPersonName = $person->givenname . " " . $person->surname;
+			$plotCreatorPersonName = "";
 		}
 		$plotStatuses = $model->getPlotStatuses();
 		$statusId = $status->id;

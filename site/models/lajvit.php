@@ -458,6 +458,18 @@ class LajvITModelLajvIT extends JModel {
 		return false;
 	}
 
+	function hasCharacterPastFirstStatusCheck($characterId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_registrationchara
+							WHERE charaid = '.$db->getEscaped($characterId).' AND statusid > 100;';
+		$db->setQuery($query);
+		if (count($db->loadObjectList()) > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	function &getEvent($eventid) {
 		/*
 		 $user = &JFactory::getUser($userid);

@@ -16,11 +16,14 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<tr>
 				<td colspan="2">
-						Rubrik: <input type="text" name="heading" value="<?php echo $this->heading; ?>" />
+						Metarubrik: <input type="text" name="heading" value="<?php echo $this->heading; ?>" />
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2"><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
+				<td colspan="2">
+					Metainformation:<br/>
+					<textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
+				</td>
 			</tr>
 			<tr>
 				<td colspan="2">Status: <?php
@@ -102,6 +105,16 @@ defined('_JEXEC') or die('Restricted access');
 					</a>
 				</td>
 			</tr>
+			<tr><td colspan="2"></td></tr>
+			<tr>
+				<td colspan="2">
+					<p>Metarubrik och Metainformation är beskrivningar som kommer ses av intrigförfattaren och arrangören. Metarubrik ska med ett
+						fåtal ord beskriva intrigen. Metainformationen mycket kort beskriva tanken med intrigen i stora drag. Här kan du också ange
+						eventuell rekvisita och vem ska ska ha den.</p>
+					<p>Delintriger är texter och rubriker som kommer visas för deltagare när arrangör uppdaterat deras status till Distributed. Därför
+						bör exempelvis intrigen inte avslöja för mycket.</p>
+				</td>
+			</tr>
 		</tbody>
 	</table>
 
@@ -123,7 +136,7 @@ function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole,
 	echo "</h3></td>\n";
 	echo "				</tr>\n";
 	echo "				<tr>\n";
-	echo "					<td>" . htmlentities($plotObject->description) . "</td>\n";
+	echo "					<td colspan=\"2\">" . nl2br(htmlentities($plotObject->description)) . "</td>\n";
 	echo "				</tr>\n";
 }
 
