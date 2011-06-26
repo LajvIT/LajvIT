@@ -433,6 +433,31 @@ class LajvITModelLajvIT extends JModel {
 		return $row;
 	}
 
+	function getCharactersOnEventForPerson($eventId, $personId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT character.* FROM #__lit_chara AS character
+							INNER JOIN #__lit_registrationchara ON charaid = character.id
+							WHERE personid = '.$db->getEscaped($personId).' AND eventid = '.$db->getEscaped($eventId).';';
+
+		$db->setQuery($query);
+
+		return $db->loadObjectList();
+	}
+
+	function isCharacterOwnedByPerson($characterId, $personId) {
+		$db = &JFactory::getDBO();
+
+		$query = 'SELECT * FROM #__lit_chara AS characters
+							INNER JOIN #__lit_registrationchara ON charaid = characters.id
+							WHERE personid = '.$db->getEscaped($personId).' AND charaid = '.$db->getEscaped($characterId).';';
+		$db->setQuery($query);
+		if (count($db->loadObjectList()) > 0) {
+			return true;
+		}
+		return false;
+	}
+
 	function &getEvent($eventid) {
 		/*
 		 $user = &JFactory::getUser($userid);
@@ -578,10 +603,11 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotObjectConceptRelations($plotObjectId) {
 		$db = &JFactory::getDBO();
-		$query = 'SELECT #__lit_characoncept.id as id, #__lit_characoncept.name AS name
+		$query = 'SELECT concept.id as id, concept.name AS name, culture.name AS culturename
 		FROM #__lit_plotobject
 		INNER JOIN #__lit_plotobjectrelconcept ON #__lit_plotobject.id = plotobjectid
-		INNER JOIN #__lit_characoncept ON #__lit_characoncept.id = conceptid
+		INNER JOIN #__lit_characoncept AS concept ON concept.id = conceptid
+		INNER JOIN #__lit_characulture AS culture ON concept.cultureid = culture.id
 		WHERE #__lit_plotobject.id ='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 		return $db->loadObjectList();

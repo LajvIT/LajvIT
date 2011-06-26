@@ -144,7 +144,6 @@ class LajvITControllerPlot extends LajvITController {
 
 
 	private function setPlotUpdatedTime($plotId) {
-		echo " setPlotUpdateTime ";
 		$query = 'UPDATE #__lit_plot SET updated = NOW()
 		    			WHERE id=' . $this->db->getEscaped($plotId) . ';';
 

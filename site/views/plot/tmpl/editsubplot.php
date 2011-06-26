@@ -56,70 +56,54 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 	$characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
 	$cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
 	echo "<tr><td><h4>Karaktär";
-	if (isAdminUser($mergedRole)) {
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=char&eid=' . $eventId;
 		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
-	}
 	echo "</h4></td><td><h4>Koncept";
-	if (isAdminUser($mergedRole)) {
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=concept&eid=' . $eventId;
 		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
-	}
 	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $characterAndConceptHeight; $i++) {
 		echo "				<tr><td>";
 		if (array_key_exists($i, $characterRelations)) {
 			echo $characterRelations[$i]->name;
-			if (isAdminUser($mergedRole)) {
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=char&eid=' . $eventId;
 				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $characterRelations[$i]->id . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
-			}
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $conceptRelations)) {
-			echo $conceptRelations[$i]->name;
-			if (isAdminUser($mergedRole)) {
+			echo $conceptRelations[$i]->culturename . "-" . $conceptRelations[$i]->name;
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=concept&eid=' . $eventId;
 				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $conceptRelations[$i]->id . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
-			}
 		}
 		echo "</td></tr>\n";
 	}
 	echo "<tr><td><h4>Kultur";
-	if (isAdminUser($mergedRole)) {
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=culture&eid=' . $eventId;
 		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
-	}
 	echo "</h4></td><td><h4>Faktion";
-	if (isAdminUser($mergedRole)) {
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=faction&eid=' . $eventId;
 		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
-	}
 	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $cultureAndFactionHeight; $i++) {
 		echo "				<tr><td>";
 		if (array_key_exists($i, $cultureRelations)) {
 			echo $cultureRelations[$i]->name;
-			if (isAdminUser($mergedRole)) {
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=culture&eid=' . $eventId;
 				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $cultureRelations[$i]->id . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
-			}
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $factionRelations)) {
 			echo $factionRelations[$i]->name;
-			if (isAdminUser($mergedRole)) {
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=faction&eid=' . $eventId;
 				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $factionRelations[$i]->id . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
-			}
 		}
 		echo "</td></tr>\n";
 	}

@@ -29,6 +29,9 @@ defined('_JEXEC') or die('Restricted access');
 				case "char":
 					echo $object->knownas;
 					break;
+				case "concept":
+					echo $object->culturename . "-" . $object->name;
+					break;
 				default:
 					echo $object->name;
 					break;

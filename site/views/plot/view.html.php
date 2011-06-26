@@ -46,23 +46,15 @@ class LajvITViewPlot extends JView {
 		}
 
 		if ($layout == 'deletesubplotrelation') {
-			if ($this->isAdminUser($mergedRole)) {
 			$this->deleteSubPlotRelation($model);
 			$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
 			$app->redirect($redirectLink);
-			} else {
-				$this->redirectToList($eventId, $app);
-			}
 		} elseif ($layout == 'addsubplotrelation') {
-			if ($this->isAdminUser($mergedRole)) {
 				$redirectToEditSubPlot = $this->subPlotRelation($model, $event, $plotId);
 				if ($redirectToEditSubPlot) {
 					$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
 					$app->redirect($redirectLink);
 				}
-			} else {
-				$this->redirectToList($eventId, $app);
-			}
 		}
 
 		if ($layout == 'listplots') {
@@ -111,18 +103,26 @@ class LajvITViewPlot extends JView {
 
 	private function displayListPlots($model, $eventId) {
 		$plots = $model->getPlotsForEvent($eventId);
+		foreach ($plots as $plot) {
+			$person = &$model->getPerson($plot->creatorpersonid);
+			$plot->plotCreatorName = $person->givenname . "&nbsp;" . $person->surname;
+		}
 		$this->assignRef('plots', $plots);
 	}
 
 	private function displayListDistributedPlots($model, $eventId, $person, $characterId) {
-		$characterRegistration = $model->getCharacterRegistrationForEvent($eventId, $characterId, $person->id);
-		$cultureId = $characterRegistration->cultureid;
-		$conceptId = $characterRegistration->conceptid;
-		$factionId = $characterRegistration->factionid;
-		$characterPlots = $model->getPlotObjectsDistributedForEventOnCharacter($eventId, $characterId);
-		$culturePlots = $model->getPlotObjectsDistributedForEventOnCulture($eventId, $cultureId);
-		$conceptPlots = $model->getPlotObjectsDistributedForEventOnConcept($eventId, $conceptId);
-		$factionPlots = $model->getPlotObjectsDistributedForEventOnFaction($eventId, $factionId);
+		$characterPlots = $culturePlots = $conceptPlots = $factionPlots = array();
+		$charactersForPerson = $model->getCharactersOnEventForPerson($eventId, $person->id);
+		if($model->isCharacterOwnedByPerson($characterId, $person->id)) {
+			$characterRegistration = $model->getCharacterRegistrationForEvent($eventId, $characterId, $person->id);
+			$cultureId = $characterRegistration->cultureid;
+			$conceptId = $characterRegistration->conceptid;
+			$factionId = $characterRegistration->factionid;
+			$characterPlots = $model->getPlotObjectsDistributedForEventOnCharacter($eventId, $characterId);
+			$culturePlots = $model->getPlotObjectsDistributedForEventOnCulture($eventId, $cultureId);
+			$conceptPlots = $model->getPlotObjectsDistributedForEventOnConcept($eventId, $conceptId);
+			$factionPlots = $model->getPlotObjectsDistributedForEventOnFaction($eventId, $factionId);
+		}
 		$this->assignRef('plotObjectsCharacter', $characterPlots);
 		$this->assignRef('plotObjectsCulture', $culturePlots);
 		$this->assignRef('plotObjectsConcept', $conceptPlots);
@@ -141,6 +141,7 @@ class LajvITViewPlot extends JView {
 			$status = $model->getPlotStatuses(100);
 			$status = $status[0];
 			$plotCreatorPersonId = $person->id;
+			$plotCreatorPersonName = $person->givenname . " " . $person->surname;
 		}
 		$plotStatuses = $model->getPlotStatuses();
 		$statusId = $status->id;
@@ -152,6 +153,7 @@ class LajvITViewPlot extends JView {
 		$this->assignRef('statusName', $statusName);
 		$this->assignRef('status', $plotStatuses);
 		$this->assignRef('plotCreatorPersonId', $plotCreatorPersonId);
+		$this->assignRef('plotCreatorName', $plotCreatorPersonName);
 
 		$plotObjects = $model->getPlotObjectsForPlot($plotId);
 		foreach ($plotObjects as $plotObject) {
@@ -220,6 +222,7 @@ class LajvITViewPlot extends JView {
 				break;
 			case "concept":
 				$relationObjects = $model->getCharacterConcepts();
+				$relationObjects = $this->addCultureNameToConcepts($relationObjects, $model);
 				break;
 			case "culture":
 				$relationObjects = $model->getCharacterCultures();
@@ -239,6 +242,14 @@ class LajvITViewPlot extends JView {
 		}
 
 		return false;
+	}
+
+	private function addCultureNameToConcepts($conceptList, $model) {
+		$cultures = $model->getCharacterCultures();
+		foreach ($conceptList as $concept) {
+			$concept->culturename = $cultures[$concept->cultureid]->name;
+		}
+		return $conceptList;
 	}
 
 	private function addSubPlotRelation($model, $event, $plotId, $plotObjectId, $relationObjectId, $relationType) {

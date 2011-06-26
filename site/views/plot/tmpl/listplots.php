@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 <h1>Intriger</h1>
 
 <table>
-	<tbody>
+	<tbody style="vertical-align: top;">
 
 <?php
 			foreach ($this->plots as $plot) {
@@ -20,8 +20,11 @@ defined('_JEXEC') or die('Restricted access');
 					<?php echo $plot->heading;?>
 				</a>
 			</td>
-			<td><?php echo $plot->description; ?></td>
 			<td><?php echo $plot->statusname; ?></td>
+			<td><?php echo $plot->plotCreatorName; ?></td>
+		</tr>
+		<tr>
+			<td colspan="3" style="padding-left: 20px;"><?php echo nl2br($plot->description); ?></td>
 		</tr>
 <?php 	}
 			} ?>

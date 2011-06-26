@@ -10,15 +10,20 @@ defined('_JEXEC') or die('Restricted access');
 	<table>
 		<tbody>
 			<tr>
-				<td >
+				<td colspan="2">
+						Skapad av: <?php echo $this->plotCreatorName; ?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
 						Rubrik: <input type="text" name="heading" value="<?php echo $this->heading; ?>" />
 				</td>
 			</tr>
 			<tr>
-				<td><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
+				<td colspan="2"><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
 			</tr>
 			<tr>
-				<td>Status: <?php
+				<td colspan="2">Status: <?php
 	if ( ( $this->mergedrole->character_setstatus ||
 					$this->mergedrole->registration_setstatus ||
 					$this->mergedrole->registration_setrole ) ||
@@ -46,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 			</tr>
 			<tr>
-					<td>
+					<td colspan="2">
 
 			<?php
 	if ( ($this->mergedrole->character_setstatus ||
@@ -67,8 +72,8 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 				</td>
 			</tr>
-			<tr><td></td></tr>
-			<tr><td><h2>Delintriger</h2></td></tr>
+			<tr><td colspan="2"></td></tr>
+			<tr><td colspan="2"><h2>Delintriger</h2></td></tr>
 
 <?php
 				foreach ($this->plotObjects as $plotObject) {
@@ -76,22 +81,22 @@ defined('_JEXEC') or die('Restricted access');
 					printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations);
 				}
 ?>
-			<tr><td></td></tr><?php
+			<tr><td colspan="2"></td></tr><?php
 				if ( ($this->mergedrole->character_setstatus ||
 						$this->mergedrole->registration_setstatus ||
 						$this->mergedrole->registration_setrole ) ||
 					$this->statusId == 100 || $this->statusId == 101 ) {
 			?>
 			<tr>
-				<td>
+				<td colspan="2">
 					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
 				</td>
 			</tr><?php
 				}
 				?>
-			<tr><td></td></tr>
+			<tr><td colspan="2"></td></tr>
 			<tr>
-				<td>
+				<td colspan="2">
 					<a href="index.php?option=com_lajvit&view=plot&layout=listplots&eid=<?php echo $this->eventId; ?>">
 						Tillbaka
 					</a>
@@ -108,7 +113,7 @@ defined('_JEXEC') or die('Restricted access');
 
 function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole, $statusId) {
 	echo "				<tr>\n";
-	echo "					<td><h3>" . $plotObject->heading;
+	echo "					<td colspan=\"2\"><h3>" . $plotObject->heading;
 	if ( ($mergedrole->character_setstatus ||
 					$mergedrole->registration_setstatus ||
 					$mergedrole->registration_setrole ) ||
@@ -136,7 +141,7 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $conceptRelations)) {
-			echo $conceptRelations[$i]->name;
+			echo $conceptRelations[$i]->culturename . "-" . $conceptRelations[$i]->name;
 		}
 		echo "</td></tr>\n";
 	}
