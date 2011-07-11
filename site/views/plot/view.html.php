@@ -61,7 +61,7 @@ class LajvITViewPlot extends JView {
 		}
 
 		if ($layout == 'listplots') {
-			$this->displayListPlots($model, $eventId, $person);
+			$this->displayListPlots($model, $eventId, $person, $orderBy);
 		} elseif ($layout == 'editplot') {
 			$this->displayEditPlot($model, $event, $plotId);
 		} elseif ($layout == 'editsubplot') {
@@ -106,11 +106,31 @@ class LajvITViewPlot extends JView {
 
 	private function displayListPlots($model, $eventId) {
 		$plots = $model->getPlotsForEvent($eventId);
+		$orderBy = JRequest::getString('orderBy', "");
+		$direction = JRequest::getString('sortOrder', "ASC");
 		foreach ($plots as $plot) {
 			$person = &$model->getPerson($plot->creatorpersonid);
 			$plot->plotCreatorName = $person->givenname . "&nbsp;" . $person->surname;
 		}
+		if ($orderBy != "") {
+			$this->orderArrayOfObjectsBy($plots, $orderBy, $direction);
+			$this->assignRef('orderBy', $orderBy);
+			$this->assignRef('sortOrder', $direction);
+		}
 		$this->assignRef('plots', $plots);
+	}
+
+	private function orderMultiDimensionArrayBy(&$data, $field) {
+		$code = "return strnatcmp(\$a['$field'], \$b['$field']);";
+		uasort($data, create_function('$a,$b', $code));
+	}
+	private function orderArrayOfObjectsBy(&$data, $field, $direction) {
+		if ($direction == "DESC") {
+			$code = "return strnatcmp(\$b->".$field.", \$a->".$field.");";
+		} else {
+			$code = "return strnatcmp(\$a->".$field.", \$b->".$field.");";
+		}
+		usort($data, create_function('$a,$b', $code));
 	}
 
 	private function displayListDistributedPlots($model, $eventId, $person, $characterId) {
