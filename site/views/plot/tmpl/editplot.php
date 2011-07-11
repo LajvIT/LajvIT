@@ -74,7 +74,9 @@ defined('_JEXEC') or die('Restricted access');
 	}
 ?>
 				</td>
-			</tr>
+			</tr><?php
+	if ($this->plotId > 0) {
+?>
 			<tr><td colspan="2"></td></tr>
 			<tr><td colspan="2"><h2>Delintriger</h2></td></tr>
 
@@ -96,6 +98,7 @@ defined('_JEXEC') or die('Restricted access');
 				</td>
 			</tr><?php
 				}
+	}
 				?>
 			<tr><td colspan="2"></td></tr>
 			<tr>
