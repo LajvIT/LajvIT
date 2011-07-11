@@ -69,6 +69,8 @@ defined('_JEXEC') or die('Restricted access');
 					<input type="hidden" name="controller" value="plot" />
 					<input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
 					<input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
+					<input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" />
+
 
 <?php
 	}
@@ -82,8 +84,8 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 				foreach ($this->plotObjects as $plotObject) {
-					printPlotObjectHeaderAndDescription($plotObject, $this->eventId, $this->mergedrole, $this->statusId);
-					printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations);
+					printPlotObjectHeaderAndDescription($plotObject, $this->eventId, $this->mergedrole, $this->statusId, $this->itemId);
+					printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations, $this->itemId);
 				}
 ?>
 			<tr><td colspan="2"></td></tr><?php
@@ -94,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 			<tr>
 				<td colspan="2">
-					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
+					<a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
 				</td>
 			</tr><?php
 				}
@@ -103,7 +105,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr><td colspan="2"></td></tr>
 			<tr>
 				<td colspan="2">
-					<a href="index.php?option=com_lajvit&view=plot&layout=listplots&eid=<?php echo $this->eventId; ?>">
+					<a href="index.php?option=com_lajvit&view=plot&layout=listplots&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>">
 						Tillbaka
 					</a>
 				</td>
@@ -112,8 +114,8 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<td colspan="2">
 					<p>Metarubrik och Metainformation är beskrivningar som kommer ses av intrigförfattaren och arrangören. Metarubrik ska med ett
-						fåtal ord beskriva intrigen. Metainformationen mycket kort beskriva tanken med intrigen i stora drag. Här kan du också ange
-						eventuell rekvisita och vem ska ska ha den.</p>
+						fåtal ord beskriva intrigen. Metainformationen ska mycket kort beskriva tanken med intrigen i stora drag. Här kan du också ange
+						eventuell rekvisita och vem som ska ha den.</p>
 					<p>Delintriger är texter och rubriker som kommer visas för deltagare när arrangör uppdaterat deras status till Distributed. Därför
 						bör exempelvis intrigen inte avslöja för mycket.</p>
 				</td>
@@ -127,14 +129,14 @@ defined('_JEXEC') or die('Restricted access');
 
 <?php
 
-function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole, $statusId) {
+function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole, $statusId, $itemId) {
 	echo "				<tr>\n";
 	echo "					<td colspan=\"2\"><h3>" . $plotObject->heading;
 	if ( ($mergedrole->character_setstatus ||
 					$mergedrole->registration_setstatus ||
 					$mergedrole->registration_setrole ) ||
 				$statusId == 100 || $statusId == 101 ) {
-		echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+		echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'&Itemid=' . $itemId . '" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
 	}
 	echo "</h3></td>\n";
 	echo "				</tr>\n";
@@ -144,7 +146,7 @@ function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole,
 }
 
 
-function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations) {
+function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations, $itemId) {
 	$characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
 	$cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
 	echo "<tr><td><h4>Karaktär";

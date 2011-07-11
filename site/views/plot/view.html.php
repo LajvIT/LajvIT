@@ -20,6 +20,9 @@ class LajvITViewPlot extends JView {
 		$debug = JRequest::getInt('debug', 0);
 		$this->assignRef('debug', $debug);
 
+		$itemId = JRequest::getInt('Itemid', 0);
+		$this->assignRef('itemId', $itemId);
+
 		$person = &$model->getPerson();
 		$this->assignRef('person', $person);
 
@@ -37,22 +40,22 @@ class LajvITViewPlot extends JView {
 		$app = &JFactory::getApplication();
 
 		if ($this->isRestrictedAccessAndNotCreatedByUser($mergedRole, $layout, $person, $plotId, $model)) {
-			$this->redirectToList($eventId, $app);
+			$this->redirectToList($eventId, $app, $itemId);
 		}
 		if ($this->isRestrictedModificationsByCreatorUser($mergedRole, $plotId, $model)) {
 			if ($layout != 'listplots' && $layout != 'editplot') {
-				$this->redirectToList($eventId, $app);
+				$this->redirectToList($eventId, $app, $itemId);
 			}
 		}
 
 		if ($layout == 'deletesubplotrelation') {
 			$this->deleteSubPlotRelation($model);
-			$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
+			$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId . '&Itemid=' . $itemId;
 			$app->redirect($redirectLink);
 		} elseif ($layout == 'addsubplotrelation') {
 				$redirectToEditSubPlot = $this->subPlotRelation($model, $event, $plotId);
 				if ($redirectToEditSubPlot) {
-					$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId;
+					$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$eventId.'&pid='. $plotId . '&poid='. $this->plotObjectId . '&Itemid=' . $itemId;
 					$app->redirect($redirectLink);
 				}
 		}
@@ -301,8 +304,8 @@ class LajvITViewPlot extends JView {
 		$this->assignRef('errorMsg', $errorMsg);
 	}
 
-	private function redirectToList($eventId, $app) {
-		$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$eventId;
+	private function redirectToList($eventId, $app, $itemId) {
+		$redirectLink = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$eventId . '&Itemid=' . $itemId;
 		$app->redirect($redirectLink);
 	}
 }

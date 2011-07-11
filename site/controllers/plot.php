@@ -23,7 +23,7 @@ class LajvITControllerPlot extends LajvITController {
 	}
 
 	function savePlot() {
-		$errlink = 'index.php?option=com_lajvit&view=plot&layout=editplot';
+		$errlink = 'index.php?option=com_lajvit&view=plot&layout=editplot&Itemid='.JRequest::getInt('Itemid', 0);
 
 		$this->model = &$this->getModel();
 		$this->db = &JFactory::getDBO();
@@ -37,18 +37,18 @@ class LajvITControllerPlot extends LajvITController {
 		if ($plotId > 0) {
 			if ($this->isCreatedByUserAndEditableOrAdmin($eventrole, $this->person)) {
 				if (!$this->updatePlot($plotId, $this->heading, $this->description, $this->statusId, $this->eventId)) {
-					$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
+					$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId.'&Itemid='.JRequest::getInt('Itemid', 0);
 				}
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			} else {
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			}
 		} else {
 			$plotId = $this->createPlot($this->heading, $this->description, $this->statusId, $this->person->id, $this->eventId);
 			if ($plotId <= 0) {
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			} else {
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editplot&eid='.$this->eventId.'&pid='.$plotId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			}
 		}
 		$this->setRedirect($redirect);
@@ -56,7 +56,7 @@ class LajvITControllerPlot extends LajvITController {
 
 	function savePlotObject() {
 		echo " savePlotObject ";
-		$errlink = 'index.php?option=com_lajvit&view=plot';
+		$errlink = 'index.php?option=com_lajvit&view=plot&Itemid='.JRequest::getInt('Itemid', 0);
 
 		$this->model = &$this->getModel();
 		$this->db = &JFactory::getDBO();
@@ -78,10 +78,10 @@ class LajvITControllerPlot extends LajvITController {
 					echo "update complete ";
 					//return;
 				}
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			} else {
 				echo "may not update ";
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			}
 		} else {
 			echo " creating plotobject ";
@@ -89,9 +89,9 @@ class LajvITControllerPlot extends LajvITController {
 			if ($this->plotObjectId <= 0) {
 				echo "creation complete ";
 				//return;
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$this->eventId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			} else {
-				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId;
+				$redirect = 'index.php?option=com_lajvit&view=plot&layout=editsubplot&eid='.$this->eventId.'&pid='. $this->plotId . '&poid='. $this->plotObjectId.'&Itemid='.JRequest::getInt('Itemid', 0);
 			}
 		}
 
@@ -213,20 +213,4 @@ class LajvITControllerPlot extends LajvITController {
 		$this->plotObjectHeading = $plotObject->heading;
 		$this->plotObjectDescription = $plotObejct->description;
 	}
-/*
-	function foo() {
-
-	if ($role->character_setstatus && $statusid > 0) {
-		$query = 'UPDATE #__lit_registrationchara SET statusid='.$db->getEscaped($statusid).' WHERE eventid='.$db->getEscaped($eventid).' AND personid='.$db->getEscaped($personid).' AND charaid='.$db->getEscaped($charid).";\n";
-
-		$db->setQuery($query);
-
-		if (!$db->query()) {
-			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			//				$this->setRedirect($errlink, $db->getErrorMsg());
-			return;
-		}
-	}
-	}
-	*/
 }

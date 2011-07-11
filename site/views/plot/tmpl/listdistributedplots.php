@@ -4,7 +4,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<h1>Intriger för:</h1>
+<h1>Intriger knutna till:</h1>
 
 <table>
 	<tbody  style="vertical-align: top;">

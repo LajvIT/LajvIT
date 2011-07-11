@@ -30,18 +30,19 @@ if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) {
 	<input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
 	<input type="hidden" name="poid" value="<? echo $this->plotObjectId; ?>" />
 	<input type="hidden" name="statusId" value="<? echo $this->statusId; ?>" />
+	<input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" />
 <?php
 	}
 ?>
 			</td></tr>
 			<tr><td colspan="2"></td></tr>
 <?php
-					printPlotObjectRelations($this->plotId, $this->plotObject, $this->eventId, $this->characterRelations, $this->conceptRelations, $this->cultureRelations, $this->factionRelations, $this->mergedrole);
+					printPlotObjectRelations($this->plotId, $this->plotObject, $this->eventId, $this->characterRelations, $this->conceptRelations, $this->cultureRelations, $this->factionRelations, $this->mergedrole, $this->itemId);
 ?>
 			<tr><td colspan="2"></td></tr>
 			<tr>
 				<td colspan="2">
-					<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>">
+					<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&Itemid=<?php echo $this->itemId; ?>">
 						Tillbaka
 					</a>
 				</td>
@@ -52,16 +53,16 @@ if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) {
 
 <?php
 
-function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations, $mergedRole) {
+function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations, $mergedRole, $itemId) {
 	$characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
 	$cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
 	echo "<tr><td><h4>Karaktär";
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=char&eid=' . $eventId;
-		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
+		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
 	echo "</h4></td><td><h4>Koncept";
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=concept&eid=' . $eventId;
-		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
+		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
 	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $characterAndConceptHeight; $i++) {
@@ -69,25 +70,25 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 		if (array_key_exists($i, $characterRelations)) {
 			echo $characterRelations[$i]->name;
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=char&eid=' . $eventId;
-				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $characterRelations[$i]->id . '" title="Delete">';
+				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $characterRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $conceptRelations)) {
 			echo $conceptRelations[$i]->culturename . "-" . $conceptRelations[$i]->name;
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=concept&eid=' . $eventId;
-				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $conceptRelations[$i]->id . '" title="Delete">';
+				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $conceptRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
 		}
 		echo "</td></tr>\n";
 	}
 	echo "<tr><td><h4>Kultur";
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=culture&eid=' . $eventId;
-		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
+		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
 	echo "</h4></td><td><h4>Faktion";
 		echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=faction&eid=' . $eventId;
-		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '">';
+		echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
 		echo '<img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>';
 	echo "</h4></td></tr>\n";
 	for ($i = 0; $i < $cultureAndFactionHeight; $i++) {
@@ -95,14 +96,14 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 		if (array_key_exists($i, $cultureRelations)) {
 			echo $cultureRelations[$i]->name;
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=culture&eid=' . $eventId;
-				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $cultureRelations[$i]->id . '" title="Delete">';
+				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $cultureRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
 		}
 		echo "</td><td>";
 		if (array_key_exists($i, $factionRelations)) {
 			echo $factionRelations[$i]->name;
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=faction&eid=' . $eventId;
-				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $factionRelations[$i]->id . '" title="Delete">';
+				echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $factionRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
 				echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
 		}
 		echo "</td></tr>\n";

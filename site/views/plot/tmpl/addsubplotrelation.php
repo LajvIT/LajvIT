@@ -24,7 +24,7 @@ defined('_JEXEC') or die('Restricted access');
 				echo "<tr>\n";
 				echo "<td>";
 				echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=' . $this->relationType . '&eid=' . $this->eventId;
-				echo '&pid=' . $this->plotId . '&poid=' . $this->plotObjectId . '&oid=' . $object->id . '">';
+				echo '&pid=' . $this->plotId . '&poid=' . $this->plotObjectId . '&oid=' . $object->id . '&Itemid=' . $this->itemId . '">';
 				switch ($this->relationType) {
 				case "char":
 					echo $object->knownas;
@@ -44,41 +44,4 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 		</tbody>
 	</table>
-
-
-<?php
-
-function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations) {
-	$characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
-	$cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
-	echo "<tr><td><h4>Karaktär</h4></td><td><h4>Koncept</h4></td></tr>\n";
-	for ($i = 0; $i < $characterAndConceptHeight; $i++) {
-		echo "				<tr><td>";
-		if (array_key_exists($i, $characterRelations)) {
-			echo $characterRelations[$i]->name;
-			echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=char&eid=' . $eventId;
-			echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $characterRelations[$i]->id . '" title="Delete">';
-			echo '<img src="components/com_lajvit/delete.gif" alt="Ta bort" /></a>';
-		}
-		echo "</td><td>";
-		if (array_key_exists($i, $conceptRelations)) {
-			echo $conceptRelations[$i]->name;
-		}
-		echo "</td></tr>\n";
-	}
-	echo "<tr><td><h4>Kultur</h4></td><td><h4>Faktion</h4></td></tr>\n";
-	for ($i = 0; $i < $cultureAndFactionHeight; $i++) {
-		echo "				<tr><td>";
-		if (array_key_exists($i, $cultureRelations)) {
-			echo $cultureRelations[$i]->name;
-		}
-		echo "</td><td>";
-		if (array_key_exists($i, $factionRelations)) {
-			echo $factionRelations[$i]->name;
-		}
-		echo "</td></tr>\n";
-	}
-}
-
-?>
 

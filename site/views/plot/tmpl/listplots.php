@@ -16,7 +16,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 		<tr>
 			<td>
-				<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $plot->id; ?>">
+				<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $plot->id; ?>&Itemid=<?php echo $this->itemId; ?>">
 					<?php echo $plot->heading;?>
 				</a>
 			</td>
@@ -30,7 +30,7 @@ defined('_JEXEC') or die('Restricted access');
 			} ?>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">
-			<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>">
+			<a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>">
 					Lägg till ny intrig
 				</a>
 		</td></tr>

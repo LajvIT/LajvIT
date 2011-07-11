@@ -1,7 +1,7 @@
 <?php
- 
+
 // No direct access
- 
+
 defined('_JEXEC') or die('Restricted access'); ?>
 
 
@@ -21,24 +21,25 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?		} ?>
 		</h2>
 		<p>Start: <? echo $event->startdate; ?> Slut: <? echo $event->enddate; ?></p>
-		
+
 <?		if (!$event->registered) { ?>
-<strong><p>Ej Registrerad.&nbsp<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<? echo $event->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new.gif" alt="Registrera"/></a></p></strong>
+<p><strong>Ej Registrerad.&nbsp;<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<? echo $event->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new.gif" alt="Registrera"/></a></strong></p>
 <?		} else { ?>
-			<strong><p>
+			<p><strong>
 				Betalning: <? echo $event->confirmationname; ?>
 				(<? echo $event->payment; ?> kr)
-			</p></strong>
-			
+			</strong></p>
+
 <?			foreach ($event->characters as $char) { ?>
-				<strong><p>
+				<p><strong>
 					<? echo $char->knownas; ?> - <? echo $char->statusname; ?>
 <?					if (false) { ?>
 						&nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info"/></a>
 <?					} ?>
 					&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär"/></a>
 					&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Ta bort karaktär"><img src="components/com_lajvit/delete.gif" alt="Ta bort karaktär"/></a>
-				</p></strong>
+					&nbsp;<a href="index.php?option=com_lajvit&view=plot&layout=listdistributedplots&eid=<? echo $event->id; ?>&cid=<? echo $char->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Intriger för karaktär"><img src="components/com_lajvit/plot.png" alt="Intriger för karaktär"/></a>
+				</strong></p>
 				<p>
 					<? echo $char->culturename;?> - <? echo $char->conceptname; ?>
 <?					if (!is_null($char->concepttext)) { ?>
@@ -46,10 +47,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?					} ?>
 					</p>
 <?			} ?>
-	
-			<strong><p>
+
+			<p><strong>
 				Lägg till karaktär
 				&nbsp;<a href="index.php?option=com_lajvit&view=character&layout=create&eid=<? echo $event->id; ?>&Itemid=<? echo $this->itemid; ?>" title="Lägg till karaktär"><img src="components/com_lajvit/new.gif" alt="Lägg till karaktär"/></a>
-			</p></strong>
+			</strong></p>
 <?		} ?>
 <?	} ?>
