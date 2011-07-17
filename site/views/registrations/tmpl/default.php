@@ -138,7 +138,7 @@ function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirm
 						if ($uglypagecnt / $pagesz == $this->page / $pagesz) {
 							echo $linktxt." ";
 						} else { ?>
-							<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $this->confirmation, $uglypagecnt)?>" title="<?php echo $linktext; ?>"><?php echo $linktxt; ?></a>
+							<a href="<?php echo getLink($this->event->id, $this->itemid, $this->orderBy, $this->sortOrder, $this->characterStatus, $this->confirmation, $uglypagecnt, $this->factionid)?>" title="<?php echo $linktext; ?>"><?php echo $linktxt; ?></a>
 <?					}
 					}
 					$uglypagecnt++;
