@@ -18,7 +18,6 @@
   <rule ref="Generic.WhiteSpace.DisallowTabIndent" />
   <rule ref="Generic.WhiteSpace.ScopeIndent" />
 
-  <rule ref="PEAR.Classes.ClassDeclaration" />
   <rule ref="PEAR.Commenting.ClassComment" />
   <!-- rule ref="PEAR.Commenting.FileComment"/ Using ClearOS class to disable PHP version check -->
   <rule ref="PEAR.Commenting.FunctionComment" />
