@@ -1,36 +1,36 @@
 <?php
- 
+
 // No direct access
- 
+
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <script language="javascript"><!--
-	function setConceptOptions(chosen) {
-		var selbox = document.characterCreateForm.conceptid;
-		selbox.options.length = 0;
-		if (chosen == 0) {
-			selbox.options[selbox.options.length] = new Option('Välj kultur först','0');
-		}
-		
-<? 		foreach ($this->cultures as $culture) { ?>
-			if (chosen == '<? echo $culture->id; ?>') {
-				selbox.options[selbox.options.length] = new Option('Välj huvudsakligt rollkoncept','0');
-<?				foreach ($this->concepts as $concept) {
-					if ($concept->cultureid == $culture->id) { ?>
-						selbox.options[selbox.options.length] = new Option('<? echo $concept->name; ?>','<? echo $concept->id; ?>');
-<?					}				
-				} ?>
-			}
-<?		} ?>
-	}
---></script> 
+  function setConceptOptions(chosen) {
+    var selbox = document.characterCreateForm.conceptid;
+    selbox.options.length = 0;
+    if (chosen == 0) {
+      selbox.options[selbox.options.length] = new Option('Välj kultur först','0');
+    }
+
+<?php     foreach ($this->cultures as $culture) { ?>
+      if (chosen == '<?php echo $culture->id; ?>') {
+        selbox.options[selbox.options.length] = new Option('Välj huvudsakligt rollkoncept','0');
+<?php        foreach ($this->concepts as $concept) {
+          if ($concept->cultureid == $culture->id) { ?>
+            selbox.options[selbox.options.length] = new Option('<?php echo $concept->name; ?>','<?php echo $concept->id; ?>');
+<?php          }
+        } ?>
+      }
+<?php    } ?>
+  }
+--></script>
 
 
-<h1><? echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
+<h1><?php echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
 
-<?	if ($this->failed == 1) { ?>
-	<p style="color:red;">Några obligatoriska fält är inte ifyllda.</p>
-<?	} ?>
+<?php  if ($this->failed == 1) { ?>
+  <p style="color:red;">Några obligatoriska fält är inte ifyllda.</p>
+<?php  } ?>
 
 <form action="index.php" method="post" name="characterCreateForm">
 
@@ -39,57 +39,56 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <tr>
 <td><strong>Arrangemang:</strong></td>
-<td><strong><? echo $this->events[$this->eventid]->name; ?></strong></td>
+<td><strong><?php echo $this->events[$this->eventid]->name; ?></strong></td>
 </tr>
 
 <tr>
 <td><strong>Rollens namn:</strong></td>
-<td><input type="text" name="fullname" value="<? echo $this->fullname; ?>" size="40" >*</td>
+<td><input type="text" name="fullname" value="<?php echo $this->fullname; ?>" size="40" >*</td>
 </tr>
 
 <tr>
 <td><strong>Faktion:</strong></td>
 <td><select name="factionid">
 <option value="0"
-<?	if ($this->factionid <= 0) { ?>
-	selected="selected"
-<?	} ?>
+<?php  if ($this->factionid <= 0) { ?>
+  selected="selected"
+<?php  } ?>
 >
-	Välj faktion
+  Välj faktion
 </option>
-<?	foreach ($this->factions as $faction) { ?>
-		<option value="<?echo $faction->id; ?>"
-<?		if ($this->factionid == $faction->id) { ?>
-			selected="selected"
-<?		} ?>
-		>
-			<? echo $faction->name; ?>
-		</option>
-<?	} ?>
+<?php  foreach ($this->factions as $faction) { ?>
+    <option value="<?echo $faction->id; ?>"
+<?php    if ($this->factionid == $faction->id) { ?>
+      selected="selected"
+<?php    } ?>
+    >
+      <?php echo $faction->name; ?>
+    </option>
+<?php  } ?>
 </select>*
 </td>
 </tr>
 
 <tr>
 <td><strong>Kultur:</strong></td>
-<td><select name="cultureid"
-onchange="setConceptOptions(this.options[this.selectedIndex].value);">
+<td><select name="cultureid" onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <option value="0"
-<?	if ($this->cultureid <= 0) { ?>
-	selected="selected"
-<?	} ?>
+<?php  if ($this->cultureid <= 0) { ?>
+  selected="selected"
+<?php  } ?>
 >
-	Välj huvudsaklig kultur
+  Välj huvudsaklig kultur
 </option>
-<?	foreach ($this->cultures as $culture) { ?>
-		<option value="<?echo $culture->id; ?>"
-<?		if ($this->cultureid == $culture->id) { ?>
-			selected="selected"
-<?		} ?>
-		>
-			<? echo $culture->name; ?>
-		</option>
-<?	} ?>
+<?php  foreach ($this->cultures as $culture) { ?>
+    <option value="<?echo $culture->id; ?>"
+<?php    if ($this->cultureid == $culture->id) { ?>
+      selected="selected"
+<?php    } ?>
+    >
+      <?php echo $culture->name; ?>
+    </option>
+<?php  } ?>
 </select>*
 </td>
 </tr>
@@ -97,23 +96,23 @@ onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <tr>
 <td><strong>Rollkoncept:</strong></td>
 <td>
-<select name="conceptid" selected="<? echo $this->conceptid; ?>">
-<?	if ($this->cultureid > 0) { ?>
-		<option value="0">Välj huvudsakligt rollkoncept</option>
-<?		foreach ($this->concepts as $concept) {
-			if ($concept->cultureid == $this->cultureid) { ?>
-				<option value="<?echo $concept->id; ?>"
-<?				if ($this->conceptid == $concept->id) { ?>
-					selected="selected"
-<?				} ?>
-				>
-					<? echo $concept->name; ?>
-				</option>
-<?			}
-		}
-	} else { ?>
-		<option value="0" selected="selected">Välj kultur först</option>
-<?	} ?>
+<select name="conceptid" selected="<?php echo $this->conceptid; ?>">
+<?php  if ($this->cultureid > 0) { ?>
+    <option value="0">Välj huvudsakligt rollkoncept</option>
+<?php    foreach ($this->concepts as $concept) {
+      if ($concept->cultureid == $this->cultureid) { ?>
+        <option value="<?echo $concept->id; ?>"
+<?php        if ($this->conceptid == $concept->id) { ?>
+          selected="selected"
+<?php        } ?>
+        >
+          <?php echo $concept->name; ?>
+        </option>
+<?php      }
+    }
+  } else { ?>
+    <option value="0" selected="selected">Välj kultur först</option>
+<?php  } ?>
 </select>*
 </td>
 </tr>
@@ -154,7 +153,7 @@ onchange="setConceptOptions(this.options[this.selectedIndex].value);">
 <input type="hidden" name="option" value="com_lajvit"/>
 <input type="hidden" name="task" value="create"/>
 <input type="hidden" name="controller" value="character"/>
-<input type="hidden" name="eid" value="<? echo $this->eventid; ?>"/>
-<input type="hidden" name="Itemid" value="<? echo $this->itemid; ?>"/>
+<input type="hidden" name="eid" value="<?php echo $this->eventid; ?>"/>
+<input type="hidden" name="Itemid" value="<?php echo $this->itemid; ?>"/>
 
 </form>

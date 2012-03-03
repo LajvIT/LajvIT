@@ -1,7 +1,7 @@
 <?php
- 
+
 // No direct access
- 
+
 defined('_JEXEC') or die('Restricted access'); ?>
 <h1><?php echo $this->greeting; ?></h1>
 
@@ -30,14 +30,14 @@ Genom att registrera dig för ett av våra arrangemang och betala medlemsavgifte
 
 <?	if (!$this->incomplete_person) { ?>
 	<form action="index.php" method="post" name="eventRegisterForm">
-		<strong><p><? echo $this->events[$this->eventid]->name; ?></p></strong>
+		<p><strong><? echo $this->events[$this->eventid]->name; ?></strong></p>
 		<input type="submit" value="Bekräfta registrering"/>
-		
+
 		<input type="hidden" name="option" value="com_lajvit"/>
 		<input type="hidden" name="task" value="register"/>
 		<input type="hidden" name="controller" value="event"/>
-		<input type="hidden" name="eid" value="<? echo $this->eventid; ?>"/>
-		<input type="hidden" name="Itemid" value="<? echo $this->itemid; ?>"/>
+		<input type="hidden" name="eid" value="<?php echo $this->eventid; ?>"/>
+		<input type="hidden" name="Itemid" value="<?php echo $this->itemid; ?>"/>
 	</form>
 <?	} ?>
 
