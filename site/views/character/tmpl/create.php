@@ -1,7 +1,5 @@
 <?php
 
-// No direct access
-
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <script language="javascript"><!--
@@ -11,19 +9,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
     if (chosen == 0) {
       selbox.options[selbox.options.length] = new Option('Välj kultur först','0');
     }
-
-<?php     foreach ($this->cultures as $culture) { ?>
-      if (chosen == '<?php echo $culture->id; ?>') {
-        selbox.options[selbox.options.length] = new Option('Välj huvudsakligt rollkoncept','0');
-<?php        foreach ($this->concepts as $concept) {
-          if ($concept->cultureid == $culture->id) { ?>
-            selbox.options[selbox.options.length] = new Option('<?php echo $concept->name; ?>','<?php echo $concept->id; ?>');
-<?php          }
-        } ?>
-      }
-<?php    } ?>
+<?php
+foreach ($this->cultures as $culture) {
+  echo '    if (chosen == ' . $culture->id . ') {';
+  echo '      selbox.options[selbox.options.length] =' .
+      ' new Option("Välj huvudsakligt rollkoncept","0")';
+  foreach ($this->concepts as $concept) {
+    if ($concept->cultureid == $culture->id) {
+      echo '      selbox.options[selbox.options.length] = new Option(' .
+          $concept->name .', ' . $concept->id . ')';
+    }
   }
---></script>
+  echo '    }';
+}
+echo '  }';'
+?> -->
+</script>
 
 
 <h1><?php echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
@@ -58,7 +59,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
   Välj faktion
 </option>
 <?php  foreach ($this->factions as $faction) { ?>
-    <option value="<?echo $faction->id; ?>"
+    <option value="<?php echo $faction->id; ?>"
 <?php    if ($this->factionid == $faction->id) { ?>
       selected="selected"
 <?php    } ?>
@@ -81,7 +82,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
   Välj huvudsaklig kultur
 </option>
 <?php  foreach ($this->cultures as $culture) { ?>
-    <option value="<?echo $culture->id; ?>"
+    <option value="<?php echo $culture->id; ?>"
 <?php    if ($this->cultureid == $culture->id) { ?>
       selected="selected"
 <?php    } ?>
@@ -101,7 +102,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
     <option value="0">Välj huvudsakligt rollkoncept</option>
 <?php    foreach ($this->concepts as $concept) {
       if ($concept->cultureid == $this->cultureid) { ?>
-        <option value="<?echo $concept->id; ?>"
+        <option value="<?php echo $concept->id; ?>"
 <?php        if ($this->conceptid == $concept->id) { ?>
           selected="selected"
 <?php        } ?>
@@ -140,9 +141,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <p><strong>Förklaring:</strong></p>
 <p>Faktion - Den huvudfaktion du anser att din karaktär tillhör.</p>
 <p>Kultur - Din karaktärs kulturella bakgrund. Ofta den region där karaktären vuxit upp.</p>
-<p>Rollkoncept - Karaktärens primära rollkoncept. Om du inte hittar ett lämpligt, välj konceptet Annat.</p>
-<p>Specialiserat koncept - Karaktärens specialiserade rollkoncept. Exempel på rollkoncept med specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat (Dödgrävare)</p>
-<p>Gruppsamordnare - Om karaktären tillhör en offgrupp, ange namnet på gruppens kontaktperson/samordnare här.</p>
+<p>Rollkoncept - Karaktärens primära rollkoncept. Om du inte hittar ett lämpligt,
+ välj konceptet Annat.</p>
+<p>Specialiserat koncept - Karaktärens specialiserade rollkoncept. Exempel på rollkoncept med
+specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat
+(Dödgrävare)</p>
+<p>Gruppsamordnare - Om karaktären tillhör en offgrupp, ange namnet på gruppens
+kontaktperson/samordnare här.</p>
 </td>
 </tr>
 
