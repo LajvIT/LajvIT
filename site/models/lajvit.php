@@ -10,17 +10,14 @@
 
 // No direct access
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-jimport( 'joomla.application.component.model' );
+jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_lajvit'.DS.'tables');
 
 /**
- * Hello Model
- *
- * @package    Joomla.Tutorials
- * @subpackage Components
+ * LajvIT Model.
  */
 class LajvITModelLajvIT extends JModel {
 	/**
@@ -139,24 +136,24 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList("id");
 	}
 
-	function &getPerson($userid = null) {
+	function &getPerson($userid = NULL) {
 		$user = &JFactory::getUser($userid);
 		if (!$user || $user->guest)
-		return false;
+		return FALSE;
 
 		$row = &JTable::getInstance('lit_person', 'Table');
 
 		if (!$row->load($user->id)) {
-			$row->_forcenew = true;
+			$row->_forcenew = TRUE;
 			$row->id = $user->id;
 			$names = explode(" ", $user->name);
 			$row->givenname = $names[0];
 			$row->surname = implode(" ", array_slice($names, 1));
 			$row->email = $user->email;
 
-			$row->_nodata = true;
+			$row->_nodata = TRUE;
 		} else {
-			$row->_nodata = false;
+			$row->_nodata = FALSE;
 		}
 
 		$row->_username = $user->username;
@@ -167,11 +164,11 @@ class LajvITModelLajvIT extends JModel {
 	function mergeRoles($a, $b) {
 		$ret = new stdClass;
 
-		if (is_null($a) || !$a) {
+		if (is_NULL($a) || !$a) {
 			return $b;
 		}
 
-		if (is_null($b) || !$b) {
+		if (is_NULL($b) || !$b) {
 			return $a;
 		}
 
@@ -190,10 +187,10 @@ class LajvITModelLajvIT extends JModel {
 		return $ret;
 	}
 
-	function getRoleForEvent($eventid, $userid = null) {
+	function getRoleForEvent($eventid, $userid = NULL) {
 		$user = &JFactory::getUser($userid);
 		if (!$user || $user->guest)
-			return false;
+			return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -201,13 +198,13 @@ class LajvITModelLajvIT extends JModel {
 
 		$db->setQuery($query);
 		$ret = $db->loadObject();
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
-	function getRoleForConcept($eventid, $cultureid, $conceptid, $userid = null) {
+	function getRoleForConcept($eventid, $cultureid, $conceptid, $userid = NULL) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
-    		return false;
+    		return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -216,38 +213,36 @@ class LajvITModelLajvIT extends JModel {
 		$db->setQuery($query);
 
 		$ret = $db->loadObject();
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
-	function getRoleForFaction($eventid, $faction, $userid = null) {
+	function getRoleForFaction($eventid, $factionId, $userid = NULL) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
-    		return false;
+    		return FALSE;
 
 		$db = &JFactory::getDBO();
 
-		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND factionid='.$db->getEscaped($factionid).' LIMIT 1;';
+		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND factionid='.$db->getEscaped($factionId).' LIMIT 1;';
 
 		$db->setQuery($query);
 
 		$ret = $db->loadObject();
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
-	function getRoleForChara($eventid, $charaid, $userid = null) {
+	function getRoleForChara($eventid, $charaid, $userid = NULL) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
-    		return false;
+    		return FALSE;
 
 		$db = &JFactory::getDBO();
-
 
 		$query = 'SELECT * FROM #__lit_vcharaconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
 
 		$db->setQuery($query);
 
 		$crole = $db->loadObject();
-
 
 		$query = 'SELECT * FROM #__lit_vcharafactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charaid).' LIMIT 1;';
 
@@ -257,21 +252,19 @@ class LajvITModelLajvIT extends JModel {
 
 		$ret = $this->mergeRoles($crole, $frole);
 
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
-	function getAllRolesMerged($eventid, $userid = null) {
+	function getAllRolesMerged($eventid, $userid = NULL) {
     	$user = &JFactory::getUser($userid);
     	if (!$user || $user->guest)
-    		return false;
+    		return FALSE;
 
 		$db = &JFactory::getDBO();
-
 
 		$ret = $this->getRoleForEvent($eventid, $user->id);
 		$eventname = $ret->eventname;
 		$name = $ret->name;
-
 
 		$query = 'SELECT * FROM #__lit_vfactionroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
 
@@ -279,11 +272,10 @@ class LajvITModelLajvIT extends JModel {
 
 		$froles = $db->loadObjectList();
 
-		foreach($froles as $role) {
+		foreach ($froles as $role) {
 			$ret = $this->mergeRoles($ret, $role);
-			$name.= ", ".$role->name." (".$role->factionname.")";
+			$name .= ", ".$role->name." (".$role->factionname.")";
 		}
-
 
 		$query = 'SELECT * FROM #__lit_vconceptroles WHERE personid='.$user->id.' AND eventid='.$db->getEscaped($eventid).';';
 
@@ -291,11 +283,10 @@ class LajvITModelLajvIT extends JModel {
 
 		$croles = $db->loadObjectList();
 
-		foreach($croles as $role) {
+		foreach ($croles as $role) {
 			$ret = $this->mergeRoles($ret, $role);
-			$name.= ", ".$role->name." (".$role->culturename.": ".$role->conceptname.")";
+			$name .= ", ".$role->name." (".$role->culturename.": ".$role->conceptname.")";
 		}
-
 
 		$ret->eventname = $eventname;
 		$ret->name = $name;
@@ -311,13 +302,13 @@ class LajvITModelLajvIT extends JModel {
 		$db->setQuery($query);
 
 		$ret = $db->loadObject();
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
-	function getEventsForPerson($person = null) {
+	function getEventsForPerson($person = NULL) {
 		$user = &JFactory::getUser($person);
 		if (!$user || $user->guest)
-		return false;
+		return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -327,10 +318,10 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList("id");
 	}
 
-	function getCharactersForEvent($event, $person = null) {
+	function getCharactersForEvent($event, $person = NULL) {
 		$user = &JFactory::getUser($person);
 		if (!$user || $user->guest)
-		return false;
+		return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -340,10 +331,10 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getAllCharactersForEvent($event, $person = null) {
+	function getAllCharactersForEvent($event, $person = NULL) {
 		$user = &JFactory::getUser($person);
 		if (!$user || $user->guest)
-			return false;
+			return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -353,10 +344,10 @@ class LajvITModelLajvIT extends JModel {
 		return $db->loadObjectList();
 	}
 
-	function getCharacterRegistrationForEvent($event, $characterId, $person = null) {
+	function getCharacterRegistrationForEvent($event, $characterId, $person = NULL) {
 		$user = &JFactory::getUser($person);
 		if (!$user || $user->guest)
-		return false;
+		return FALSE;
 
 		$db = &JFactory::getDBO();
 
@@ -378,26 +369,26 @@ class LajvITModelLajvIT extends JModel {
 		}
 
 		switch ($orderBy) {
-			case 'knownas':
-				$query .= " ORDER BY knownas";
-				break;
-			case 'culture':
-				$query .= " ORDER BY culturename";
-				break;
-			case 'concept':
-				$query .= " ORDER BY conceptname";
-				break;
-			case 'personname':
-				$query .= " ORDER BY personname";
-				break;
-			case 'created':
-				$query .= " ORDER BY created";
-				break;
-			case 'updated':
-				$query .= " ORDER BY updated";
-				break;
-			default:
-				break;
+		  case 'knownas':
+  		    $query .= " ORDER BY knownas";
+  		    break;
+		  case 'culture':
+  		    $query .= " ORDER BY culturename";
+  		    break;
+		  case 'concept':
+  		    $query .= " ORDER BY conceptname";
+  		    break;
+		  case 'personname':
+  		    $query .= " ORDER BY personname";
+  		    break;
+		  case 'created':
+  		    $query .= " ORDER BY created";
+  		    break;
+		  case 'updated':
+		      $query .= " ORDER BY updated";
+		      break;
+		  default:
+		      break;
 		}
 
 		if ( $orderDirection != '' && ($orderDirection == 'DESC' || $orderDirection == 'DESC')) {
@@ -416,14 +407,14 @@ class LajvITModelLajvIT extends JModel {
 		$db->setQuery($query);
 
 		$ret = $db->loadObject();
-		return is_null($ret) ? false : $ret;
+		return is_NULL($ret) ? FALSE : $ret;
 	}
 
 	function &getCharacter($charid) {
 		/*
 		 $user = &JFactory::getUser($userid);
 		 if (!$user || $user->guest)
-		 return false;
+		 return FALSE;
 		 */
 
 		$row = &JTable::getInstance('lit_chara', 'Table');
@@ -453,9 +444,9 @@ class LajvITModelLajvIT extends JModel {
 							WHERE personid = '.$db->getEscaped($personId).' AND charaid = '.$db->getEscaped($characterId).';';
 		$db->setQuery($query);
 		if (count($db->loadObjectList()) > 0) {
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 
 	function hasCharacterPastFirstStatusCheck($characterId) {
@@ -465,16 +456,16 @@ class LajvITModelLajvIT extends JModel {
 							WHERE charaid = '.$db->getEscaped($characterId).' AND statusid > 100;';
 		$db->setQuery($query);
 		if (count($db->loadObjectList()) > 0) {
-			return true;
+			return TRUE;
 		}
-		return false;
+		return FALSE;
 	}
 
 	function &getEvent($eventid) {
 		/*
 		 $user = &JFactory::getUser($userid);
 		 if (!$user || $user->guest)
-		 return false;
+		 return FALSE;
 		 */
 
 		$row = &JTable::getInstance('lit_event', 'Table');
@@ -486,8 +477,8 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotHeading($plotId) {
 		$plot = $this->getPlot($plotId);
-		if (is_null($plot)) {
-			return null;
+		if (is_NULL($plot)) {
+			return NULL;
 		} else {
 			return $plot->heading;
 		}
@@ -495,8 +486,8 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotDescription($plotId) {
 		$plot = $this->getPlot($plotId);
-		if (is_null($plot)) {
-			return null;
+		if (is_NULL($plot)) {
+			return NULL;
 		} else {
 			return $plot->description;
 		}
@@ -504,23 +495,23 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotCreator($plotId) {
 		$plot = $this->getPlot($plotId);
-		return is_null($plot) ? null : $plot->creatorpersonid;
+		return is_NULL($plot) ? NULL : $plot->creatorpersonid;
 	}
 
 	function getPlotStatus($plotId) {
 		$plot = $this->getPlot($plotId);
-		if (is_null($plot)) {
-			return null;
+		if (is_NULL($plot)) {
+			return NULL;
 		} else {
 			$ret = $this->getPlotStatuses($plot->statusid);
 			return $ret[0];
 		}
 	}
 
-	function getPlotStatuses($statusId = null) {
+	function getPlotStatuses($statusId = NULL) {
 		$db = &JFactory::getDBO();
 		$query = 'SELECT * FROM #__lit_plotstatus';
-		if ($statusId != null) {
+		if ($statusId != NULL) {
 			$query .= " WHERE id = ". $db->getEscaped($statusId);
 		}
 		$query .= ';';
@@ -568,10 +559,12 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotObjectsDistributedForEventOnConcept($eventId, $conceptId) {
 		$db = &JFactory::getDBO();
-		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
-		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
-		$query .= 'INNER JOIN #__lit_plotobjectrelconcept as conceptrel ON conceptrel.plotobjectid = plotobject.id AND conceptrel.conceptid = ' . $db->getEscaped($conceptId) . " ";
-		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot ' .
+		  'INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ' .
+		  'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id ' .
+		  'AND plotstatus.useravailable = 1 INNER JOIN #__lit_plotobjectrelconcept as conceptrel ' .
+		  'ON conceptrel.plotobjectid = plotobject.id AND conceptrel.conceptid = ' .
+		  $db->getEscaped($conceptId) . ' WHERE plot.eventid = ' . $db->getEscaped($eventId);
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -579,10 +572,12 @@ class LajvITModelLajvIT extends JModel {
 
 	function getPlotObjectsDistributedForEventOnFaction($eventId, $factionId) {
 		$db = &JFactory::getDBO();
-		$query = 'SELECT plotobject.* FROM #__lit_plot as plot INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ';
-		$query .= 'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id AND plotstatus.useravailable = 1 ';
-		$query .= 'INNER JOIN #__lit_plotobjectrelfaction as factionrel ON factionrel.plotobjectid = plotobject.id AND factionrel.factionid = ' . $db->getEscaped($factionId) . " ";
-		$query .= 'WHERE plot.eventid = ' . $db->getEscaped($eventId);
+		$query = 'SELECT plotobject.* FROM #__lit_plot as plot ' .
+		  'INNER JOIN  #__lit_plotobject as plotobject ON plot.id = plotid ' .
+		  'INNER JOIN #__lit_plotstatus as plotstatus ON statusid = plotstatus.id ' .
+		  'AND plotstatus.useravailable = 1 INNER JOIN #__lit_plotobjectrelfaction as factionrel ' .
+		  'ON factionrel.plotobjectid = plotobject.id AND factionrel.factionid = ' .
+		  $db->getEscaped($factionId) . ' WHERE plot.eventid = ' . $db->getEscaped($eventId);
 
 		$db->setQuery($query);
 		return $db->loadObjectList();
@@ -665,7 +660,8 @@ class LajvITModelLajvIT extends JModel {
 
 	private function deleteSubPlotRelation($relId, $plotObjectId, $relation, $columnName) {
 		$db = &JFactory::getDBO();
-		$query = 'DELETE FROM #__lit_plotobjectrel' . $relation . ' WHERE ' . $columnName . ' ='.$db->getEscaped($relId).' AND plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'DELETE FROM #__lit_plotobjectrel' . $relation . ' WHERE ' . $columnName . ' ='.
+		  $db->getEscaped($relId).' AND plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 
 		if (!$db->query() ) {
@@ -675,50 +671,54 @@ class LajvITModelLajvIT extends JModel {
 
 	function addSubPlotRelationToCharacter($plotObjectId, $characterId) {
 		$db = &JFactory::getDBO();
-		$query = 'INSERT INTO #__lit_plotobjectrelchara SET charaid ='.$db->getEscaped($characterId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'INSERT INTO #__lit_plotobjectrelchara SET charaid ='.$db->getEscaped($characterId).
+		  ', plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 
 		if (!$db->query() ) {
 			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 
 	function addSubPlotRelationToConcept($plotObjectId, $conceptId) {
 		$db = &JFactory::getDBO();
-		$query = 'INSERT INTO #__lit_plotobjectrelconcept SET conceptid ='.$db->getEscaped($conceptId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'INSERT INTO #__lit_plotobjectrelconcept SET conceptid ='.$db->getEscaped($conceptId).
+		  ', plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 
 		if (!$db->query() ) {
 			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 
 	function addSubPlotRelationToCulture($plotObjectId, $cultureId) {
 		$db = &JFactory::getDBO();
-		$query = 'INSERT INTO #__lit_plotobjectrelculture SET cultureid ='.$db->getEscaped($cultureId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'INSERT INTO #__lit_plotobjectrelculture SET cultureid ='.$db->getEscaped($cultureId).
+		  ', plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 
 		if (!$db->query() ) {
 			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 
 	function addSubPlotRelationToFaction($plotObjectId, $factionId) {
 		$db = &JFactory::getDBO();
-		$query = 'INSERT INTO #__lit_plotobjectrelfaction SET factionid ='.$db->getEscaped($factionId).', plotobjectid='.$db->getEscaped($plotObjectId).';';
+		$query = 'INSERT INTO #__lit_plotobjectrelfaction SET factionid ='.$db->getEscaped($factionId).
+		  ', plotobjectid='.$db->getEscaped($plotObjectId).';';
 		$db->setQuery($query);
 
 		if (!$db->query() ) {
 			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			return false;
+			return FALSE;
 		}
-		return true;
+		return TRUE;
 	}
 
 
@@ -738,14 +738,15 @@ class LajvITModelLajvIT extends JModel {
 
 	function fixDefaultFactionRoleForChara($personid, $eventid, $charid) {
 		if (!$this->getRegistration($personid, $eventid, $charid)) {
-			return false;
+			return FALSE;
 		}
 
 		$chara = &$this->getCharacter($charid);
 		if (!$chara) {
-			return false;
+			return FALSE;
 		}
 
-		return $this->addFactionRole($personid, $eventid, $chara->factionid, $this->getDefaultFactionRoleId());
+		return $this->addFactionRole($personid, $eventid, $chara->factionid,
+		    $this->getDefaultFactionRoleId());
 	}
 }
