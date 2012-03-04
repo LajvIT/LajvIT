@@ -13,9 +13,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <td><?php echo $this->character->fullname; ?></td>
 
   <td rowspan="6">
-<?php     if (!is_null($this->character->image)) { ?>
-      <img src="<?php echo $this->character->image; ?>"/>
-<?php    } ?>
+<?php
+if (!is_null($this->character->image)) {
+  echo '    <img src="' . $this->character->image . '"/>';'
+} ?>
   </td>
 </tr>
 
@@ -56,7 +57,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="description3" cols="70" rows="20" disabled="disabled"><?php echo $this->character->description3; ?></textarea>
+      <textarea name="description3" cols="70" rows="20" disabled="disabled">
+        <?php echo $this->character->description3; ?>
+      </textarea>
     </td>
   </tr>
 <?php  } ?>
@@ -67,7 +70,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
     </tr>
     <tr>
       <td colspan="3">
-        <textarea name="description2" cols="70" rows="10" disabled="disabled"><?php echo $this->character->description2; ?></textarea>
+        <textarea name="description2" cols="70" rows="10" disabled="disabled">
+          <?php echo $this->character->description2; ?>
+        </textarea>
       </td>
     </tr>
 <?php  } ?>
@@ -78,7 +83,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="description1" cols="70" rows="5" disabled="disabled"><?php echo $this->character->description1; ?></textarea>
+      <textarea name="description1" cols="70" rows="5" disabled="disabled">
+        <?php echo $this->character->description1; ?>
+      </textarea>
     </td>
   </tr>
 <?php  } ?>
@@ -89,7 +96,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="privateinfo" cols="70" rows="10" disabled="disabled"><?php echo $this->character->privateinfo; ?></textarea>
+      <textarea name="privateinfo" cols="70" rows="10" disabled="disabled">
+        <?php echo $this->character->privateinfo; ?>
+      </textarea>
     </td>
 
   </tr>
