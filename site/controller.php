@@ -1,23 +1,17 @@
 <?php
 /**
- * @package    Joomla.Tutorials
- * @subpackage Components
- * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_1
- * @license    GNU/GPL
+ * @package    LajvIT
  */
 
 // No direct access
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 jimport('joomla.filesystem.file');
 
 /**
- * Hello World Component Controller
- *
- * @package    Joomla.Tutorials
- * @subpackage Components
+ * LajvIT Component Controller.
  */
 class LajvITController extends JController {
   /**
@@ -25,7 +19,7 @@ class LajvITController extends JController {
   *
   * @access    public
   */
-  function display($cachable = false) {
+  function display( $cachable = FALSE) {
     $document = &JFactory::getDocument();
 
     $viewType = $document->getType();
@@ -33,30 +27,29 @@ class LajvITController extends JController {
     $viewLayout = JRequest::getCmd('layout', 'default');
 
     $user = &JFactory::getUser();
-      if (!$user || $user->guest) {
+    if (!$user || $user->guest) {
       $redirectUrl = 'index.php?option=com_lajvit&view=' . $viewName . '&layout=' . $viewLayout;
-      $redirectUrl.= '&Itemid='.JRequest::getInt('Itemid', 0);
-      $this->setRedirect('index.php?option=com_user&view=login&return=' . base64_encode($redirectUrl));
+      $redirectUrl .= '&Itemid='.JRequest::getInt('Itemid', 0);
+      $this->setRedirect('index.php?option=com_user&view=login&return='.base64_encode($redirectUrl));
       return;
-      }
+    }
 
     $view = &$this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
 
     // Get/Create the model
-//    if ($model = &$this->getModel($viewName)) {
+    //    if ($model = &$this->getModel($viewName)) {
     if ($model = &$this->getModel($this->getName())) {
       // Push the model into the view (as default)
-      $view->setModel($model, true);
+      $view->setModel($model, TRUE);
     }
 
-
     if ($viewName != 'person' || $viewLayout != 'edit') {
-        $person = &$model->getPerson();
+      $person = &$model->getPerson();
 
-        if (!$person || $person->_nodata) {
-          $this->setRedirect('index.php?option=com_lajvit&view=person&layout=edit&Itemid='.JRequest::getInt('Itemid', 0));
-          return;
-        }
+      if (!$person || $person->_nodata) {
+        $this->setRedirect('index.php?option=com_lajvit&view=person&layout=edit&Itemid='.JRequest::getInt('Itemid', 0));
+        return;
+      }
     }
 
     // Set the layout
@@ -72,56 +65,51 @@ class LajvITController extends JController {
     }
   }
 
-
   function mypages() {
     JRequest::setVar('view', 'mypages');
-//    JRequest::setVar('layout', 'edit');
-//    JRequest::setVar('hidemainmenu', 1);
+    //    JRequest::setVar('layout', 'edit');
+    //    JRequest::setVar('hidemainmenu', 1);
 
     $this->display();
   }
 
-
-
-
   function saveimage($fieldname) {
-         switch ($_FILES[$fieldname]['error']) {
-          case 1:
-            echo 'File larger than php.ini allows.';
-            return false;
+    switch ($_FILES[$fieldname]['error']) {
+      case 1:
+        echo 'File larger than php.ini allows.';
+        return FALSE;
       case 2:
         echo 'File larger than html form allows.';
-        return false;
+        return FALSE;
       case 3:
         echo 'Partial upload.';
-        return false;
+        return FALSE;
       case 4:
         echo 'No file';
-        return false;
+        return FALSE;
     }
-
 
     if ($_FILES[$fieldname]['size'] > 2000000) {
       echo 'File bigger than 2 Mb.';
-      return false;
+      return FALSE;
     }
 
     $filename = $_FILES[$fieldname]['name'];
-    $extension = array_pop(explode('.',$filename));
+    $extension = array_pop(explode('.', $filename));
 
     $validextensions = array('jpg', 'jpeg', 'png', 'gif');
 
-    $extok = false;
+    $extok = FALSE;
     foreach ($validextensions as $ext) {
-      if (strcasecmp($ext, $extension) == 0){
-        $extok = true;
+      if (strcasecmp($ext, $extension) == 0) {
+        $extok = TRUE;
         break;
       }
     }
 
     if (!$extok) {
       echo 'Invalid file extension.';
-      return false;
+      return FALSE;
     }
 
     $tempfile = $_FILES[$fieldname]['tmp_name'];
@@ -132,21 +120,20 @@ class LajvITController extends JController {
 
     if (!is_int($imageinfo[0]) || !is_int($imageinfo[1]) || !in_array($imageinfo['mime'], $validmimetypes)) {
       echo 'Invalid file type';
-      return false;
+      return FALSE;
     }
 
     if ($imageinfo[0] > 300 || $imageinfo[1] > 300) {
       echo 'Image area too big.';
-      return false;
+      return FALSE;
     }
 
-    $filename = uniqid('', true).'_'.ereg_replace('[^A-Za-z0-9.]', '_', $filename);
+    $filename = uniqid('', TRUE).'_' . preg_replace('/[^A-Za-z0-9.]/', '_', $filename);
     $path = 'images'.DS.'stories'.DS.$filename;
-
 
     if (!JFile::upload($tempfile, JPATH_SITE.DS.$path)) {
       echo 'Error moving file.';
-      return false;
+      return FALSE;
     }
 
     return $path;
