@@ -7,8 +7,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
   Mina Arrangemang
-  <?php if (false) { ?>
-  &nbsp;<a href="event_new.html" title="Lägg till arrangemang"><img
+  <?php if (TRUE) { ?>
+  &nbsp;<a href="index.php?option=com_lajvit&view=event&Itemid=<?php echo $this->itemid; ?>&layout=add" title="Lägg till arrangemang"><img
     src="components/com_lajvit/new_organizer.gif" alt="Lägg till arrangemang" /> </a>
   <?php  } ?>
 </h1>
