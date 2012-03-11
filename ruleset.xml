@@ -33,7 +33,9 @@
   </rule>
   <rule ref="PEAR.Functions.ValidDefaultValue" />
   <rule ref="PEAR.NamingConventions.ValidClassName" />
-  <rule ref="PEAR.NamingConventions.ValidVariableName" />
+  <rule ref="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore">
+    <severity>0</severity>
+  </rule>
   <rule ref="PEAR.NamingConventions.ValidFunctionName" />
   <rule ref="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore">
     <severity>0</severity>
@@ -52,7 +54,7 @@
   <!-- <rule ref="Squiz.WhiteSpace.FunctionSpacing" /> -->
   <!-- <rule ref="Squiz.WhiteSpace.LanguageConstructSpacing" /> -->
   <rule ref="Squiz.WhiteSpace.LogicalOperatorSpacing" />
-  <rule ref="Squiz.WhiteSpace.MemberVarSpacing" />
+  <!-- <rule ref="Squiz.WhiteSpace.MemberVarSpacing" /> -->
   <rule ref="Squiz.WhiteSpace.ObjectOperatorSpacing" />
   <rule ref="Squiz.WhiteSpace.OperatorSpacing" />
   <rule ref="Squiz.WhiteSpace.PropertyLabelSpacing" />
