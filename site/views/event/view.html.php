@@ -1,27 +1,14 @@
 <?php
-/**
- * @package    Joomla.Tutorials
- * @subpackage Components
- * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_1
- * @license    GNU/GPL
- */
+defined('_JEXEC') or die('Restricted access');
 
-// no direct access
-
-defined( '_JEXEC' ) or die( 'Restricted access' );
-
-jimport( 'joomla.application.component.view');
+jimport('joomla.application.component.view');
 
 /**
- * HTML View class for the HelloWorld Component
- *
- * @package    HelloWorld
+ * HTML View class for the HelloWorld Component.
  */
-
 class LajvITViewEvent extends JView {
-  function display($tpl = null) {
+  function display($tpl = NULL) {
     $model = &$this->getModel();
-
 
     $person = &$model->getPerson();
 
@@ -48,14 +35,13 @@ class LajvITViewEvent extends JView {
     $this->assignRef('medicine', $person->medicine);
     $this->assignRef('info', $person->info);
 
-
     $events = $model->getEventsForPerson();
 
     foreach ($events as $event) {
       if (is_null($event->roleid)) {
-        $event->registered = false;
+        $event->registered = FALSE;
       } else {
-        $event->registered = true;
+        $event->registered = TRUE;
         $event->characters = $model->getCharactersForEvent($event->id, $event->personid);
         $event->role = $model->getAllRolesMerged($event->id);
       }
@@ -63,14 +49,11 @@ class LajvITViewEvent extends JView {
 
     $this->assignRef('events', $events);
 
-
     $eventid = JRequest::getInt('eid', -1);
     $this->assignRef('eventid', $eventid);
     // TODO: Check eid in case of action
 
-
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
-
 
     parent::display($tpl);
   }
