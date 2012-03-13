@@ -1,212 +1,210 @@
 <?php
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
+/**
+ * Controller class for Characters.
+ */
 class LajvITControllerCharacter extends LajvITController {
-	function create() {
-		$errlink = 'index.php?option=com_lajvit&view=character&layout=create';
-		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
+  function create() {
+    $errlink = 'index.php?option=com_lajvit&view=character&layout=create';
+    $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
-		$model = &$this->getModel();
-		$db = &JFactory::getDBO();
+    $model = &$this->getModel();
+    $db = &JFactory::getDBO();
 
-		$person = &$model->getPerson();
+    $person = &$model->getPerson();
 
-		$eventid = JRequest::getInt('eid', -1);
-		if ($eventid > 0) {
-			$errlink.= '&eid='.$eventid;
-		}
-		
-		$factionid = JRequest::getInt('factionid', -1);
+    $eventid = JRequest::getInt('eid', -1);
+    if ($eventid > 0) {
+      $errlink .= '&eid='.$eventid;
+    }
 
-		$data = new stdClass;
-		$data->created = date('Y-m-d H:i:s');
-		$data->updated = $data->created;
-		//		$data->main = false;
-		$name = JRequest::getString('fullname');
-		$data->fullname = $name;
-		$data->knownas = $name;
-		$data->factionid = $factionid;
-		$data->cultureid = JRequest::getInt('cultureid', -1);
-		$data->conceptid = JRequest::getInt('conceptid', -1);
-		$concepttext = trim(JRequest::getString('concepttext'));
-		if (strlen($concepttext) > 0) {
-			$data->concepttext = $concepttext;
-		}
+    $factionid = JRequest::getInt('factionid', -1);
 
-		if (!is_null($data->fullname) && strlen($data->fullname) > 0) {
-			$errlink.= '&fullname='.$data->fullname;
-		}
-		if ($data->factionid > 0) {
-			$errlink.= '&factionid='.$data->factionid;
-		}
-		if ($data->cultureid > 0) {
-			$errlink.= '&cultureid='.$data->cultureid;
-		}
-		if ($data->conceptid > 0) {
-			$errlink.= '&conceptid='.$data->conceptid;
-		}
+    $data = new stdClass;
+    $data->created = date('Y-m-d H:i:s');
+    $data->updated = $data->created;
+    //    $data->main = false;
+    $name = JRequest::getString('fullname');
+    $data->fullname = $name;
+    $data->knownas = $name;
+    $data->factionid = $factionid;
+    $data->cultureid = JRequest::getInt('cultureid', -1);
+    $data->conceptid = JRequest::getInt('conceptid', -1);
+    $concepttext = trim(JRequest::getString('concepttext'));
+    if (strlen($concepttext) > 0) {
+      $data->concepttext = $concepttext;
+    }
 
+    if (!is_null($data->fullname) && strlen($data->fullname) > 0) {
+      $errlink .= '&fullname='.$data->fullname;
+    }
+    if ($data->factionid > 0) {
+      $errlink .= '&factionid='.$data->factionid;
+    }
+    if ($data->cultureid > 0) {
+      $errlink .= '&cultureid='.$data->cultureid;
+    }
+    if ($data->conceptid > 0) {
+      $errlink .= '&conceptid='.$data->conceptid;
+    }
 
-		if (is_null($data->fullname) || strlen($data->fullname) == 0 ||
-		is_null($data->knownas) || strlen($data->knownas) == 0 ||
-		$data->factionid == 0 || $data->cultureid == 0 || $data->conceptid == 0) {
-			$errlink.= '&failed=1';
-			$this->setRedirect($errlink);
-			return;
-		}
+    if (is_null($data->fullname) || strlen($data->fullname) == 0 ||
+        is_null($data->knownas) || strlen($data->knownas) == 0 ||
+        $data->factionid == 0 || $data->cultureid == 0 || $data->conceptid == 0) {
+      $errlink .= '&failed=1';
+      $this->setRedirect($errlink);
+      return;
+    }
 
+    $db->insertObject('#__lit_chara', $data);
+    if ($db->getErrorNum() != 0) {
+      echo '<h1>'.$db->getErrorMsg().'</h1>';
+      //      $this->setRedirect($errlink, $db->getErrorMsg());
+      return;
+    }
+    $charid = $db->insertid();
 
-		$db->insertObject('#__lit_chara', $data);
-		if ($db->getErrorNum() != 0) {
-			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			//			$this->setRedirect($errlink, $db->getErrorMsg());
-			return;
-		}
-		$charid = $db->insertid();
+    $data = new stdClass;
+    $data->personid = $person->id;
+    $data->eventid = $eventid;
+    $data->charaid = $charid;
+    $data->statusid = $model->getDefaultStatusId();
+    $data->groupleader = JRequest::getString('groupleader');
 
+    $db->insertObject('#__lit_registrationchara', $data);
+    if ($db->getErrorNum() != 0) {
+      echo '<h1>'.$db->getErrorMsg().'</h1>';
+      //      $this->setRedirect($errlink, $db->getErrorMsg());
+      return;
+    }
 
-		$data = new stdClass;
-		$data->personid = $person->id;
-		$data->eventid = $eventid;
-		$data->charaid = $charid;
-		$data->statusid = $model->getDefaultStatusId();
-		$data->groupleader = JRequest::getString('groupleader');
+    $froleid = $model->getDefaultFactionRoleId();
+    $x = $model->addFactionRole($person->id, $eventid, $factionid, $froleid);
 
-		$db->insertObject('#__lit_registrationchara', $data);
-		if ($db->getErrorNum() != 0) {
-			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			//			$this->setRedirect($errlink, $db->getErrorMsg());
-			return;
-		}
-		
-		
-		$froleid = $model->getDefaultFactionRoleId();
-		$x = $model->addFactionRole($person->id, $eventid, $factionid, $froleid);
-
-
-		$oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid='.$eventid.'&cid='.$charid;
-		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
-		$this->setRedirect($oklink);
-	}
+    $oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid=' .
+        $eventid.'&cid='.$charid;
+    $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
+    $this->setRedirect($oklink);
+  }
 
 
-	function save() {
-		$errlink = 'index.php?option=com_lajvit&view=character&layout=edit';
-		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
+  function save() {
+    $errlink = 'index.php?option=com_lajvit&view=character&layout=edit';
+    $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
+    $model = &$this->getModel();
 
-		$model = &$this->getModel();
+    $person = &$model->getPerson();
 
-		$person = &$model->getPerson();
+    $charid = JRequest::getInt('cid', -1);
+    $character = &$model->getCharacter($charid);
+    $oldcharacter = $model->getCharacterExtended($charid);
 
-		$charid = JRequest::getInt('cid', -1);
-		$character = &$model->getCharacter($charid);
-		$oldcharacter = $model->getCharacterExtended($charid);
+    $eventid = JRequest::getInt('eid', -1);
+    $event = &$model->getEvent($eventid);
 
-		$eventid = JRequest::getInt('eid', -1);
-		$event = &$model->getEvent($eventid);
+    $reg = $model->getRegistration($person->id, $eventid, $charid);
+    if (!$reg) {
+      echo '<h1>not registered</h1>';
+      //      $this->setRedirect($errlink, 'Not registered';
+      return;
+    }
 
+    $data = JRequest::get('post');
 
-		$reg = $model->getRegistration($person->id, $eventid, $charid);
-		if (!$reg) {
-			echo '<h1>not registered</h1>';
-			//			$this->setRedirect($errlink, 'Not registered';
-			return;
-		}
+    if (strlen($data['age']) > 0 && (int) $data['age'] > 0) {
+      $data['bornyear'] = $event->ingameyear - (int) $data['age'];
+    }
 
+    // Bind the form fields to the record
+    if (!$character->bind($data)) {
+      echo '<h1>bind</h1>'.$character->getDBO()->getErrorMsg();
+      //$this->setRedirect($errlink, 'Database bind error: ' . $character->getDBO()->getErrorMsg());
+      return;
+    }
 
+    $photo = $this->saveimage('photo');
+    if ($photo) {
+      $character->image = $photo;
+    } else {
+      //      $character->image = $oldcharacter->image;
+    }
 
-		$data = JRequest::get('post');
+    // Make sure the record is valid
+    if (!$character->check()) {
+      echo '<h1>check</h1>'.$character->getDBO()->getErrorMsg();
+      //$this->setRedirect($errlink, 'Database check error:' . $character->getDBO()->getErrorMsg());
+      return;
+    }
 
-		if (strlen($data['age']) > 0 && (int) $data['age'] > 0) {
-			$data['bornyear'] = $event->ingameyear - (int) $data['age'];
-		}
+    // Store the record to the database
+    if (!$character->store()) {
+      echo '<h1>store</h1>'.$character->getDBO()->getErrorMsg();
+      //$this->setRedirect($errlink, 'Database store error:' . $character->getDBO()->getErrorMsg());
+      return;
+    }
 
-		// Bind the form fields to the record
-		if (!$character->bind($data)) {
-			echo '<h1>bind</h1>'.$character->getDBO()->getErrorMsg();
-			//			$this->setRedirect($errlink, 'Database bind error: ' . $character->getDBO()->getErrorMsg());
-			return;
-		}
+    $oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid=' .
+        $eventid.'&cid='.$charid;
+    $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
+    $this->setRedirect($oklink);
+  }
 
-		$photo = $this->saveimage('photo');
-		if ($photo) {
-			$character->image = $photo;
-		} else {
-			//			$character->image = $oldcharacter->image;
-		}
+  function delete() {
+    $errlink = 'index.php?option=com_lajvit&view=event';
+    $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
-		// Make sure the record is valid
-		if (!$character->check()) {
-			echo '<h1>check</h1>'.$character->getDBO()->getErrorMsg();
-			//			$this->setRedirect($errlink, 'Database check error: ' . $character->getDBO()->getErrorMsg());
-			return;
-		}
+    $model = &$this->getModel();
 
-		// Store the record to the database
-		if (!$character->store()) {
-			echo '<h1>store</h1>'.$character->getDBO()->getErrorMsg();
-			//			$this->setRedirect($errlink, 'Database store error: ' . $character->getDBO()->getErrorMsg());
-			return;
-		}
+    $person = &$model->getPerson();
 
-		$oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid='.$eventid.'&cid='.$charid;
-		$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
-		$this->setRedirect($oklink);
-	}
+    $charid = JRequest::getInt('cid', -1);
+    $character = $model->getCharacterExtended($charid);
 
-	function delete() {
-		$errlink = 'index.php?option=com_lajvit&view=event';
-		$errlink.= '&Itemid='.JRequest::getInt('Itemid', 0);
+    $eventid = JRequest::getInt('eid', -1);
+    $event = &$model->getEvent($eventid);
 
-		$model = &$this->getModel();
+    $erole = &$model->getRoleForEvent($eventid);
+    $crole = $model->getRoleForChara($eventid, $charid);
+    $role = $model->mergeRoles($erole, $crole);
 
-		$person = &$model->getPerson();
+    $redirect = JRequest::getString('redirect', '');
 
-		$charid = JRequest::getInt('cid', -1);
-		$character = $model->getCharacterExtended($charid);
+    $reg = $model->getRegistration($person->id, $eventid, $charid);
+    $db = &JFactory::getDBO();
+    if (!$reg) {
+      if ($role->character_delete) {
+        echo '<h1>admin</h1>';
+        $query = 'DELETE FROM #__lit_registrationchara WHERE eventid='.$db->getEscaped($eventid) .
+          ' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
+      } else {
+        echo 'Access denied';
+        //      $this->setRedirect($errlink, 'Not registered';
+        return;
+      }
+    } else {
+      $query = 'DELETE FROM #__lit_registrationchara WHERE personid='.$person->id.' AND eventid=' .
+          $db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
+    }
 
-		$eventid = JRequest::getInt('eid', -1);
-		$event = &$model->getEvent($eventid);
+    $db->setQuery($query);
 
-		$erole = &$model->getRoleForEvent($eventid);
-		$crole = $model->getRoleForChara($eventid, $charid);
-		$role = $model->mergeRoles($erole, $crole);
+    if (!$db->query()) {
+      echo '<h1>'.$db->getErrorMsg().'</h1>';
+      //      $this->setRedirect($errlink, $db->getErrorMsg());
+      return;
+    }
 
-		$redirect = JRequest::getString('redirect', '');
-
-		$reg = $model->getRegistration($person->id, $eventid, $charid);
-		$db = &JFactory::getDBO();
-		if (!$reg) {
-			if ($role->character_delete) {
-				echo '<h1>admin</h1>';
-				$query = 'DELETE FROM #__lit_registrationchara WHERE eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
-			} else {
-				echo 'Access denied';
-				//			$this->setRedirect($errlink, 'Not registered';
-				return;
-			}
-		} else {
-			$query = 'DELETE FROM #__lit_registrationchara WHERE personid='.$person->id.' AND eventid='.$db->getEscaped($eventid).' AND charaid='.$db->getEscaped($charid).' LIMIT 1;';
-		}
-
-		$db->setQuery($query);
-
-		if (!$db->query()) {
-			echo '<h1>'.$db->getErrorMsg().'</h1>';
-			//			$this->setRedirect($errlink, $db->getErrorMsg());
-			return;
-		}
-
-		if ($redirect == 'registrations' && $eventid > 0) {
-			$oklink = 'index.php?option=com_lajvit&view=registrations';
-			$oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
-			$oklink .= '&eid=' . $eventid;
-		} else {
-			$oklink = 'index.php?option=com_lajvit&view=event';
-			$oklink.= '&Itemid='.JRequest::getInt('Itemid', 0);
-		}
-		$this->setRedirect($oklink);
-	}
+    if ($redirect == 'registrations' && $eventid > 0) {
+      $oklink = 'index.php?option=com_lajvit&view=registrations';
+      $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
+      $oklink .= '&eid=' . $eventid;
+    } else {
+      $oklink = 'index.php?option=com_lajvit&view=event';
+      $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
+    }
+    $this->setRedirect($oklink);
+  }
 }
