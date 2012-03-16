@@ -51,9 +51,11 @@ class LajvITViewEvent extends JView {
 
     $eventid = JRequest::getInt('eid', -1);
     $this->assignRef('eventid', $eventid);
+    $this->assignRef('eventId', $eventid);
     // TODO: Check eid in case of action
 
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
+    $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
 
     parent::display($tpl);
   }
