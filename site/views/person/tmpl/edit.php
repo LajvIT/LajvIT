@@ -1,17 +1,14 @@
 <?php
-
-// No direct access
-
 defined('_JEXEC') or die('Restricted access'); ?>
-<?php ?>
+
 <form action="index.php" method="post" name="personEditForm">
 
   <h1>Mina personuppgifter</h1>
-  <p>Dessa uppgifter kommer användas när du anmäler dig till olika arrangemang. Se till att de hålls
-    uppdaterade.</p>
-  <?php  if ($this->incomplete_person) { ?>
-  <p style="color: red;">Några obligatoriska fält är inte ifyllda.</p>
-  <?php  } ?>
+  <p>Dessa uppgifter kommer användas när du anmäler dig till olika arrangemang. Se till att
+  de hålls uppdaterade.</p><?php
+if ($this->incomplete_person) { ?>
+  <p style="color: red;">Några obligatoriska fält är inte ifyllda.</p><?php
+} ?>
 
   <table class="contentpaneopen">
 

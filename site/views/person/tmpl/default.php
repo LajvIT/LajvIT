@@ -1,9 +1,5 @@
 <?php
-
-// No direct access
-
 defined('_JEXEC') or die('Restricted access'); ?>
-
 
 <h1>Personuppgifter</h1>
 
@@ -15,34 +11,36 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <tr>
     <td>Efternamn:</td>
     <td><?php echo $this->surname; ?></td>
-  </tr>
-<?php  if ($this->role->person_viewcontactinfo || $this->role->person_viewmedical) { ?>
+  </tr><?php
+if ($this->role->person_viewcontactinfo || $this->role->person_viewmedical) { ?>
     <tr>
       <td>Personnummer:</td>
       <td><?php echo $this->pnumber; ?></td>
     </tr>
     <tr>
       <td>Kön:</td>
-      <td>
-<?php        if ($this->sex == 'M') { ?>
-          Man
-<?php        } else if ($this->sex == 'F') { ?>
-          Kvinna
-<?php        } ?>
+      <td><?php
+  if ($this->sex == 'M') {
+    echo 'Man';
+  } else if ($this->sex == 'F') {
+    echo 'Kvinna';
+  } ?>
       </td>
-    </tr>
-<?php        }
-  if ($this->role->person_viewcontactinfo) { ?>
+    </tr><?php
+}
+
+if ($this->role->person_viewcontactinfo) { ?>
     <tr>
       <td>E-post:</td>
       <td><?php echo $this->email; ?></td>
-    </tr>
-<?php  } ?>
+    </tr><?php
+} ?>
   <tr>
     <td>Epost publik:</td>
     <td><?php echo $this->publicemail; ?></td>
-  </tr>
-<?php  if ($this->role->person_viewcontactinfo) { ?>
+  </tr><?php
+
+if ($this->role->person_viewcontactinfo) { ?>
     <tr>
       <td>Telefon:</td>
       <td><?php echo $this->phone1; ?></td>
@@ -58,13 +56,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
     <tr>
       <td>Postnummer:</td>
       <td><?php echo $this->zip; ?></td>
-    </tr>
-<?php  } ?>
+    </tr><?php
+} ?>
   <tr>
     <td>Stad:</td>
     <td><?php echo $this->town; ?></td>
-  </tr>
-<?php  if ($this->role->person_viewcontactinfo) { ?>
+  </tr><?php
+if ($this->role->person_viewcontactinfo) { ?>
     <tr>
       <td>Icq:</td>
       <td><?php echo $this->icq; ?></td>
@@ -80,9 +78,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
     <tr>
       <td>Facebook:</td>
       <td><?php echo $this->facebook; ?></td>
-    </tr>
-<?php  }
-  if ($this->role->person_viewmedical) { ?>
+    </tr><?php
+}
+
+if ($this->role->person_viewmedical) { ?>
     <tr>
       <td>Eventuella sjukdomar:</td>
       <td><?php echo $this->illness; ?></td>
@@ -94,8 +93,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
     <tr>
       <td>Eventuella mediciner:</td>
       <td><?php echo $this->medicine; ?></td>
-    </tr>
-<?php  } ?>
+    </tr><?php
+} ?>
   <tr>
     <td>Beskrivning:</td>
     <td><?php echo $this->info; ?></td>
@@ -103,11 +102,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <tr>
     <td>Användarnamn:</td>
     <td><?php echo $this->username; ?></td>
-  </tr>
-<?php  if ($this->role->registration_list) { ?>
+  </tr><?php
+
+if ($this->role->registration_list) { ?>
     <tr>
       <td>Roller <?php echo $this->eventname; ?>:</td>
       <td><?php echo $this->personrolenames; ?></td>
-    </tr>
-<?php  } ?>
+    </tr><?php
+} ?>
 </tbody></table>
