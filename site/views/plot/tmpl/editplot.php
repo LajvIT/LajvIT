@@ -36,7 +36,7 @@ if ( ( $this->mergedrole->character_setstatus ||
         ( $this->mergedrole->character_setstatus ||
             $this->mergedrole->registration_setstatus ||
             $this->mergedrole->registration_setrole ) ) {?>
-            <option value="<?echo $status->id; ?>" <?php
+            <option value="<?php echo $status->id; ?>" <?php
       if ($this->statusId == $status->id) {
         ?> selected="selected" <?php
       } ?> ><?php
@@ -62,9 +62,9 @@ if ( ($this->mergedrole->character_setstatus ||
           <input type="hidden" name="option" value="com_lajvit" />
           <input type="hidden" name="task" value="savePlot" />
           <input type="hidden" name="controller" value="plot" />
-          <input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
-          <input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
-          <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" /> <?php
+          <input type="hidden" name="eid" value="<?php echo $this->eventId; ?>" />
+          <input type="hidden" name="pid" value="<?php echo $this->plotId; ?>" />
+          <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" /> <?php
 } ?>
         </td>
       </tr><?php
@@ -82,7 +82,7 @@ if ($this->plotId > 0) { ?>
       $this->statusId == 100 || $this->statusId == 101 ) { ?>
       <tr>
         <td colspan="2">
-          <a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
+          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
         </td>
       </tr><?php
   }

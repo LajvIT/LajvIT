@@ -13,13 +13,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php
 foreach ($this->events as $event) { ?>
-  <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info">
-    <img src="components/com_lajvit/info.png" alt="Info"/></a>
+  <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info"><img
+    src="components/com_lajvit/info.png" alt="Info"/></a>
   <?php
   if ($event->role->registration_list || $event->role->character_list) { ?>
     &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>
-      &Itemid=<?php echo $this->itemid; ?>" title="Anmälningar">
-    <img src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
+      &Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
+      src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
   }
   if (FALSE) { ?>
       &nbsp;<a href="event_edit.html" title="Redigera arrangemang">

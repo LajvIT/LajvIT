@@ -22,11 +22,11 @@ if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) { ?>
   <input type="hidden" name="option" value="com_lajvit" />
   <input type="hidden" name="task" value="savePlotObject" />
   <input type="hidden" name="controller" value="plot" />
-  <input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
-  <input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
-  <input type="hidden" name="poid" value="<? echo $this->plotObjectId; ?>" />
-  <input type="hidden" name="statusId" value="<? echo $this->statusId; ?>" />
-  <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" /><?php
+  <input type="hidden" name="eid" value="<?php echo $this->eventId; ?>" />
+  <input type="hidden" name="pid" value="<?php echo $this->plotId; ?>" />
+  <input type="hidden" name="poid" value="<?php echo $this->plotObjectId; ?>" />
+  <input type="hidden" name="statusId" value="<?php echo $this->statusId; ?>" />
+  <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" /><?php
 } ?>
       </td></tr>
       <tr><td colspan="2"></td></tr><?php
