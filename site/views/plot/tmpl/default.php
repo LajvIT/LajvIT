@@ -18,18 +18,17 @@ defined('_JEXEC') or die('Restricted access');
         <td><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
       </tr>
       <tr><td></td></tr>
-      <tr><td><h2>Delintriger</h2></td></tr>
+      <tr><td><h2>Delintriger</h2></td></tr><?php
 
-<?php
-        foreach ($this->plotObjects as $plotObject) {
-          printPlotObjectHeaderAndDescription($plotObject, $eventId);
-          printPlotObjectRelations($plotObject, $eventId);
-        }
+foreach ($this->plotObjects as $plotObject) {
+  printPlotObjectHeaderAndDescription($plotObject, $eventId);
+  printPlotObjectRelations($plotObject, $eventId);
+}
 ?>
       <tr><td></td></tr>
       <tr>
         <td>
-          <a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=subplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
+          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=subplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
         </td>
       </tr>
       <tr><td></td></tr>
@@ -37,17 +36,15 @@ defined('_JEXEC') or die('Restricted access');
   </table>
 
 <?php
-  if ($this->mergedrole->character_setstatus || $this->mergedrole->registration_setstatus || $this->mergedrole->registration_setrole) {
-?>
+if ($this->mergedrole->character_setstatus || $this->mergedrole->registration_setstatus || $this->mergedrole->registration_setrole) { ?>
   <input type="submit" value="Spara ändringar" />
   <input type="hidden" name="option" value="com_lajvit" />
   <input type="hidden" name="task" value="save" />
   <input type="hidden" name="controller" value="plot" />
-  <input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
-  <input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
-  <input type="hidden" name="statusId" value="<? echo $this->statusId; ?>" />
-<?php
-  }
+  <input type="hidden" name="eid" value="<?php echo $this->eventId; ?>" />
+  <input type="hidden" name="pid" value="<?php echo $this->plotId; ?>" />
+  <input type="hidden" name="statusId" value="<?php echo $this->statusId; ?>" /><?php
+}
 ?>
 
 </form>
@@ -100,4 +97,3 @@ function printPlotObjectRelations($plotObject) {
 }
 
 ?>
-

@@ -1,6 +1,4 @@
 <?php
-
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -27,81 +25,68 @@ defined('_JEXEC') or die('Restricted access');
       </tr>
       <tr>
         <td colspan="2">Status: <?php
-  if ( ( $this->mergedrole->character_setstatus ||
-          $this->mergedrole->registration_setstatus ||
-          $this->mergedrole->registration_setrole ) ||
-        $this->statusId == 100 || $this->statusId == 101 ) {
-?>
-          <select name="statusId">
-<?php
-    foreach ($this->status as $status) {
-      if ($status->id == 100 || $status->id == 101 ||
-             ( $this->mergedrole->character_setstatus || $this->mergedrole->registration_setstatus || $this->mergedrole->registration_setrole ) ) {
+if ( ( $this->mergedrole->character_setstatus ||
+        $this->mergedrole->registration_setstatus ||
+        $this->mergedrole->registration_setrole ) ||
+      $this->statusId == 100 || $this->statusId == 101 ) {
   ?>
-            <option value="<?echo $status->id; ?>" <?php if ($this->statusId == $status->id) { ?> selected="selected" <?php } ?> >
-<?php                        echo $status->name; ?>
-            </option>
-<?php
-      }
+          <select name="statusId"><?php
+  foreach ($this->status as $status) {
+    if ($status->id == 100 || $status->id == 101 ||
+        ( $this->mergedrole->character_setstatus ||
+            $this->mergedrole->registration_setstatus ||
+            $this->mergedrole->registration_setrole ) ) {?>
+            <option value="<?echo $status->id; ?>" <?php
+      if ($this->statusId == $status->id) {
+        ?> selected="selected" <?php
+      } ?> ><?php
+      echo $status->name; ?>
+            </option><?php
     }
-    ?>
-          </select>
-<?php
-  } else {
-    echo $this->statusName;
-  }
+  } ?>
+          </select><?php
+} else {
+  echo $this->statusName;
+}
 ?>
         </td>
       </tr>
       <tr>
-          <td colspan="2">
+          <td colspan="2"><?php
 
-      <?php
-  if ( ($this->mergedrole->character_setstatus ||
-          $this->mergedrole->registration_setstatus ||
-          $this->mergedrole->registration_setrole ) ||
-        $this->statusId == 100 || $this->statusId == 101 ) {
-
-?>
+if ( ($this->mergedrole->character_setstatus ||
+    $this->mergedrole->registration_setstatus ||
+    $this->mergedrole->registration_setrole ) ||
+    $this->statusId == 100 || $this->statusId == 101 ) { ?>
           <input type="submit" value="Spara ändringar" />
           <input type="hidden" name="option" value="com_lajvit" />
           <input type="hidden" name="task" value="savePlot" />
           <input type="hidden" name="controller" value="plot" />
           <input type="hidden" name="eid" value="<? echo $this->eventId; ?>" />
           <input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
-          <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" />
-
-
-<?php
-  }
-?>
+          <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" /> <?php
+} ?>
         </td>
       </tr><?php
-  if ($this->plotId > 0) {
-?>
+if ($this->plotId > 0) { ?>
       <tr><td colspan="2"></td></tr>
-      <tr><td colspan="2"><h2>Delintriger</h2></td></tr>
-
-<?php
-        foreach ($this->plotObjects as $plotObject) {
-          printPlotObjectHeaderAndDescription($plotObject, $this->eventId, $this->mergedrole, $this->statusId, $this->itemId);
-          printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations, $this->itemId);
-        }
-?>
+      <tr><td colspan="2"><h2>Delintriger</h2></td></tr> <?php
+  foreach ($this->plotObjects as $plotObject) {
+    printPlotObjectHeaderAndDescription($plotObject, $this->eventId, $this->mergedrole, $this->statusId, $this->itemId);
+    printPlotObjectRelations($plotObject->plotid, $plotObject, $this->eventId, $plotObject->characterRelations, $plotObject->conceptRelations, $plotObject->cultureRelations, $plotObject->factionRelations, $this->itemId);
+  } ?>
       <tr><td colspan="2"></td></tr><?php
-        if ( ($this->mergedrole->character_setstatus ||
-            $this->mergedrole->registration_setstatus ||
-            $this->mergedrole->registration_setrole ) ||
-          $this->statusId == 100 || $this->statusId == 101 ) {
-      ?>
+  if ( ($this->mergedrole->character_setstatus ||
+      $this->mergedrole->registration_setstatus ||
+      $this->mergedrole->registration_setrole ) ||
+      $this->statusId == 100 || $this->statusId == 101 ) { ?>
       <tr>
         <td colspan="2">
           <a href="index.php?option=com_lajvit&view=plot&eid=<? echo $this->eventId; ?>&pid=<? echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
         </td>
       </tr><?php
-        }
   }
-        ?>
+} ?>
       <tr><td colspan="2"></td></tr>
       <tr>
         <td colspan="2">
@@ -113,11 +98,13 @@ defined('_JEXEC') or die('Restricted access');
       <tr><td colspan="2"></td></tr>
       <tr>
         <td colspan="2">
-          <p>Metarubrik och Metainformation är beskrivningar som kommer ses av intrigförfattaren och arrangören. Metarubrik ska med ett
-            fåtal ord beskriva intrigen. Metainformationen ska mycket kort beskriva tanken med intrigen i stora drag. Här kan du också ange
-            eventuell rekvisita och vem som ska ha den.</p>
-          <p>Delintriger är texter och rubriker som kommer visas för deltagare när arrangör uppdaterat deras status till Distributed. Därför
-            bör exempelvis intrigen inte avslöja för mycket.</p>
+          <p>Metarubrik och Metainformation är beskrivningar som kommer ses av intrigförfattaren och
+            arrangören. Metarubrik ska med ett fåtal ord beskriva intrigen. Metainformationen ska
+            mycket kort beskriva tanken med intrigen i stora drag. Här kan du också ange eventuell
+            rekvisita och vem som ska ha den.</p>
+          <p>Delintriger är texter och rubriker som kommer visas för deltagare när arrangör
+            uppdaterat deras status till Distributed. Därför bör exempelvis intrigen inte avslöja
+            för mycket.</p>
         </td>
       </tr>
     </tbody>
@@ -180,4 +167,3 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 }
 
 ?>
-

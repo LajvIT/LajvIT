@@ -1,14 +1,11 @@
 <?php
-
-// No direct access
 defined('_JEXEC') or die('Restricted access');
-?>
-<?php
-$plotheadSortOrder = $this->orderBy == 'heading' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-$statusSortOrder = $this->orderBy == 'statusname' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-$creatorSortOrder = $this->orderBy == 'plotCreatorName' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-$createdSortOrder = $this->orderBy == 'created' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
-$updatedSortOrder = $this->orderBy == 'updated' && $this->sortOrder == 'ASC' ? 'DESC' : 'ASC';
+
+$plotheadSortOrder = ($this->orderBy == 'heading' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
+$statusSortOrder = ($this->orderBy == 'statusname' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
+$creatorSortOrder = ($this->orderBy == 'plotCreatorName' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
+$createdSortOrder = ($this->orderBy == 'created' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
+$updatedSortOrder = ($this->orderBy == 'updated' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
 
 function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirmation, $page, $faction) {
   $link = "index.php?option=com_lajvit&view=plot&layout=listplots";
@@ -35,10 +32,12 @@ function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirm
   <tbody style="vertical-align: top;">
 
 <?php
-      foreach ($this->plots as $plot) {
-        if ($this->debug) { print_r($plot); echo "setstatus:".$this->mergedrole->character_setstatus . ",creator:". $plot->creatorpersonid .",person:" .$this->person->id ; }
-        if ($this->mergedrole->character_setstatus || $plot->creatorpersonid == $this->person->id ) {
-        ?>
+foreach ($this->plots as $plot) {
+  if ($this->debug) {
+    print_r($plot);
+    echo "setstatus:".$this->mergedrole->character_setstatus . ",creator:". $plot->creatorpersonid .",person:" .$this->person->id;
+  }
+  if ($this->mergedrole->character_setstatus || $plot->creatorpersonid == $this->person->id ) { ?>
     <tr>
       <td>
         <a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $plot->id; ?>&Itemid=<?php echo $this->itemId; ?>">
@@ -52,9 +51,9 @@ function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirm
     </tr>
     <tr>
       <td colspan="5" style="padding-left: 20px; padding-bottom: 15px;"><?php echo nl2br($plot->description); ?></td>
-    </tr>
-<?php   }
-      } ?>
+    </tr><?php
+  }
+} ?>
     <tr><td colspan="2">&nbsp;</td></tr>
     <tr><td colspan="2">
       <a href="index.php?option=com_lajvit&view=plot&layout=editplot&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>">

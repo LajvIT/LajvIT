@@ -1,6 +1,4 @@
 <?php
-
-// No direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
 
@@ -18,10 +16,8 @@ defined('_JEXEC') or die('Restricted access');
         <td colspan="2"><textarea style="width:300px; height:100px" name="description"><?php echo $this->description; ?></textarea>
       </tr>
       <tr><td colspan="2"></td></tr>
-      <tr><td colspan="2">
-<?php
-if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) {
-?>
+      <tr><td colspan="2"><?php
+if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) { ?>
   <input type="submit" value="Spara ändringar" />
   <input type="hidden" name="option" value="com_lajvit" />
   <input type="hidden" name="task" value="savePlotObject" />
@@ -30,15 +26,13 @@ if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) {
   <input type="hidden" name="pid" value="<? echo $this->plotId; ?>" />
   <input type="hidden" name="poid" value="<? echo $this->plotObjectId; ?>" />
   <input type="hidden" name="statusId" value="<? echo $this->statusId; ?>" />
-  <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" />
-<?php
-  }
-?>
+  <input type="hidden" name="Itemid" value="<? echo $this->itemId; ?>" /><?php
+} ?>
       </td></tr>
-      <tr><td colspan="2"></td></tr>
-<?php
-          printPlotObjectRelations($this->plotId, $this->plotObject, $this->eventId, $this->characterRelations, $this->conceptRelations, $this->cultureRelations, $this->factionRelations, $this->mergedrole, $this->itemId);
-?>
+      <tr><td colspan="2"></td></tr><?php
+printPlotObjectRelations($this->plotId, $this->plotObject, $this->eventId,
+    $this->characterRelations, $this->conceptRelations, $this->cultureRelations,
+    $this->factionRelations, $this->mergedrole, $this->itemId); ?>
       <tr><td colspan="2"></td></tr>
       <tr>
         <td colspan="2">
@@ -53,7 +47,8 @@ if (isAdminUser($this->mergedrole) || $this->plotEditableByCreator == 1) {
 
 <?php
 
-function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations, $conceptRelations, $cultureRelations, $factionRelations, $mergedRole, $itemId) {
+function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRelations,
+    $conceptRelations, $cultureRelations, $factionRelations, $mergedRole, $itemId) {
   $characterAndConceptHeight = max(count($characterRelations), count($conceptRelations));
   $cultureAndFactionHeight = max(count($cultureRelations), count($factionRelations));
   echo "<tr><td><h4>Karaktär";
@@ -112,11 +107,10 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
 
 function isAdminUser($mergedRole) {
   if ($mergedRole->character_setstatus || $mergedRole->registration_setstatus || $mergedRole->registration_setrole) {
-    return true;
+    return TRUE;
   } else {
-    return false;
+    return FALSE;
   }
 }
 
 ?>
-
