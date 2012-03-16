@@ -5,25 +5,17 @@
  * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_1
  * @license    GNU/GPL
 */
- 
-// no direct access
- 
-defined( '_JEXEC' ) or die( 'Restricted access' );
- 
-jimport( 'joomla.application.component.view');
- 
+
+defined('_JEXEC') or die('Restricted access');
+jimport('joomla.application.component.view');
+
 /**
- * HTML View class for the HelloWorld Component
- *
- * @package    HelloWorld
+ * View for My pages.
  */
- 
 class LajvITViewMyPages extends JView {
-    function display($tpl = null) {
-    	$model = &$this->getModel();
-    	
-    	$person = &$model->getPerson();
-        
-        parent::display($tpl);
-    }
+  function display($tpl = NULL) {
+    $model = &$this->getModel();
+    $person = &$model->getPerson();
+    parent::display($tpl);
+  }
 }
