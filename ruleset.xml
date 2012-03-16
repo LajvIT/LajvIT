@@ -22,38 +22,33 @@
   <!-- <rule ref="PEAR.Commenting.FunctionComment" /> -->
   <rule ref="PEAR.Commenting.InlineComment" />
   <rule ref="PEAR.ControlStructures.ControlSignature" />
-  <rule ref="PEAR.ControlStructures.MultiLineCondition" />
-  <rule ref="PEAR.ControlStructures.MultiLineCondition.StartWithBoolean">
-    <severity>0</severity>
-  </rule>  
-  <rule ref="PEAR.ControlStructures.MultiLineCondition.CloseBracketNewLine">
-    <severity>0</severity>
-  </rule>  
-  <rule ref="PEAR.Formatting.MultiLineAssignment" />
-  <rule ref="PEAR.Functions.FunctionCallSignature" />
-  <rule ref="PEAR.Functions.FunctionCallSignature.CloseBracketLine">
-    <severity>0</severity>
+  <rule ref="PEAR.ControlStructures.MultiLineCondition">
+    <exclude name="PEAR.ControlStructures.MultiLineCondition.StartWithBoolean"/>
+    <exclude name="PEAR.ControlStructures.MultiLineCondition.CloseBracketNewLine"/>
   </rule>
-  <rule ref="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket">
-    <severity>0</severity>
+  <rule ref="PEAR.Formatting.MultiLineAssignment" />
+  <rule ref="PEAR.Functions.FunctionCallSignature">
+    <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
+    <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
   </rule>
   <rule ref="PEAR.Functions.ValidDefaultValue" />
-  <rule ref="PEAR.NamingConventions.ValidClassName" />
-  <rule ref="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore">
-    <severity>0</severity>
+  <rule ref="PEAR.NamingConventions.ValidClassName">
+    <exclude name="PEAR.NamingConventions.ValidVariableName.PrivateNoUnderscore"/>
   </rule>
-  <rule ref="PEAR.NamingConventions.ValidFunctionName" />
-  <rule ref="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore">
-    <severity>0</severity>
+  <rule ref="PEAR.NamingConventions.ValidFunctionName">
+    <exclude name="PEAR.NamingConventions.ValidFunctionName.PrivateNoUnderscore"/>
   </rule>
   <rule ref="PEAR.WhiteSpace.ObjectOperatorIndent" />
   <rule ref="PEAR.WhiteSpace.ScopeClosingBrace">
+    <exclude name="PEAR.WhiteSpace.ScopeClosingBrace.BreakIdent"/>
     <properties>
       <property name="indent" value="2" />
     </properties>
   </rule>
   <rule ref="Squiz.Commenting.ClassComment" />
-  <rule ref="Squiz.ControlStructures.InlineIfDeclaration" />
+  <rule ref="Squiz.ControlStructures.InlineIfDeclaration">
+    <exclude name="Squiz.ControlStructures.InlineIfDeclaration.NoBrackets"/>
+  </rule>
   <!-- <rule ref="Squiz.WhiteSpace.ControlStructureSpacing" /> -->
   <!-- <rule ref="Squiz.WhiteSpace.FunctionClosingBraceSpace" /> -->
   <rule ref="Squiz.WhiteSpace.FunctionOpeningBraceSpace" />
