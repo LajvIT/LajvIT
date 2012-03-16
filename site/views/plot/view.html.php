@@ -35,10 +35,9 @@ class LajvITViewPlot extends JView {
     if ($this->isRestrictedAccessAndNotCreatedByUser($mergedRole, $layout, $person, $plotId, $model)) {
       $this->redirectToList($eventId, $app, $itemId);
     }
-    if ($this->isRestrictedModificationsByCreatorUser($mergedRole, $plotId, $model)) {
-      if ($layout != 'listplots' && $layout != 'editplot') {
-        $this->redirectToList($eventId, $app, $itemId);
-      }
+    if ($this->isRestrictedModificationsByCreatorUser($mergedRole, $plotId, $model) &&
+        $layout != 'listplots' && $layout != 'editplot') {
+      $this->redirectToList($eventId, $app, $itemId);
     }
 
     if ($layout == 'deletesubplotrelation') {
@@ -56,9 +55,9 @@ class LajvITViewPlot extends JView {
     if ($layout == 'listplots') {
       $this->displayListPlots($model, $eventId, $person, $orderBy);
     } elseif ($layout == 'editplot') {
-      $this->displayEditPlot($model, $event, $plotId);
+      $this->displayEditPlot($model, $plotId, $person);
     } elseif ($layout == 'editsubplot') {
-      $this->displayEditSubPlot($model, $event, $plotId);
+      $this->displayEditSubPlot($model, $plotId);
     } elseif ($layout == 'listdistributedplots') {
       $characterId = JRequest::getInt('cid', -1);
       $this->displayListDistributedPlots($model, $eventId, $person, $characterId);
@@ -145,7 +144,7 @@ class LajvITViewPlot extends JView {
     $this->assignRef('plotObjectsFaction', $factionPlots);
   }
 
-  private function displayEditPlot($model, $event, $plotId, $person) {
+  private function displayEditPlot($model, $plotId, $person) {
     if ($plotId > 0) {
       $heading = $model->getPlotHeading($plotId);
       $description = $model->getPlotDescription($plotId);
@@ -183,7 +182,7 @@ class LajvITViewPlot extends JView {
     $this->assignRef('plotObjects', $plotObjects);
   }
 
-  private function displayEditSubPlot($model, $event, $plotId) {
+  private function displayEditSubPlot($model, $plotId) {
     $plotObjectId = JRequest::getInt('poid', -1);
     $plotObject = $model->getPlotObject($plotObjectId);
     $plotStatus = $model->getPlotStatus($plotId);
@@ -229,7 +228,7 @@ class LajvITViewPlot extends JView {
     }
   }
 
-  private function subPlotRelation($model, $event, $plotId) {
+  private function subPlotRelation($model, $event) {
     $relationType = JRequest::getString('rel', '');
     $this->plotObjectId = JRequest::getInt('poid', -1);
     $relationObjectId = JRequest::getInt('oid', -1);
@@ -254,7 +253,7 @@ class LajvITViewPlot extends JView {
     $this->assignRef('relationObjects', $relationObjects);
     $this->assignRef('plotObjectId', $this->plotObjectId);
     if ($relationObjectId > 0) {
-      $this->addSubPlotRelation($model, $event, $plotId, $this->plotObjectId, $relationObjectId, $relationType);
+      $this->addSubPlotRelation($model, $this->plotObjectId, $relationObjectId, $relationType);
       return TRUE;
     }
 
@@ -269,7 +268,7 @@ class LajvITViewPlot extends JView {
     return $conceptList;
   }
 
-  private function addSubPlotRelation($model, $event, $plotId, $plotObjectId, $relationObjectId, $relationType) {
+  private function addSubPlotRelation($model, $plotObjectId, $relationObjectId, $relationType) {
     $relationName = "";
     $errorMsg = FALSE;
 
@@ -318,7 +317,8 @@ class LajvITViewPlot extends JView {
   }
 
   private function redirectToList($eventId, $app, $itemId) {
-    $redirectLink = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid='.$eventId . '&Itemid=' . $itemId;
+    $redirectLink = 'index.php?option=com_lajvit&view=plot&layout=listplots&eid=' .
+        $eventId . '&Itemid=' . $itemId;
     $app->redirect($redirectLink);
   }
 }
