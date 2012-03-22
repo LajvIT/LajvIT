@@ -7,15 +7,17 @@ defined('_JEXEC') or die('Restricted access');
  */
 class LajvITControllerEvent extends LajvITController {
   private static $eventTableName = '#__lit_event';
+  private $model = NULL;
+  const ADMINISTRATOR = "Super Administrator";
 
   public function register() {
     $errlink = 'index.php?option=com_lajvit&view=event';
     $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
-    $model = &$this->getModel();
+    $this->model = &$this->getModel();
     $db = &JFactory::getDBO();
 
-    $person = &$model->getPerson();
+    $person = &$this->model->getPerson();
     $eventid = JRequest::getInt('eid', -1);
 
     if (!$person->check()) {
@@ -36,9 +38,9 @@ class LajvITControllerEvent extends LajvITController {
   }
 
   public function add() {
-    $model = &$this->getModel();
+    $this->model = &$this->getModel();
     $db = &JFactory::getDBO();
-    $person = &$model->getPerson();
+    $person = &$this->model->getPerson();
     $data = $this->getEventDataFromPostedForm();
     if (!$this->verifyEventData($data)) {
       return;
@@ -48,7 +50,35 @@ class LajvITControllerEvent extends LajvITController {
     $this->setRedirect($this->addEventCompletedLink($eventId));
   }
 
+  public function delete() {
+    $this->model = &$this->getModel();
+    $db = &JFactory::getDBO();
+    $person = &$this->model->getPerson();
+    $eventId = JRequest::getInt('eid', -1);
+    $deleteConfirmed = JRequest::getBool('confirmed', FALSE);
+    if (!$this->allowedToDeleteEvent($eventId)) {
+      $this->setRedirect($this->listEventsLink());
+    }
+
+    if ($deleteConfirmed) {
+      $this->model->deleteEvent($eventId);
+    }
+    $this->setRedirect($this->listEventsLink());
+  }
+
+  private function allowedToDeleteEvent($eventId) {
+    $user = &JFactory::getUser($userid);
+    if ($eventId == -1) {
+      return FALSE;
+    }
+    if ($user->usertype == $this->ADMINISTRATOR) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   private function getEventDataFromPostedForm() {
+    $db =& JFactory::getDBO();
     $eventName = JRequest::getString('eventName', "");
     $eventShortName = JRequest::getString('eventShortName', "");
     $eventStartDate = JRequest::getString('eventStartDate', "");
@@ -56,15 +86,18 @@ class LajvITControllerEvent extends LajvITController {
     $eventUrl = JRequest::getString('eventUrl', "");
     $eventStatus = JRequest::getInt('eventStatus', -1);
     $data = new stdClass();
-    $data->name = $eventName;
-    $data->shortname = $eventShortName;
-    $data->startdate = $eventStartDate;
-    $data->enddate = $eventEndDate;
-    $data->url = $eventUrl;
+    $data->name = $db->quote($eventName);
+    $data->shortname = $db->quote($eventShortName);
+    $data->startdate = $db->quote($eventStartDate);
+    $data->enddate = $db->quote($eventEndDate);
+    $data->url = $db->quote($eventUrl);
     return $data;
   }
 
   private function verifyEventData($data) {
+    if ($data->name == '') {
+      return FALSE;
+    }
     return TRUE;
   }
 
@@ -75,6 +108,9 @@ class LajvITControllerEvent extends LajvITController {
   }
 
   private function addEventCompletedLink($eventId) {
+    return $this->listEventsLink();
+  }
+  private function listEventsLink() {
     $link = 'index.php?option=com_lajvit&view=event';
     $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
     return $link;

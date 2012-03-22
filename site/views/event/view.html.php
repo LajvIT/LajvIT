@@ -11,6 +11,7 @@ class LajvITViewEvent extends JView {
     $model = &$this->getModel();
 
     $person = &$model->getPerson();
+    $user = &JFactory::getUser($userid);
 
     $incomplete = !$person->check();
     $this->assignRef('incomplete_person', $incomplete);
@@ -48,6 +49,7 @@ class LajvITViewEvent extends JView {
     }
 
     $this->assignRef('events', $events);
+    $this->assignRef('userType', $user->usertype);
 
     $eventid = JRequest::getInt('eid', -1);
     $this->assignRef('eventid', $eventid);

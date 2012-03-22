@@ -17,9 +17,13 @@ foreach ($this->events as $event) { ?>
     src="components/com_lajvit/info.png" alt="Info"/></a>
   <?php
   if ($event->role->registration_list || $event->role->character_list) { ?>
-    &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>
-      &Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
+    &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
       src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
+  }
+  if ($this->userType == "Super Administrator") { ?>
+      &nbsp;<a href="index.php?option=com_lajvit&view=event&layout=delete&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>"
+        title="Radera arrangemang"><img src="components/com_lajvit/delete_organizer.gif"
+        alt="Radera arrangemang"/></a><?php
   }
   if (FALSE) { ?>
       &nbsp;<a href="event_edit.html" title="Redigera arrangemang">
