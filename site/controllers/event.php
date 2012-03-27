@@ -79,18 +79,22 @@ class LajvITControllerEvent extends LajvITController {
 
   private function getEventDataFromPostedForm() {
     $db =& JFactory::getDBO();
-    $eventName = JRequest::getString('eventName', "");
-    $eventShortName = JRequest::getString('eventShortName', "");
-    $eventStartDate = JRequest::getString('eventStartDate', "");
-    $eventEndDate = JRequest::getString('eventEndDate', "");
-    $eventUrl = JRequest::getString('eventUrl', "");
-    $eventStatus = JRequest::getInt('eventStatus', -1);
+    $eventName = JRequest::getString('eventName', '');
+    $eventShortName = JRequest::getString('eventShortName', '');
+    $eventStartDate = JRequest::getString('eventStartDate', '');
+    $eventEndDate = JRequest::getString('eventEndDate', '');
+    $eventUrl = JRequest::getString('eventUrl', '');
+    $eventStatus = JRequest::getString('eventStatus', 'created');
+    if (!preg_match('/http:\/\/|https:\/\//', $eventUrl)) {
+      $eventUrl = 'http://' . $eventUrl;
+    }
     $data = new stdClass();
-    $data->name = $db->quote($eventName);
-    $data->shortname = $db->quote($eventShortName);
-    $data->startdate = $db->quote($eventStartDate);
-    $data->enddate = $db->quote($eventEndDate);
-    $data->url = $db->quote($eventUrl);
+    $data->name = $db->getEscaped($eventName);
+    $data->shortname = $db->getEscaped($eventShortName);
+    $data->startdate = $db->getEscaped($eventStartDate);
+    $data->enddate = $db->getEscaped($eventEndDate);
+    $data->url = $db->getEscaped($eventUrl);
+    $data->status = $db->getEscaped($eventStatus);
     return $data;
   }
 

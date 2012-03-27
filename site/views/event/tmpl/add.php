@@ -31,10 +31,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
       <tr>
         <td><strong>Status:</strong></td>
         <td><select name="eventStatus">
-            <option value="0" selected="selected">Created</option>
-            <option value="34">Open</option>
-            <option value="2">Closed</option>
-            <option value="3">Hidden</option>
+            <option value="created" selected="selected">Created</option>
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="hidden">Hidden</option>
         </select>
         </td>
       </tr>
