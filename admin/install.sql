@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS #__lit_event (
  ingameyear int NOT NULL,
  ingamemonth int,
  ingameday int,
-
+ status ENUM('created', 'open', 'closed', 'hidden'),
  description text,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000;

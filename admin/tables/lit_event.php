@@ -22,6 +22,7 @@ class TableLIT_Event extends LITTable {
   var $ingamemonth = NULL;
   var $ingameday = NULL;
   var $description = NULL;
+  var $status = 'created';
 
   function __construct(&$db) {
     parent::__construct($this->tableName, 'id', $db);
