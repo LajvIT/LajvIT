@@ -34,7 +34,7 @@ foreach ($this->events as $event) { ?>
 
   <?php
   if (!$event->registered) { ?>
-    <p><strong>Ej Registrerad.&nbsp;<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new.gif" alt="Registrera"/></a></strong></p><?php
+    <p><strong>Ej Registrerad.&nbsp;<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new_character.png" alt="Registrera"/></a></strong></p><?php
   } else { ?>
     <p><strong>Betalning: <?php
     echo $event->confirmationname;
@@ -45,8 +45,8 @@ foreach ($this->events as $event) { ?>
       if (FALSE) { ?>
         &nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info"/></a><?php
       } ?>
-      &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit.gif" alt="Redigera karaktär"/></a>
-      &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Ta bort karaktär"><img src="components/com_lajvit/delete.gif" alt="Ta bort karaktär"/></a>
+      &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Redigera karaktär"><img src="components/com_lajvit/edit_character.png" alt="Redigera karaktär"/></a>
+      &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Ta bort karaktär"><img src="components/com_lajvit/delete_character.png" alt="Ta bort karaktär"/></a>
       &nbsp;<a href="index.php?option=com_lajvit&view=plot&layout=listdistributedplots&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Intriger för karaktär"><img src="components/com_lajvit/plot.png" alt="Intriger för karaktär"/></a>
       </strong></p>
       <p><?php
@@ -59,7 +59,7 @@ foreach ($this->events as $event) { ?>
 
       <p><strong>
         Lägg till karaktär
-        &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=create&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Lägg till karaktär"><img src="components/com_lajvit/new.gif" alt="Lägg till karaktär"/></a>
+        &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=create&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Lägg till karaktär"><img src="components/com_lajvit/new_character.png" alt="Lägg till karaktär"/></a>
       </strong></p><?php
   }
 } ?>

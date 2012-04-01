@@ -20,13 +20,13 @@
  <files folder="images">
   <filename>copy.gif</filename>
   <filename>cut.gif</filename>
-  <filename>delete.gif</filename>
+  <filename>delete_character.png</filename>
   <filename>delete_organizer.gif</filename>
-  <filename>edit.gif</filename>
+  <filename>edit_character.png</filename>
   <filename>edit_organizer.gif</filename>
   <filename>info.png</filename>
   <filename>list.png</filename>
-  <filename>new.gif</filename>
+  <filename>new_character.png</filename>
   <filename>new_organizer.gif</filename>
   <filename>person.jpg</filename>
   <filename>plot.png</filename>

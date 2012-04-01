@@ -205,13 +205,13 @@ foreach ($this->factions as $faction) { ?>
                   &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=
                   <?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=
                   <?php echo $this->itemid; ?>" title="Redigera karaktär">
-                  <img src="components/com_lajvit/edit.gif" alt="Redigera karaktär" /></a><?php
+                  <img src="components/com_lajvit/edit_character.png" alt="Redigera karaktär" /></a><?php
       }
       if ($char->role->character_delete) { ?>
                   &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=
                   <?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=
                   <?php echo $this->itemid; ?>&redirect=registrations" title="Ta bort karaktär">
-                  <img src="components/com_lajvit/delete.gif" alt="Ta bort karaktär" /></a><?php
+                  <img src="components/com_lajvit/delete_character.png" alt="Ta bort karaktär" /></a><?php
       } ?>
               </td>
               <td><?php
