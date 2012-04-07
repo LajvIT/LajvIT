@@ -34,7 +34,7 @@ class LajvITControllerEvent extends LajvITController {
 
     $db->insertObject('#__lit_registration', $data);
 
-    $this->setRedirect(registrationForEventCompletedLink($eventid));
+    $this->setRedirect($this->registrationForEventCompletedLink($eventid));
   }
 
   public function add() {
