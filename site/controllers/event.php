@@ -50,6 +50,19 @@ class LajvITControllerEvent extends LajvITController {
     $this->setRedirect($this->addEventCompletedLink($eventId));
   }
 
+  public function edit() {
+    $this->model = &$this->getModel();;
+    $db = &JFactory::getDBO();;
+    $person = &$this->model->getPerson();;
+    $data = $this->getEventDataFromPostedForm();
+    if (!$this->verifyEventData($data)) {
+      $this->setRedirect($this->listEventsLink());
+      return;
+    }
+    $retval = $db->updateObject(LajvITControllerEvent::$eventTableName, $data, 'id');
+    $this->setRedirect($this->addEventCompletedLink($eventId));
+  }
+
   public function delete() {
     $this->model = &$this->getModel();
     $db = &JFactory::getDBO();
@@ -85,6 +98,7 @@ class LajvITControllerEvent extends LajvITController {
     $eventEndDate = JRequest::getString('eventEndDate', '');
     $eventUrl = JRequest::getString('eventUrl', '');
     $eventStatus = JRequest::getString('eventStatus', 'created');
+    $eventId = JRequest::getInt('eventId', -1);
     if (!preg_match('/http:\/\/|https:\/\//', $eventUrl)) {
       $eventUrl = 'http://' . $eventUrl;
     }
@@ -95,6 +109,7 @@ class LajvITControllerEvent extends LajvITController {
     $data->enddate = $db->getEscaped($eventEndDate);
     $data->url = $db->getEscaped($eventUrl);
     $data->status = $db->getEscaped($eventStatus);
+    $data->id = $db->getEscaped($eventId);
     return $data;
   }
 
