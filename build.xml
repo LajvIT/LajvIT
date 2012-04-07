@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="LajvIT" default="createArchive" basedir=".">
+  <!-- Build file for Phing -->
+
+  <property file="./build.properties" />
+
+  <fileset dir="${project.basedir}" id="allFiles">
+    <include name="*" />
+  </fileset>
+
+  <fileset dir="./site" id="component_files">
+    <include name="**" />
+  </fileset>
+  <fileset dir="./images" id="image_files">
+    <include name="**" />
+  </fileset>
+
+  <!-- copy_all Target -->
+  <target name="createArchive" description="Create component archive file">
+    <echo message="Creating tar file..." />
+    <delete file="lajvit.tar.gz" quiet="true" />
+    <tar destfile="lajvit.tar.gz" compression="gzip">
+      <fileset refid="allFiles" />
+    </tar>
+  </target>
+
+  <target name="scp" description="SCP files to test server">
+    <echo message="Copying files to test server..." />
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
+      pubkeyfile="${testServerPubKeyfile}" host="${testServer}" todir="${testServerDirectory}" level="debug">
+      <fileset refid="component_files"/>
+      <fileset refid="image_files"/>
+    </scp>
+  </target>
+</project>
