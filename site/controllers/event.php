@@ -29,8 +29,8 @@ class LajvITControllerEvent extends LajvITController {
     $data = new stdClass;
     $data->personid = $person->id;
     $data->eventid = $eventid;
-    $data->roleid = $model->getDefaultRoleId();
-    $data->confirmationid = $model->getDefaultConfirmationId();
+    $data->roleid = $this->model->getDefaultRoleId();
+    $data->confirmationid = $this->model->getDefaultConfirmationId();
 
     $db->insertObject('#__lit_registration', $data);
 

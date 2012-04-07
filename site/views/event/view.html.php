@@ -18,7 +18,7 @@ class LajvITViewEvent extends JView {
     // TODO: Check eid in case of action
 
     if ($layout == 'register') {
-      $this->setRegisterData();
+      $this->setRegisterData($model);
     } else if ($layout == 'edit') {
       $this->setEditData($events[$eventId]);
     }
@@ -35,14 +35,12 @@ class LajvITViewEvent extends JView {
 
     $this->assignRef('events', $events);
     $this->assignRef('userType', $user->usertype);
-
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
     $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
-
     parent::display($tpl);
   }
 
-  private function setRegisterData() {
+  private function setRegisterData($model) {
     $person = &$model->getPerson();
     $incomplete = !$person->check();;
     $this->assignRef('incomplete_person', $incomplete);;
