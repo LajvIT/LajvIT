@@ -9,34 +9,19 @@ jimport('joomla.application.component.view');
 class LajvITViewEvent extends JView {
   function display($tpl = NULL) {
     $model = &$this->getModel();
-
-    $person = &$model->getPerson();
+    $layout = $this->getLayout();
     $user = &JFactory::getUser($userid);
-
-    $incomplete = !$person->check();
-    $this->assignRef('incomplete_person', $incomplete);
-
-    $this->assignRef('givenname', $person->givenname);
-    $this->assignRef('surname', $person->surname);
-    $this->assignRef('pnumber', $person->pnumber);
-    $this->assignRef('sex', $person->sex);
-    $this->assignRef('email', $person->email);
-    $this->assignRef('publicemail', $person->publicemail);
-    $this->assignRef('phone1', $person->phone1);
-    $this->assignRef('phone2', $person->phone2);
-    $this->assignRef('street', $person->street);
-    $this->assignRef('zip', $person->zip);
-    $this->assignRef('town', $person->town);
-    $this->assignRef('icq', $person->icq);
-    $this->assignRef('msn', $person->msn);
-    $this->assignRef('skype', $person->skype);
-    $this->assignRef('facebook', $person->facebook);
-    $this->assignRef('illness', $person->illness);
-    $this->assignRef('allergies', $person->allergies);
-    $this->assignRef('medicine', $person->medicine);
-    $this->assignRef('info', $person->info);
-
     $events = $model->getEventsForPerson();
+    $eventId = JRequest::getInt('eid', -1);
+    $this->assignRef('eventid', $eventId);
+    $this->assignRef('eventId', $eventId);
+    // TODO: Check eid in case of action
+
+    if ($layout == 'register') {
+      $this->setRegisterData();
+    } else if ($layout == 'edit') {
+      $this->setEditData($events[$eventId]);
+    }
 
     foreach ($events as $event) {
       if (is_null($event->roleid)) {
@@ -51,14 +36,43 @@ class LajvITViewEvent extends JView {
     $this->assignRef('events', $events);
     $this->assignRef('userType', $user->usertype);
 
-    $eventid = JRequest::getInt('eid', -1);
-    $this->assignRef('eventid', $eventid);
-    $this->assignRef('eventId', $eventid);
-    // TODO: Check eid in case of action
-
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
     $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
 
     parent::display($tpl);
+  }
+
+  private function setRegisterData() {
+    $person = &$model->getPerson();
+    $incomplete = !$person->check();;
+    $this->assignRef('incomplete_person', $incomplete);;
+    $this->assignRef('givenname', $person->givenname);;
+    $this->assignRef('surname', $person->surname);;
+    $this->assignRef('pnumber', $person->pnumber);;
+    $this->assignRef('sex', $person->sex);;
+    $this->assignRef('email', $person->email);;
+    $this->assignRef('publicemail', $person->publicemail);;
+    $this->assignRef('phone1', $person->phone1);;
+    $this->assignRef('phone2', $person->phone2);;
+    $this->assignRef('street', $person->street);;
+    $this->assignRef('zip', $person->zip);;
+    $this->assignRef('town', $person->town);;
+    $this->assignRef('icq', $person->icq);;
+    $this->assignRef('msn', $person->msn);;
+    $this->assignRef('skype', $person->skype);;
+    $this->assignRef('facebook', $person->facebook);;
+    $this->assignRef('illness', $person->illness);;
+    $this->assignRef('allergies', $person->allergies);;
+    $this->assignRef('medicine', $person->medicine);;
+    $this->assignRef('info', $person->info);
+  }
+
+  private function setEditData($event) {
+    $this->assignRef('eventName', $event->name);
+    $this->assignRef('eventShortName', $event->shortname);
+    $this->assignRef('eventStartDate', $event->startdate);
+    $this->assignRef('eventEndDate', $event->enddate);
+    $this->assignRef('eventUrl', $event->url);
+    $this->assignRef('eventStatus', $event->status);
   }
 }

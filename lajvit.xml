@@ -79,6 +79,7 @@
   <filename>views/event/index.html</filename>
   <filename>views/event/view.html.php</filename>
   <filename>views/event/tmpl/add.php</filename>
+  <filename>views/event/tmpl/edit.php</filename>
   <filename>views/event/tmpl/default.php</filename>
   <filename>views/event/tmpl/delete.php</filename>
   <filename>views/event/tmpl/register.php</filename>
