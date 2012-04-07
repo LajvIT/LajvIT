@@ -28,7 +28,7 @@ foreach ($this->plotObjects as $plotObject) {
       <tr><td></td></tr>
       <tr>
         <td>
-          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=subplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new.gif" alt="Lägg till" /></a>
+          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=subplot" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>
         </td>
       </tr>
       <tr><td></td></tr>
@@ -54,7 +54,7 @@ if ($this->mergedrole->character_setstatus || $this->mergedrole->registration_se
 function printPlotObjectHeaderAndDescription($plotObject, $eventId) {
   echo "        <tr>\n";
   echo '          <td><h3>' . $plotObject->heading . '</h3>';
-  echo '<a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->id .'&layout=subplot" title="Edit subplot"><img src="components/com_lajvit/edit.gif" alt="Redigera" /></a>';
+  echo '<a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->id .'&layout=subplot" title="Edit subplot"><img src="components/com_lajvit/edit_character.png" alt="Redigera" /></a>';
   echo "</td>\n";
   echo "        </tr>\n";
   echo "        <tr>\n";
