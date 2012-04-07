@@ -22,16 +22,17 @@ foreach ($this->cultures as $culture) {
   }
   echo '    }';
 }
-echo '  }';'
+echo '  }';
 ?> -->
 </script>
 
 
 <h1><?php echo $this->events[$this->eventid]->shortname; ?> - Skapa karaktär</h1>
 
-<?php  if ($this->failed == 1) { ?>
-  <p style="color:red;">Några obligatoriska fält är inte ifyllda.</p>
-<?php  } ?>
+<?php
+if ($this->failed == 1) { ?>
+  <p style="color:red;">Några obligatoriska fält är inte ifyllda.</p><?php
+} ?>
 
 <form action="index.php" method="post" name="characterCreateForm">
 
@@ -51,22 +52,22 @@ echo '  }';'
 <tr>
 <td><strong>Faktion:</strong></td>
 <td><select name="factionid">
-<option value="0"
-<?php  if ($this->factionid <= 0) { ?>
-  selected="selected"
-<?php  } ?>
+<option value="0"<?php
+if ($this->factionid <= 0) { ?>
+  selected="selected"<?php
+} ?>
 >
   Välj faktion
-</option>
-<?php  foreach ($this->factions as $faction) { ?>
-    <option value="<?php echo $faction->id; ?>"
-<?php    if ($this->factionid == $faction->id) { ?>
-      selected="selected"
-<?php    } ?>
-    >
-      <?php echo $faction->name; ?>
-    </option>
-<?php  } ?>
+</option><?php
+foreach ($this->factions as $faction) { ?>
+    <option value="<?php echo $faction->id; ?>"<?php
+  if ($this->factionid == $faction->id) { ?>
+      selected="selected"<?php
+  } ?>
+    ><?php
+  echo $faction->name; ?>
+    </option><?php
+} ?>
 </select>*
 </td>
 </tr>
@@ -74,22 +75,22 @@ echo '  }';'
 <tr>
 <td><strong>Kultur:</strong></td>
 <td><select name="cultureid" onchange="setConceptOptions(this.options[this.selectedIndex].value);">
-<option value="0"
-<?php  if ($this->cultureid <= 0) { ?>
-  selected="selected"
-<?php  } ?>
+<option value="0"<?php
+if ($this->cultureid <= 0) { ?>
+  selected="selected"<?php
+} ?>
 >
   Välj huvudsaklig kultur
-</option>
-<?php  foreach ($this->cultures as $culture) { ?>
-    <option value="<?php echo $culture->id; ?>"
-<?php    if ($this->cultureid == $culture->id) { ?>
-      selected="selected"
-<?php    } ?>
-    >
-      <?php echo $culture->name; ?>
-    </option>
-<?php  } ?>
+</option><?php
+foreach ($this->cultures as $culture) { ?>
+    <option value="<?php echo $culture->id; ?>"<?php
+  if ($this->cultureid == $culture->id) { ?>
+      selected="selected"<?php
+  } ?>
+    ><?php
+  echo $culture->name; ?>
+    </option><?php
+} ?>
 </select>*
 </td>
 </tr>
@@ -97,23 +98,23 @@ echo '  }';'
 <tr>
 <td><strong>Rollkoncept:</strong></td>
 <td>
-<select name="conceptid" selected="<?php echo $this->conceptid; ?>">
-<?php  if ($this->cultureid > 0) { ?>
-    <option value="0">Välj huvudsakligt rollkoncept</option>
-<?php    foreach ($this->concepts as $concept) {
-      if ($concept->cultureid == $this->cultureid) { ?>
-        <option value="<?php echo $concept->id; ?>"
-<?php        if ($this->conceptid == $concept->id) { ?>
-          selected="selected"
-<?php        } ?>
-        >
-          <?php echo $concept->name; ?>
-        </option>
-<?php      }
+<select name="conceptid" selected="<?php echo $this->conceptid; ?>"><?php
+if ($this->cultureid > 0) { ?>
+    <option value="0">Välj huvudsakligt rollkoncept</option><?php
+  foreach ($this->concepts as $concept) {
+    if ($concept->cultureid == $this->cultureid) { ?>
+        <option value="<?php echo $concept->id; ?>"<?php
+      if ($this->conceptid == $concept->id) { ?>
+          selected="selected"<?php
+      } ?>
+        ><?php
+      echo $concept->name; ?>
+        </option><?php
     }
-  } else { ?>
-    <option value="0" selected="selected">Välj kultur först</option>
-<?php  } ?>
+  }
+} else { ?>
+    <option value="0" selected="selected">Välj kultur först</option><?php
+} ?>
 </select>*
 </td>
 </tr>
