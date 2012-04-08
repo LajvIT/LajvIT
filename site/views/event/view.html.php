@@ -13,11 +13,13 @@ class LajvITViewEvent extends JView {
     $user = &JFactory::getUser($userid);
     $events = $model->getEventsForPerson();
     $eventId = JRequest::getInt('eid', -1);
+    $currentEventStatus = $events[$eventId]->status;
     $this->assignRef('eventid', $eventId);
     $this->assignRef('eventId', $eventId);
-    // TODO: Check eid in case of action
 
-    if ($layout == 'register') {
+    if ($layout == 'register' && $currentEventStatus != 'open') {
+      $this->setLayout('default');
+    } else if ($layout == 'register') {
       $this->setRegisterData($model);
     } else if ($layout == 'edit') {
       $this->setEditData($events[$eventId]);
