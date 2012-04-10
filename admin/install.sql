@@ -73,6 +73,55 @@ CREATE TABLE IF NOT EXISTS #__lit_person (
 
 -- --------------------------------------------------------
 --
+-- Structure for table Groups
+-- Groups groups people together for an event.
+--
+CREATE  TABLE IF NOT EXISTS #__lit_groups (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(55) NULL DEFAULT 'unnamed' ,
+  `groupLeaderPersonId` INT NULL DEFAULT NULL ,
+  `description` TEXT NULL DEFAULT NULL ,
+  `maxParticipants` INT UNSIGNED NOT NULL DEFAULT 0 ,
+  `url` VARCHAR(255) NULL DEFAULT '' ,
+  `status` ENUM('created','approved','rejected','open','closed','hidden') NOT NULL DEFAULT 'created' ,
+  `adminInformation` TEXT NULL DEFAULT NULL ,
+  `eventId` INT NULL DEFAULT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `groupleader` (`groupLeaderPersonId`) ,
+  INDEX `event` (`eventId` ASC) ,
+  CONSTRAINT `groupleader`
+    FOREIGN KEY (`groupLeaderPersonId`)
+    REFERENCES #__lit_person (`id`)
+    ON DELETE SET NULL
+    ON UPDATE NO ACTION,
+  CONSTRAINT `event`
+    FOREIGN KEY (`eventId` )
+    REFERENCES #__lit_event (`id` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+
+
+CREATE  TABLE IF NOT EXISTS #__lit_group_members (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `groupId` INT UNSIGNED NOT NULL DEFAULT 0,
+  `personId` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`) ,
+  INDEX `person` (`personId` ASC) ,
+  INDEX `group` (`groupId` ASC) ,
+  CONSTRAINT `personId`
+    FOREIGN KEY (`personId`)
+    REFERENCES #__lit_person (`id`)
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION,
+  CONSTRAINT `group`
+    FOREIGN KEY (`groupId`)
+    REFERENCES #__lit_groups (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+-- --------------------------------------------------------
+--
 -- Structure for table Role
 -- Role is in what role a person is connected to an event.
 --
