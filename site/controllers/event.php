@@ -98,7 +98,7 @@ class LajvITControllerEvent extends LajvITController {
     $eventEndDate = JRequest::getString('eventEndDate', '');
     $eventUrl = JRequest::getString('eventUrl', '');
     $eventStatus = JRequest::getString('eventStatus', 'created');
-    $eventId = JRequest::getInt('eventId', -1);
+    $eventId = JRequest::getInt('eventId', NULL);
     if (!preg_match('/http:\/\/|https:\/\//', $eventUrl)) {
       $eventUrl = 'http://' . $eventUrl;
     }
