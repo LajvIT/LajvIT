@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
@@ -12,22 +12,24 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 
 <?php
-foreach ($this->events as $event) { ?>
+foreach ($this->events as $event) {
+  if ($event->status != 'open' && $this->userType != 'Super Administrator') {
+    continue;
+  }?>
   <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info"><img
     src="components/com_lajvit/info.png" alt="Info"/></a>
   <?php
   if ($event->role->registration_list || $event->role->character_list) { ?>
-    &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
-      src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
+    &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Lista kända karaktärer"><img
+      src="components/com_lajvit/list.png" alt="Lista kända karaktärer"/></a><?php
   }
   if ($this->userType == "Super Administrator") { ?>
       &nbsp;<a href="index.php?option=com_lajvit&view=event&layout=delete&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>"
         title="Radera arrangemang"><img src="components/com_lajvit/delete_organizer.gif"
         alt="Radera arrangemang"/></a><?php
   }
-  if (FALSE) { ?>
-      &nbsp;<a href="event_edit.html" title="Redigera arrangemang">
-      <img src="components/com_lajvit/edit_organizer.gif" alt="Redigera arrangemang"/></a><?php
+  if ($this->userType == 'Super Administrator') { ?>
+      &nbsp;<a href="index.php?option=com_lajvit&view=event&layout=edit&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Redigera arrangemang"><img src="components/com_lajvit/edit_organizer.gif" alt="Redigera arrangemang"/></a><?php
   } ?>
   </h2>
   <p>Start: <?php echo $event->startdate; ?> Slut: <?php echo $event->enddate; ?></p>
