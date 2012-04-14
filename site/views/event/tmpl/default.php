@@ -12,8 +12,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 
 <?php
+
+
 foreach ($this->events as $event) {
-  if ($event->status != 'open' && $this->userType != 'Super Administrator') {
+  $isEventOpen = ($event->status == 'open' ? TRUE : FALSE);
+  $isEventHidden = ($event->status == 'hidden' ? TRUE : FALSE);
+
+  if ($isEventHidden && $this->userType != 'Super Administrator') {
     continue;
   }?>
   <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info"><img
@@ -35,9 +40,9 @@ foreach ($this->events as $event) {
   <p>Start: <?php echo $event->startdate; ?> Slut: <?php echo $event->enddate; ?></p>
 
   <?php
-  if (!$event->registered) { ?>
+  if (!$event->registered && $isEventOpen) { ?>
     <p><strong>Ej Registrerad.&nbsp;<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new_character.png" alt="Registrera"/></a></strong></p><?php
-  } else { ?>
+  } else if ($isEventOpen) { ?>
     <p><strong>Betalning: <?php
     echo $event->confirmationname;
     echo '(' . $event->payment . ' kr)'; ?></strong></p><?php
