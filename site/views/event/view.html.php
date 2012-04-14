@@ -10,10 +10,13 @@ class LajvITViewEvent extends JView {
   function display($tpl = NULL) {
     $model = &$this->getModel();
     $layout = $this->getLayout();
-    $user = &JFactory::getUser($userid);
+    $user = &JFactory::getUser();
     $events = $model->getEventsForPerson();
     $eventId = JRequest::getInt('eid', -1);
-    $currentEventStatus = $events[$eventId]->status;
+    $currentEventStatus = '';
+    if ($eventId > 0) {
+      $currentEventStatus = $events[$eventId]->status;
+    }
     $this->assignRef('eventid', $eventId);
     $this->assignRef('eventId', $eventId);
 

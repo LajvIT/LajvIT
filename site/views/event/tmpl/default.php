@@ -17,6 +17,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 foreach ($this->events as $event) {
   $isEventOpen = ($event->status == 'open' ? TRUE : FALSE);
   $isEventHidden = ($event->status == 'hidden' ? TRUE : FALSE);
+  $allowedToListRegistrations = FALSE;
+  $allowedToListCharacters = FALSE;
+  if (isset($event->role)) {
+    $allowedToListRegistrations = ($event->role->registration_list == 1 ? TRUE : FALSE);
+    $allowedToListCharacters = ($event->role->character_list == 1 ? TRUE : FALSE);
+  }
 
   if ($isEventHidden && $this->userType != 'Super Administrator') {
     continue;
@@ -24,7 +30,7 @@ foreach ($this->events as $event) {
   <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info"><img
     src="components/com_lajvit/info.png" alt="Info"/></a>
   <?php
-  if ($event->role->registration_list || $event->role->character_list) { ?>
+  if ($allowedToListRegistrations || $allowedToListCharacters) { ?>
     &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
       src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
   }
