@@ -41,6 +41,9 @@ class LajvITControllerEvent extends LajvITController {
     $this->model = &$this->getModel();
     $db = &JFactory::getDBO();
     $person = &$this->model->getPerson();
+    if ($person->userType != 'Super Administrator') {
+      $this->setRedirect($this->listEventsLink());
+    }
     $data = $this->getEventDataFromPostedForm();
     if (!$this->verifyEventData($data)) {
       return;

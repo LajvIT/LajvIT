@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
   Mina Arrangemang
-<?php if (TRUE) { ?>
+<?php if ($this->userType == 'Super Administrator') { ?>
   &nbsp;<a href="index.php?option=com_lajvit&view=event&Itemid=<?php echo $this->itemid; ?>&layout=add" title="Lägg till arrangemang"><img
     src="components/com_lajvit/new_organizer.gif" alt="Lägg till arrangemang" /> </a>
   <?php

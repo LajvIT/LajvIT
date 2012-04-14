@@ -21,6 +21,8 @@ class LajvITViewEvent extends JView {
       $this->setLayout('default');
     } else if ($layout == 'register') {
       $this->setRegisterData($model);
+    } else if ($layout == 'add' && $user->usertype != 'Super Administrator') {
+      $this->setLayout('default');
     } else if ($layout == 'edit') {
       $this->setEditData($events[$eventId]);
     }
