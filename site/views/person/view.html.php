@@ -56,7 +56,7 @@ class LajvITViewPerson extends JView {
 
     $this->assignRef('username', $person->_username);
 
-    if ($role->registration_list) {
+    if (is_array($role) && $role->registration_list) {
       $personroles = $model->getAllRolesMerged($eventid, $personid);
       $this->assignRef('eventname', $personroles->eventname);
       $this->assignRef('personrolenames', $personroles->name);
