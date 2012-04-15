@@ -53,7 +53,7 @@ class LajvITViewPlot extends JView {
     }
 
     if ($layout == 'listplots') {
-      $this->displayListPlots($model, $eventId, $person, $orderBy);
+      $this->displayListPlots($model, $eventId);
     } elseif ($layout == 'editplot') {
       $this->displayEditPlot($model, $plotId, $person);
     } elseif ($layout == 'editsubplot') {
@@ -77,7 +77,12 @@ class LajvITViewPlot extends JView {
   }
 
   private function isAdminUser($mergedRole) {
-    if ($mergedRole->character_setstatus || $mergedRole->registration_setstatus || $mergedRole->registration_setrole) {
+    if (is_array($mergedRole) && ((array_key_exists('character_setstatus', $mergedRole) &&
+          $mergedRole->character_setstatus) ||
+        (array_key_exists('registration_setstatus', $mergedRole) &&
+          $mergedRole->registration_setstatus) ||
+        (array_key_exists('registration_setrole', $mergedRole) &&
+          $mergedRole->registration_setrole)) ) {
       return TRUE;
     } else {
       return FALSE;
@@ -106,9 +111,9 @@ class LajvITViewPlot extends JView {
     }
     if ($orderBy != "") {
       $this->orderArrayOfObjectsBy($plots, $orderBy, $direction);
-      $this->assignRef('orderBy', $orderBy);
       $this->assignRef('sortOrder', $direction);
     }
+    $this->assignRef('orderBy', $orderBy);
     $this->assignRef('plots', $plots);
   }
 
@@ -191,8 +196,13 @@ class LajvITViewPlot extends JView {
     } else {
       $plotEditableByCreator = 0;
     }
-    $heading = $plotObject->heading;
-    $description = $plotObject->description;
+    if (is_object($plotObject)) {
+      $heading = $plotObject->heading;
+      $description = $plotObject->description;
+    } else {
+      $heading = '';
+      $description = '';
+    }
     $this->assignRef('heading', $heading);
     $this->assignRef('description', $description);
     $this->assignRef('plotObject', $plotObject);
