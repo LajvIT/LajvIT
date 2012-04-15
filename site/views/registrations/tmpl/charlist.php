@@ -94,8 +94,9 @@ if ($this->mergedrole->character_list) { ?>
         </tr><?php
   } ?>
     </table>
-
-    <textarea name="csvdata" cols="80" rows="50">Förnamn;Efternamn;Rollnamn;Rollkoncept;Kultur;Faktion <?php
+    <textarea name="csvdata"
+      cols="80" rows="50">Förnamn;Efternamn;Rollnamn;Rollkoncept;Kultur;Faktion<?php
+  echo "\n";
   foreach ($this->factions as $faction) {
     foreach ($faction->characters as $char) {
       if (!$char->role->character_list) {
