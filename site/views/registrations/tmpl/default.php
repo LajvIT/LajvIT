@@ -270,7 +270,7 @@ foreach ($this->factions as $faction) { ?>
         } else { ?>
                     <select name="confirmationid_<?php echo $char->id; ?>"><?php
           foreach ($this->confirmations as $confirmation) { ?>
-                        <option value="<?echo $confirmation->id; ?>"<?php
+                        <option value="<?php echo $confirmation->id; ?>"<?php
             if ($char->confirmationid == $confirmation->id) { ?>
                             selected="selected"<?php
             } ?> ><?php
