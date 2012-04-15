@@ -179,7 +179,7 @@ class LajvITModelLajvIT extends JModel {
     }
 
     foreach (get_object_vars($b) as $k => $v) {
-      $ret->$k = (array_key_exists($k, $ret) ? $ret->$k = $v : $v);
+      $ret->$k = (array_key_exists($k, $ret) ? $ret->$k : $v);
     }
 
     $ret->name = $name;
