@@ -64,12 +64,13 @@ if ($this->mergedrole->registration_list && $this->mergedrole->person_viewcontac
   </table>
 
   <textarea name="csvdata" cols="80" rows="50">Förnamn;Efternamn;Personnummer;Medlemsavgift;Startdatum;Slutdatum;Kön;CO-Adress;Gatuadress;Postnr;Ort;Land;E-postadress;Telefon 1;Telefon 2<?php
+  echo "\n";
   foreach ($this->factions as $faction) {
     foreach ($faction->characters as $char) {
       if (!$char->role->registration_list || !$char->role->person_viewcontactinfo) {
         continue;
       }
-      if ($personrow[$char->personid]) {
+      if (array_key_exists($char->personid, $personrow)) {
         continue;
       }
 
