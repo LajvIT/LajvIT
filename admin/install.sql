@@ -94,6 +94,9 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  character_view_private boolean NOT NULL DEFAULT FALSE,
  person_viewcontactinfo boolean NOT NULL DEFAULT FALSE,
  person_viewmedical boolean NOT NULL DEFAULT FALSE,
+ event_create boolean NOT NULL DEFAULT FALSE,
+ event_edit boolean NOT NULL DEFAULT FALSE,
+ event_delete boolean NOT NULL DEFAULT FALSE
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
