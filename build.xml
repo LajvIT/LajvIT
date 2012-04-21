@@ -14,8 +14,10 @@
   <fileset dir="./images" id="image_files">
     <include name="**" />
   </fileset>
+  <fileset dir="./admin/tables" id="table_files">
+    <include name="**" />
+  </fileset>
 
-  <!-- copy_all Target -->
   <target name="createArchive" description="Create component archive file">
     <echo message="Creating tar file..." />
     <delete file="lajvit.tar.gz" quiet="true" />
@@ -25,11 +27,26 @@
   </target>
 
   <target name="scp" description="SCP files to test server">
-    <echo message="Copying files to test server..." />
+    <echo message="Copying component files to test server..." />
     <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
-      pubkeyfile="${testServerPubKeyfile}" host="${testServer}" todir="${testServerDirectory}" level="debug">
+      pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+      todir="${testServerDirectory}/components/com_lajvit">
       <fileset refid="component_files"/>
-      <fileset refid="image_files"/>
+    </scp>
+    <echo message="Copying table files to test server..." />
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
+            pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+      todir="${testServerDirectory}/administrator/components/com_lajvit/tables">
+      <fileset refid="table_files"/>
+    </scp>
+  </target>
+
+  <target name="scpImages" description="SCP images to test server">
+    <echo message="Copying images to test server..." />
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
+        pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+        todir="${testServerDirectory}/components/com_lajvit">
+        <fileset refid="image_files"/>
     </scp>
   </target>
 </project>

@@ -9,7 +9,7 @@ defined('_JEXEC') or die('Restricted access');
   <table>
     <tbody>
       <?php
-if ($this->relationAddedName != "") {
+if (array_key_exists('relationAddedName', $this) && $this->relationAddedName != "") {
   echo "<tr>\n";
   echo "<td>";
   if ($this->errorMsg == TRUE) {

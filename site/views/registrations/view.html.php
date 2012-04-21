@@ -54,6 +54,8 @@ class LajvITViewRegistrations extends JView {
           unset($faction->characters[$i]);
         } else if ($char->role->registration_list && $char->role->person_viewcontactinfo) {
           $char->person = &$model->getPerson($char->personid);
+        } else {
+          $char->person = &$model->getPerson($char->personid);
         }
       }
     }

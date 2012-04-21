@@ -25,6 +25,6 @@ class TableLIT_Event extends LITTable {
   var $status = 'created';
 
   function __construct(&$db) {
-    parent::__construct($this->tableName, 'id', $db);
+    parent::__construct(self::$tableName, 'id', $db);
   }
 }

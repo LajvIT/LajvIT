@@ -3,7 +3,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
   Mina Arrangemang
-<?php if (TRUE) { ?>
+<?php if ($this->userType == 'Super Administrator') { ?>
   &nbsp;<a href="index.php?option=com_lajvit&view=event&Itemid=<?php echo $this->itemid; ?>&layout=add" title="Lägg till arrangemang"><img
     src="components/com_lajvit/new_organizer.gif" alt="Lägg till arrangemang" /> </a>
   <?php
@@ -12,32 +12,47 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 
 <?php
+
+
 foreach ($this->events as $event) {
-  if ($event->status != 'open' && $this->userType != 'Super Administrator') {
+  $isEventOpen = ($event->status == 'open' ? TRUE : FALSE);
+  $isEventHidden = ($event->status == 'hidden' ? TRUE : FALSE);
+  $allowedToListRegistrations = FALSE;
+  $allowedToListCharacters = FALSE;
+  $allowedToEditEvent = FALSE;
+  $allowedToDeleteEvent = FALSE;
+  if (isset($event->role) && is_object($event->role)) {
+    $allowedToListRegistrations = ($event->role->registration_list == 1 ? TRUE : FALSE);
+    $allowedToListCharacters = ($event->role->character_list == 1 ? TRUE : FALSE);
+    $allowedToEditEvent = ($event->role->event_edit == 1 ? TRUE : FALSE);
+    $allowedToDeleteEvent = ($event->role->event_delete == 1 ? TRUE : FALSE);
+  }
+
+  if ($isEventHidden && $this->userType != 'Super Administrator') {
     continue;
   }?>
   <h2><?php echo $event->name; ?>&nbsp;<a href="<?php echo $event->url; ?>" title="Info"><img
     src="components/com_lajvit/info.png" alt="Info"/></a>
   <?php
-  if ($event->role->registration_list || $event->role->character_list) { ?>
+  if ($allowedToListRegistrations || $allowedToListCharacters) { ?>
     &nbsp;<a href="index.php?option=com_lajvit&view=registrations&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Anmälningar"><img
       src="components/com_lajvit/list.png" alt="Anmälningar"/></a><?php
   }
-  if ($this->userType == "Super Administrator") { ?>
+  if ($this->userType == "Super Administrator" || $allowedToDeleteEvent) { ?>
       &nbsp;<a href="index.php?option=com_lajvit&view=event&layout=delete&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>"
         title="Radera arrangemang"><img src="components/com_lajvit/delete_organizer.gif"
         alt="Radera arrangemang"/></a><?php
   }
-  if ($this->userType == 'Super Administrator') { ?>
+  if ($allowedToEditEvent) { ?>
       &nbsp;<a href="index.php?option=com_lajvit&view=event&layout=edit&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Redigera arrangemang"><img src="components/com_lajvit/edit_organizer.gif" alt="Redigera arrangemang"/></a><?php
   } ?>
   </h2>
   <p>Start: <?php echo $event->startdate; ?> Slut: <?php echo $event->enddate; ?></p>
 
   <?php
-  if (!$event->registered) { ?>
+  if (!$event->registered && $isEventOpen) { ?>
     <p><strong>Ej Registrerad.&nbsp;<a href="index.php?option=com_lajvit&view=event&layout=register&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Registrera"><img src="components/com_lajvit/new_character.png" alt="Registrera"/></a></strong></p><?php
-  } else { ?>
+  } else if ($isEventOpen) { ?>
     <p><strong>Betalning: <?php
     echo $event->confirmationname;
     echo '(' . $event->payment . ' kr)'; ?></strong></p><?php

@@ -9,25 +9,36 @@ jimport('joomla.application.component.view');
 class LajvITViewEvent extends JView {
   function display($tpl = NULL) {
     $model = &$this->getModel();
+    $eventModel =& JModel::getInstance('eventmodel', 'lajvitmodel');
     $layout = $this->getLayout();
-    $user = &JFactory::getUser($userid);
+    $user = &JFactory::getUser();
     $events = $model->getEventsForPerson();
     $eventId = JRequest::getInt('eid', -1);
-    $currentEventStatus = $events[$eventId]->status;
+    $currentEventStatus = '';
+    if ($eventId > 0) {
+      $currentEventStatus = $events[$eventId]->status;
+    }
     $this->assignRef('eventid', $eventId);
     $this->assignRef('eventId', $eventId);
-
     if ($layout == 'register' && $currentEventStatus != 'open') {
       $this->setLayout('default');
     } else if ($layout == 'register') {
       $this->setRegisterData($model);
+    } else if ($layout == 'add' && $user->usertype != 'Super Administrator') {
+      $this->setLayout('default');
     } else if ($layout == 'edit') {
-      $this->setEditData($events[$eventId]);
+      $isUserAllowedToEditEvent = $eventModel->isUserAllowedToEditEvent($user, $eventId);
+      if ($isUserAllowedToEditEvent) {
+        $this->setEditData($events[$eventId], $user);
+      } else {
+        $this->setLayout('default');
+      }
     }
 
     foreach ($events as $event) {
       if (is_null($event->roleid)) {
         $event->registered = FALSE;
+        $event->role = $model->getRoleForEvent($event->id);
       } else {
         $event->registered = TRUE;
         $event->characters = $model->getCharactersForEvent($event->id, $event->personid);
@@ -67,7 +78,8 @@ class LajvITViewEvent extends JView {
     $this->assignRef('info', $person->info);
   }
 
-  private function setEditData($event) {
+  private function setEditData($event, $isUserAllowedToEditEvent) {
+    $this->assignRef('isUserAllowedToEditEvent', $isUserAllowedToEditEvent);
     $this->assignRef('eventName', $event->name);
     $this->assignRef('eventShortName', $event->shortname);
     $this->assignRef('eventStartDate', $event->startdate);

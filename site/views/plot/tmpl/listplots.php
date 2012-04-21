@@ -7,7 +7,7 @@ $creatorSortOrder = ($this->orderBy == 'plotCreatorName' && $this->sortOrder == 
 $createdSortOrder = ($this->orderBy == 'created' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
 $updatedSortOrder = ($this->orderBy == 'updated' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
 
-function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirmation, $page, $faction) {
+function getLink($event, $item, $orderBy, $sortOrder) {
   $link = "index.php?option=com_lajvit&view=plot&layout=listplots";
   $link .= "&eid=" . $event;
   $link .= "&Itemid=" . $item;

@@ -25,17 +25,13 @@ defined('_JEXEC') or die('Restricted access');
       </tr>
       <tr>
         <td colspan="2">Status: <?php
-if ( ( $this->mergedrole->character_setstatus ||
-        $this->mergedrole->registration_setstatus ||
-        $this->mergedrole->registration_setrole ) ||
+if (isRoleAllowedToChangeStatus($this->mergedrole) ||
       $this->statusId == 100 || $this->statusId == 101 ) {
   ?>
           <select name="statusId"><?php
   foreach ($this->status as $status) {
     if ($status->id == 100 || $status->id == 101 ||
-        ( $this->mergedrole->character_setstatus ||
-            $this->mergedrole->registration_setstatus ||
-            $this->mergedrole->registration_setrole ) ) {?>
+        isRoleAllowedToChangeStatus($this->mergedrole) ) {?>
             <option value="<?php echo $status->id; ?>" <?php
       if ($this->statusId == $status->id) {
         ?> selected="selected" <?php
@@ -54,9 +50,7 @@ if ( ( $this->mergedrole->character_setstatus ||
       <tr>
           <td colspan="2"><?php
 
-if ( ($this->mergedrole->character_setstatus ||
-    $this->mergedrole->registration_setstatus ||
-    $this->mergedrole->registration_setrole ) ||
+if ( isRoleAllowedToChangeStatus($this->mergedrole) ||
     $this->statusId == 100 || $this->statusId == 101 ) { ?>
           <input type="submit" value="Spara ändringar" />
           <input type="hidden" name="option" value="com_lajvit" />
@@ -166,4 +160,20 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
   }
 }
 
+function isRoleAllowedToChangeStatus($mergedRole) {
+  if (!is_array($mergedRole)) {
+    return FALSE;
+  }
+  if ((array_key_exists('character_setstatus', $mergedRole) &&
+      $mergedRole->character_setstatus)) {
+    return TRUE;
+  } else if ((array_key_exists('registration_setstatus', $mergedRole) &&
+      $mergedRole->registration_setstatus)) {
+    return TRUE;
+  } else if ((array_key_exists('registration_setrole', $mergedRole) &&
+      $mergedRole->registration_setrole)) {
+    return TRUE;
+  }
+  return FALSE;
+}
 ?>

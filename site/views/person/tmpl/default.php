@@ -12,7 +12,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
     <td>Efternamn:</td>
     <td><?php echo $this->surname; ?></td>
   </tr><?php
-if ($this->role->person_viewcontactinfo || $this->role->person_viewmedical) { ?>
+if (is_array($this->role) &&
+    ($this->role->person_viewcontactinfo || $this->role->person_viewmedical)) { ?>
     <tr>
       <td>Personnummer:</td>
       <td><?php echo $this->pnumber; ?></td>
@@ -29,7 +30,8 @@ if ($this->role->person_viewcontactinfo || $this->role->person_viewmedical) { ?>
     </tr><?php
 }
 
-if ($this->role->person_viewcontactinfo) { ?>
+if (is_array($this->role) &&
+    ($this->role->person_viewcontactinfo)) { ?>
     <tr>
       <td>E-post:</td>
       <td><?php echo $this->email; ?></td>
@@ -40,7 +42,8 @@ if ($this->role->person_viewcontactinfo) { ?>
     <td><?php echo $this->publicemail; ?></td>
   </tr><?php
 
-if ($this->role->person_viewcontactinfo) { ?>
+if (is_array($this->role) &&
+    ($this->role->person_viewcontactinfo)) { ?>
     <tr>
       <td>Telefon:</td>
       <td><?php echo $this->phone1; ?></td>
@@ -62,7 +65,8 @@ if ($this->role->person_viewcontactinfo) { ?>
     <td>Stad:</td>
     <td><?php echo $this->town; ?></td>
   </tr><?php
-if ($this->role->person_viewcontactinfo) { ?>
+if (is_array($this->role) &&
+    ($this->role->person_viewcontactinfo)) { ?>
     <tr>
       <td>Icq:</td>
       <td><?php echo $this->icq; ?></td>
@@ -81,7 +85,8 @@ if ($this->role->person_viewcontactinfo) { ?>
     </tr><?php
 }
 
-if ($this->role->person_viewmedical) { ?>
+if (is_array($this->role) &&
+    ($this->role->person_viewmedical)) { ?>
     <tr>
       <td>Eventuella sjukdomar:</td>
       <td><?php echo $this->illness; ?></td>
@@ -104,7 +109,8 @@ if ($this->role->person_viewmedical) { ?>
     <td><?php echo $this->username; ?></td>
   </tr><?php
 
-if ($this->role->registration_list) { ?>
+if (is_array($this->role) &&
+    ($this->role->registration_list)) { ?>
     <tr>
       <td>Roller <?php echo $this->eventname; ?>:</td>
       <td><?php echo $this->personrolenames; ?></td>

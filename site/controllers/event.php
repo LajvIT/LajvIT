@@ -41,6 +41,9 @@ class LajvITControllerEvent extends LajvITController {
     $this->model = &$this->getModel();
     $db = &JFactory::getDBO();
     $person = &$this->model->getPerson();
+    if ($person->userType != 'Super Administrator') {
+      $this->setRedirect($this->listEventsLink());
+    }
     $data = $this->getEventDataFromPostedForm();
     if (!$this->verifyEventData($data)) {
       return;
@@ -98,7 +101,7 @@ class LajvITControllerEvent extends LajvITController {
     $eventEndDate = JRequest::getString('eventEndDate', '');
     $eventUrl = JRequest::getString('eventUrl', '');
     $eventStatus = JRequest::getString('eventStatus', 'created');
-    $eventId = JRequest::getInt('eventId', -1);
+    $eventId = JRequest::getInt('eventId', NULL);
     if (!preg_match('/http:\/\/|https:\/\//', $eventUrl)) {
       $eventUrl = 'http://' . $eventUrl;
     }

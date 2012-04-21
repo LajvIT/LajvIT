@@ -69,11 +69,13 @@ if ($this->mergedrole->registration_list && $this->mergedrole->person_viewmedica
       ?>;Gatuadress;Postnr;Ort;E-postadress;Telefon 1;Telefon 2<?php
     }
     ?>;Publik epost;Allergier;Medicinsk info<?php
+    echo "\n";
     foreach ($faction->characters as $char) {
+
       if (!$char->role->registration_list || !$char->role->person_viewcontactinfo) {
         continue;
       }
-      if ($personrow[$char->personid]) {
+      if (array_key_exists($char->personid, $personrow)) {
         continue;
       }
 
@@ -89,7 +91,7 @@ if ($this->mergedrole->registration_list && $this->mergedrole->person_viewmedica
       $char->person->allergies = str_replace("\r", "| ", $char->person->allergies);
       $char->person->medicine = str_replace("\r", "| ", $char->person->medicine);
 
-      echo $char->name.';';
+      echo $char->fullname.';';
       echo $char->person->givenname.';';
       echo $char->person->surname.';';
       echo $char->person->pnumber.';';

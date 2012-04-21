@@ -238,7 +238,7 @@ foreach ($this->factions as $faction) { ?>
                 <td></td>
                 <td></td>
                 <td><?php
-        if (!$personrow[$char->personid]) { ?>
+        if (array_key_exists($char->personid, $personrow) && !$personrow[$char->personid]) { ?>
                     <a name="person_<?php echo $char->personid; ?>"></a><?php
         } ?>
                   <input type="hidden" name="pid_<?php echo $char->id; ?>" value="<?php echo $char->personid; ?>" /><?php
@@ -254,7 +254,7 @@ foreach ($this->factions as $faction) { ?>
                 </td>
                 <td><?php
         if ($this->role->registration_setrole) {
-          if ($personrow[$char->personid]) { ?>
+          if (array_key_exists($char->personid, $personrow) && $personrow[$char->personid]) { ?>
                       <a href="#person_<?php echo $char->personid; ?>"><?php echo $char->rolename; ?></a><?php
           } else {
             echo $char->rolename;
@@ -265,12 +265,12 @@ foreach ($this->factions as $faction) { ?>
         if (!$this->role->registration_setstatus) {
           echo $char->confirmationname;
           echo $char->payment . '&nbsp;kr';
-        } else if ($personrow[$char->personid]) { ?>
+        } else if (array_key_exists($char->personid, $personrow) && $personrow[$char->personid]) { ?>
                     <a href="#person_<?php echo $char->personid; ?>"><?php echo $char->confirmationname; ?></a> <?php echo $char->payment; ?>&nbsp;kr<?php
         } else { ?>
                     <select name="confirmationid_<?php echo $char->id; ?>"><?php
           foreach ($this->confirmations as $confirmation) { ?>
-                        <option value="<?echo $confirmation->id; ?>"<?php
+                        <option value="<?php echo $confirmation->id; ?>"<?php
             if ($char->confirmationid == $confirmation->id) { ?>
                             selected="selected"<?php
             } ?> ><?php
