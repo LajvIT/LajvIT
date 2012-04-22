@@ -19,7 +19,7 @@ class TableLIT_Groups extends LITTable {
   var $eventId = NULL;
 
   function __construct(&$db) {
-    parent::__construct($this->tableName, 'id', $db);
+    parent::__construct(TableLIT_Groups::$tableName, 'id', $db);
   }
 }
 

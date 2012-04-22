@@ -8,9 +8,9 @@ jimport('joomla.application.component.view');
  */
 class LajvITViewGroup extends JView {
   function display($tpl = NULL) {
-    $model = &$this->getModel('groups');
+    $model = &$this->getModel('groupmodel');
     $layout = $this->getLayout();
-    $user = &JFactory::getUser($userid);
+    $user = &JFactory::getUser();
 
     $this->assignRef('eventId', JRequest::getInt('eid', 0));
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
