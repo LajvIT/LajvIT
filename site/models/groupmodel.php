@@ -13,7 +13,6 @@ class LajvITModelGroupModel extends JModel {
   function createGroup($data) {
     echo 'creating table';
     $db = &JFactory::getDBO();
-//         $group = new TableLIT_Groups($db);
     $group = JTable::getInstance('lit_groups', 'Table');
     $group->bind($data);
     $creationSuccess = $group->store();

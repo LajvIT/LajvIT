@@ -13,10 +13,12 @@ class TableLIT_Groups extends LITTable {
   var $name = '';
   var $description = NULL;
   var $maxParticipants = 0;
+  var $expectedParticipants = 0;
   var $url = '';
   var $status = 'created';
   var $adminInformation = NULL;
   var $eventId = NULL;
+  var $visible = 0;
 
   function __construct(&$db) {
     parent::__construct(TableLIT_Groups::$tableName, 'id', $db);

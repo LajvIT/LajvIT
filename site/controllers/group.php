@@ -23,14 +23,13 @@ class LajvITControllerGroup extends LajvITController {
     $this->person = &$this->lajvitModel->getPerson();
     $data = $this->getGroupDataFromPostedForm();
     if (!$this->verifyGroupData($data)) {
+      $this->setRedirect($this->listGroupsLink());
       return;
     }
     $groupId = $this->groupModel->createGroup($data);
     if (is_int($groupId) && $groupId > 0) {
-      echo "Group created<br>\n";
       $this->setRedirect($this->createGroupCompletedLink($groupId));
     } else {
-      echo "Group creation failed<br>\n";
       $this->setRedirect($this->listGroupsLink());
     }
   }
@@ -54,9 +53,11 @@ class LajvITControllerGroup extends LajvITController {
     $groupUrl = JRequest::getString('groupUrl', '');
     $groupAdminInfo = JRequest::getString('groupAdminInfo', '');
     $groupMaxParticipants = JRequest::getInt('groupMaxParticipants', 0);
+    $groupExpectedParticipants = JRequest::getInt('groupExpectedParticipants', 0);
     $groupStatus = JRequest::getString('groupStatus', 'created');
     $groupEventId = JRequest::getInt('eventId', -1);
     $groupLeaderPersonId = JRequest::getInt('groupLeaderId', $this->person->id);
+    $visible = JRequest::getInt('groupVisible', 0);
     if (!preg_match('/http:\/\/|https:\/\//', $groupUrl)) {
       $groupUrl = 'http://' . $groupUrl;
     }
@@ -66,15 +67,20 @@ class LajvITControllerGroup extends LajvITController {
     $data->url = $db->getEscaped($groupUrl);
     $data->adminInformation = $db->getEscaped($groupAdminInfo);
     $data->maxParticipants = $db->getEscaped($groupMaxParticipants);
+    $data->expectedParticipants = $db->getEscaped($groupExpectedParticipants);
     $data->status = $db->getEscaped($groupStatus);
     $data->eventId = $db->getEscaped($groupEventId);
     $data->id = $db->getEscaped($groupId);
     $data->grouLeaderPersonId = $db->getEscaped($groupLeaderPersonId);
+    $data->visible = $db->getEscaped($visible);
     return $data;
   }
 
   private function verifyGroupData($data) {
     if ($data->name == '') {
+      return FALSE;
+    }
+    if (!is_numeric($data->visible) || !($data->visible >= 0 && $data->visible <= 1)) {
       return FALSE;
     }
     return TRUE;

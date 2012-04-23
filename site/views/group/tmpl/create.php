@@ -17,8 +17,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <td><textArea name="groupDescription" cols="40" rows="5" ></textArea></td>
       </tr>
       <tr>
-        <td><strong>Antal deltagare:</strong></td>
+        <td><strong>Max antal medlemmar:</strong></td>
         <td><input type="text" name="groupMaxParticipants" value="" size="3"></td>
+      </tr>
+      <tr>
+        <td><strong>Förväntat antal deltagare:</strong></td>
+        <td><input type="text" name="groupExpectedParticipants" value="" size="3"></td>
       </tr>
       <tr>
         <td><strong>Information till arrangör:</strong></td>
@@ -27,6 +31,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
       <tr>
         <td><strong>Hemsida:</strong></td>
         <td><input type="text" name="groupUrl" value="" size="40"></td>
+      </tr>
+      <tr>
+        <td><strong>Synlighet för alla deltagare:</strong></td>
+        <td>
+          <select name="groupVisible">
+            <option value="0">Gömd</option>
+            <option value="1">Synlig</option>
+          </select>
+        </td>
       </tr>
       <tr>
         <td></td>
