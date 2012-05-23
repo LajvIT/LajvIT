@@ -11,18 +11,18 @@ defined('_JEXEC') or die('Restricted access'); ?>
     }
 <?php
 foreach ($this->cultures as $culture) {
-  echo '    if (chosen == ' . $culture->id . ') {';
-  echo '      selbox.options[selbox.options.length] =' .
-      ' new Option("Välj huvudsakligt rollkoncept","0")';
+  echo "    if (chosen == " . $culture->id . ") {\n";
+  echo "      selbox.options[selbox.options.length] =" .
+      " new Option(\"Välj huvudsakligt rollkoncept\",\"0\")\n";
   foreach ($this->concepts as $concept) {
     if ($concept->cultureid == $culture->id) {
-      echo '      selbox.options[selbox.options.length] = new Option(' .
-          $concept->name .', ' . $concept->id . ')';
+      echo "      selbox.options[selbox.options.length] = new Option(\"" .
+          $concept->name ."\", " . $concept->id . ")\n";
     }
   }
-  echo '    }';
+  echo "    }\n";
 }
-echo '  }';
+echo "  }\n";
 ?> -->
 </script>
 
