@@ -12,7 +12,7 @@
  <version>dev</version>
  <!-- The description is optional and defaults to the name -->
  <description>Verktyg för att hantera lajv.</description>
- 
+
  <!-- Site Main File Copy Section -->
  <!-- Note the folder attribute: This attribute describes the folder
       to copy FROM in the package to install therefore files copied
@@ -32,11 +32,11 @@
   <filename>plot.png</filename>
   <filename>roll.jpg</filename>
  </files>
- 
+
  <files folder="site">
   <filename>index.html</filename>
   <filename>lajvit.php</filename>
-  
+
   <filename>controller.php</filename>
   <filename>controllers/index.html</filename>
   <filename>controllers/character.php</filename>
@@ -44,19 +44,19 @@
   <filename>controllers/person.php</filename>
   <filename>controllers/plot.php</filename>
   <filename>controllers/registrations.php</filename>
-  
-  
+
+
   <filename>models/index.html</filename>
   <filename>models/lajvit.php</filename>
-  <filename>models/eventModel.php</filename>
-  
+  <filename>models/eventmodel.php</filename>
+
   <filename>views/index.html</filename>
-  
+
   <filename>views/anmalan/index.html</filename>
   <filename>views/anmalan/view.html.php</filename>
   <filename>views/anmalan/tmpl/default.php</filename>
   <filename>views/anmalan/tmpl/index.html</filename>
-  
+
   <filename>views/character/index.html</filename>
   <filename>views/character/view.html.php</filename>
   <filename>views/character/tmpl/create.php</filename>
@@ -65,18 +65,18 @@
   <filename>views/character/tmpl/edit.php</filename>
   <filename>views/character/tmpl/updated.php</filename>
   <filename>views/character/tmpl/index.html</filename>
-  
+
   <filename>views/person/index.html</filename>
   <filename>views/person/view.html.php</filename>
   <filename>views/person/tmpl/default.php</filename>
   <filename>views/person/tmpl/edit.php</filename>
   <filename>views/person/tmpl/index.html</filename>
-  
+
   <filename>views/mypages/index.html</filename>
   <filename>views/mypages/view.html.php</filename>
   <filename>views/mypages/tmpl/default.php</filename>
   <filename>views/mypages/tmpl/index.html</filename>
-  
+
   <filename>views/event/index.html</filename>
   <filename>views/event/view.html.php</filename>
   <filename>views/event/tmpl/add.php</filename>
@@ -86,7 +86,7 @@
   <filename>views/event/tmpl/register.php</filename>
   <filename>views/event/tmpl/registered.php</filename>
   <filename>views/event/tmpl/index.html</filename>
-  
+
   <filename>views/plot/index.html</filename>
   <filename>views/plot/view.html.php</filename>
   <filename>views/plot/tmpl/addsubplotrelation.php</filename>
@@ -96,7 +96,7 @@
   <filename>views/plot/tmpl/listplots.php</filename>
   <filename>views/plot/tmpl/listdistributedplots.php</filename>
   <filename>views/plot/tmpl/index.html</filename>
-  
+
   <filename>views/registrations/index.html</filename>
   <filename>views/registrations/view.html.php</filename>
   <filename>views/registrations/tmpl/charimg.php</filename>
@@ -106,11 +106,11 @@
   <filename>views/registrations/tmpl/medicine.php</filename>
   <filename>views/registrations/tmpl/index.html</filename>
  </files>
- 
+
  <administration>
   <!-- Administration Menu Section -->
   <menu>LajvIT</menu>
- 
+
   <!-- Administration Main File Copy Section -->
   <files folder="admin">
    <filename>index.html</filename>
@@ -118,7 +118,7 @@
    <filename>install.sql</filename>
    <filename>uninstall.sql</filename>
    <filename>testdata.sql</filename>
-   
+
    <filename>tables/index.html</filename>
    <filename>tables/littable.php</filename>
    <filename>tables/lit_chara.php</filename>
@@ -126,9 +126,9 @@
    <filename>tables/lit_person.php</filename>
    <filename>tables/lit_plot.php</filename>
   </files>
- 
+
  </administration>
- 
+
  <install>
   <sql>
    <file charset="utf8" driver="mysql">install.sql</file>

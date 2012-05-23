@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  person_viewmedical boolean NOT NULL DEFAULT FALSE,
  event_create boolean NOT NULL DEFAULT FALSE,
  event_edit boolean NOT NULL DEFAULT FALSE,
- event_delete boolean NOT NULL DEFAULT FALSE
+ event_delete boolean NOT NULL DEFAULT FALSE,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -478,7 +478,7 @@ CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
 ;
 
 
-CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT 
+CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
 	#__lit_event.*,
 	#__lit_vperson.id AS personid,
 	#__lit_vperson.username,
@@ -552,7 +552,7 @@ CREATE OR REPLACE VIEW #__lit_vcharafactionroles AS SELECT
 	FROM #__lit_chara
 	LEFT OUTER JOIN #__lit_registrationfactionrole ON #__lit_chara.factionid = #__lit_registrationfactionrole.factionid
 	LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
-	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id	
+	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
@@ -584,7 +584,7 @@ CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
 	#__lit_registration.timeofconfirmation,
 	CONCAT(#__lit_vperson.givenname, ' ', #__lit_vperson.surname) AS personname,
 	#__lit_vperson.pnumber,
-	#__lit_vperson.username 
+	#__lit_vperson.username
 	FROM #__lit_registrationchara
 	LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
 	LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
