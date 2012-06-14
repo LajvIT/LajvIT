@@ -87,10 +87,6 @@
   <filename>views/event/tmpl/registered.php</filename>
   <filename>views/event/tmpl/index.html</filename>
   
-  <filename>views/group/index.html</filename>
-  <filename>views/group/view.html.php</filename>
-  <filename>views/group/tmpl/create.php</filename>
-  
   <filename>views/plot/index.html</filename>
   <filename>views/plot/view.html.php</filename>
   <filename>views/plot/tmpl/addsubplotrelation.php</filename>

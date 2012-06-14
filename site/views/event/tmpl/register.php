@@ -1,7 +1,5 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); ?>
-<h1><?php echo $this->greeting; ?></h1>
-
 <h1>Bekräfta registrering</h1>
 <p>Kontrollera att dina personuppgifter stämmer. I annat fall kan du
 <a href="index.php?option=com_lajvit&view=person&layout=edit&Itemid=<?php echo $this->itemid; ?>">
