@@ -26,7 +26,7 @@ if ($this->incomplete_person) { ?>
       <tr>
         <td><label for="pnumber" title=>Personnummer:</label></td>
         <td><input type="text" name="pnumber" value="<?php echo $this->pnumber; ?>" mosreq="1"
-          moslabel="E-post" size="25" />*</td>
+          moslabel="Personnummer" size="25" />*</td>
       </tr>
       <tr>
         <td><label for="sex">Kön:</label></td>
