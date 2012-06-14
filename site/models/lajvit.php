@@ -164,11 +164,11 @@ class LajvITModelLajvIT extends JModel {
   function mergeRoles($a, $b) {
     $ret = new stdClass;
 
-    if (is_NULL($a) || !$a) {
+    if (is_null($a) || !$a) {
       return $b;
     }
 
-    if (is_NULL($b) || !$b) {
+    if (is_null($b) || !$b) {
       return $a;
     }
 
@@ -179,7 +179,11 @@ class LajvITModelLajvIT extends JModel {
     }
 
     foreach (get_object_vars($b) as $k => $v) {
-      $ret->$k = (array_key_exists($k, $ret) ? $ret->$k : $v);
+      if (array_key_exists($k, $ret) && $ret->$k != NULL && $ret->$k != 0) {
+        $ret->$k = $ret->$k;
+      } else {
+        $ret->$k = $v;
+      }
     }
 
     $ret->name = $name;
@@ -198,7 +202,7 @@ class LajvITModelLajvIT extends JModel {
 
     $db->setQuery($query);
     $ret = $db->loadObject();
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function getRoleForConcept($eventid, $cultureid, $conceptid, $userid = NULL) {
@@ -213,7 +217,7 @@ class LajvITModelLajvIT extends JModel {
     $db->setQuery($query);
 
     $ret = $db->loadObject();
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function getRoleForFaction($eventid, $factionId, $userid = NULL) {
@@ -228,7 +232,7 @@ class LajvITModelLajvIT extends JModel {
     $db->setQuery($query);
 
     $ret = $db->loadObject();
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function getRoleForChara($eventid, $charaid, $userid = NULL) {
@@ -252,7 +256,7 @@ class LajvITModelLajvIT extends JModel {
 
     $ret = $this->mergeRoles($crole, $frole);
 
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function getAllRolesMerged($eventid, $userid = NULL) {
@@ -302,7 +306,7 @@ class LajvITModelLajvIT extends JModel {
     $db->setQuery($query);
 
     $ret = $db->loadObject();
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function getEventsForPerson($person = NULL) {
@@ -407,7 +411,7 @@ class LajvITModelLajvIT extends JModel {
     $db->setQuery($query);
 
     $ret = $db->loadObject();
-    return is_NULL($ret) ? FALSE : $ret;
+    return is_null($ret) ? FALSE : $ret;
   }
 
   function &getCharacter($charid) {
@@ -491,7 +495,7 @@ class LajvITModelLajvIT extends JModel {
 
   function getPlotHeading($plotId) {
     $plot = $this->getPlot($plotId);
-    if (is_NULL($plot)) {
+    if (is_null($plot)) {
       return NULL;
     } else {
       return $plot->heading;
@@ -500,7 +504,7 @@ class LajvITModelLajvIT extends JModel {
 
   function getPlotDescription($plotId) {
     $plot = $this->getPlot($plotId);
-    if (is_NULL($plot)) {
+    if (is_null($plot)) {
       return NULL;
     } else {
       return $plot->description;
@@ -509,12 +513,12 @@ class LajvITModelLajvIT extends JModel {
 
   function getPlotCreator($plotId) {
     $plot = $this->getPlot($plotId);
-    return is_NULL($plot) ? NULL : $plot->creatorpersonid;
+    return is_null($plot) ? NULL : $plot->creatorpersonid;
   }
 
   function getPlotStatus($plotId) {
     $plot = $this->getPlot($plotId);
-    if (is_NULL($plot)) {
+    if (is_null($plot)) {
       return NULL;
     } else {
       $ret = $this->getPlotStatuses($plot->statusid);
