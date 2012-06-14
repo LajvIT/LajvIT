@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <td rowspan="6">
 <?php
 if (!is_null($this->character->image)) {
-  echo '    <img src="' . $this->character->image . '"/>';'
+  echo '    <img src="' . $this->character->image . '"/>';
 } ?>
   </td>
 </tr>

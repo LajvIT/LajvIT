@@ -197,21 +197,17 @@ foreach ($this->factions as $faction) { ?>
         echo " (" . $char->concepttext . ")";
       } ?>
                 </strong>
-                &nbsp;<a href="index.php?option=com_lajvit&view=character&eid=
-                <?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=
-                <?php echo $this->itemid; ?>" title="Info">
-                <img src="components/com_lajvit/info.png" alt="Info" /></a><?php
+                &nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a><?php
       if (FALSE) { ?>
-                  &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=
-                  <?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=
-                  <?php echo $this->itemid; ?>" title="Redigera karaktär">
-                  <img src="components/com_lajvit/edit_character.png" alt="Redigera karaktär" /></a><?php
+                  &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php
+                  echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php
+                  echo $this->itemid; ?>" title="Redigera karaktär"><img
+                  src="components/com_lajvit/edit_character.png" alt="Redigera karaktär" /></a><?php
       }
       if ($char->role->character_delete) { ?>
-                  &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=
-                  <?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=
-                  <?php echo $this->itemid; ?>&redirect=registrations" title="Ta bort karaktär">
-                  <img src="components/com_lajvit/delete_character.png" alt="Ta bort karaktär" /></a><?php
+                  &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=delete&eid=<?php
+                  echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php
+                  echo $this->itemid; ?>&redirect=registrations" title="Ta bort karaktär"><img src="components/com_lajvit/delete_character.png" alt="Ta bort karaktär" /></a><?php
       } ?>
               </td>
               <td><?php
@@ -247,10 +243,7 @@ foreach ($this->factions as $faction) { ?>
           echo ' - ' . $char->pnumber;
         }
         echo '(' . $char->username . ')'; ?>
-                  &nbsp;<a href="index.php?option=com_lajvit&view=person&pid=
-                  <?php echo $char->personid; ?>&eid=<?php echo $this->event->id; ?>&Itemid=
-                  <?php echo $this->itemid; ?>" title="Info">
-                  <img src="components/com_lajvit/info.png" alt="Info" /></a>
+                  &nbsp;<a href="index.php?option=com_lajvit&view=person&pid=<?php echo $char->personid; ?>&eid=<?php echo $this->event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a>
                 </td>
                 <td><?php
         if ($this->role->registration_setrole) {
@@ -291,10 +284,9 @@ foreach ($this->factions as $faction) { ?>
                 <td></td>
                 <td colspan="3">
                   <?php echo $char->username; ?>
-                  &nbsp;<a href="index.php?option=com_lajvit&view=person&
-                  pid=<?php echo $char->personid; ?>&eid=<?php echo $this->event->id; ?>
-                  &Itemid=<?php echo $this->itemid; ?>" title="Info">
-                  <img src="components/com_lajvit/info.png" alt="Info" /></a>
+                  &nbsp;<a href="index.php?option=com_lajvit&view=person&pid=<?php
+                  echo $char->personid; ?>&eid=<?php echo $this->event->id; ?>&Itemid=<?php
+                  echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a>
                 </td>
               </tr><?php
       }

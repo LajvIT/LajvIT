@@ -10,19 +10,44 @@ JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_lajvit'.DS.'t
  */
 class LajvITModelGroupModel extends JModel {
 
-  function createGroup($data) {
-    echo 'creating table';
+  /**
+   * @param object $data
+   * @return int|array
+   */
+  public function createGroup($data) {
     $db = &JFactory::getDBO();
     $group = JTable::getInstance('lit_groups', 'Table');
     $group->bind($data);
     $creationSuccess = $group->store();
     if ($creationSuccess) {
-      echo "success";
       return $group->id;
     } else {
-      echo "fail";
       return $group->getErrors();
     }
   }
 
+  /**
+   *
+   * @param int $groupId
+   * @return boolean|array
+   */
+  public function getGroup($groupId) {
+    $group = JTable::getInstance('lit_groups', 'Table');
+    if (!$group->load($groupId)) {
+      return FALSE;
+    }
+    return $group->getProperties();
+  }
+
+  /**
+   * @param object $data
+   * @return boolean
+   */
+  public function updateGroup($data) {
+    $group = JTable::getInstance('lit_groups', 'Table');
+    $group->bind($data);
+    $result = $group->store();
+    echo "Error: " . print_r($group->getErrors()) . "<br>\n";
+    return $result;
+  }
 }

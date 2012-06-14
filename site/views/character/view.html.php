@@ -38,6 +38,8 @@ class LajvITViewCharacter extends JView {
 
       if (!is_null($character->bornyear)) {
         $character->age = $events[$eventid]->ingameyear - $character->bornyear;
+      } else {
+        $character->age = 0;
       }
 
       $this->assignRef('character', $character);

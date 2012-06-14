@@ -73,57 +73,6 @@ CREATE TABLE IF NOT EXISTS #__lit_person (
 
 -- --------------------------------------------------------
 --
--- Structure for table Groups
--- Groups groups people together for an event.
---
-CREATE  TABLE IF NOT EXISTS #__lit_groups (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(55) NULL DEFAULT 'unnamed' ,
-  `groupLeaderPersonId` INT NULL DEFAULT NULL ,
-  `description` TEXT NULL DEFAULT NULL ,
-  `maxParticipants` INT UNSIGNED NOT NULL DEFAULT 0 ,
-  `expectedParticipants` INT NOT NULL DEFAULT '0',
-  `url` VARCHAR(255) NULL DEFAULT '' ,
-  `status` ENUM('created','approved','rejected','open','closed','hidden') NOT NULL DEFAULT 'created' ,
-  `adminInformation` TEXT NULL DEFAULT NULL ,
-  `eventId` INT NULL DEFAULT NULL ,
-  `visible` BOOLEAN NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`) ,
-  INDEX `groupleader` (`groupLeaderPersonId`) ,
-  INDEX `event` (`eventId` ASC) ,
-  CONSTRAINT `groupleader`
-    FOREIGN KEY (`groupLeaderPersonId`)
-    REFERENCES #__lit_person (`id`)
-    ON DELETE SET NULL
-    ON UPDATE NO ACTION,
-  CONSTRAINT `event`
-    FOREIGN KEY (`eventId` )
-    REFERENCES #__lit_event (`id` )
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-
-
-CREATE  TABLE IF NOT EXISTS #__lit_group_members (
-  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  `groupId` INT UNSIGNED NOT NULL DEFAULT 0,
-  `personId` INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`) ,
-  INDEX `person` (`personId` ASC) ,
-  INDEX `group` (`groupId` ASC) ,
-  CONSTRAINT `personId`
-    FOREIGN KEY (`personId`)
-    REFERENCES #__lit_person (`id`)
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION,
-  CONSTRAINT `group`
-    FOREIGN KEY (`groupId`)
-    REFERENCES #__lit_groups (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
--- --------------------------------------------------------
---
 -- Structure for table Role
 -- Role is in what role a person is connected to an event.
 --
@@ -147,7 +96,7 @@ CREATE TABLE IF NOT EXISTS #__lit_role (
  person_viewmedical boolean NOT NULL DEFAULT FALSE,
  event_create boolean NOT NULL DEFAULT FALSE,
  event_edit boolean NOT NULL DEFAULT FALSE,
- event_delete boolean NOT NULL DEFAULT FALSE
+ event_delete boolean NOT NULL DEFAULT FALSE,
  PRIMARY KEY  (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
@@ -506,141 +455,141 @@ CREATE TABLE IF NOT EXISTS #__lit_plotobjectrelfaction (
 --
 
 CREATE TABLE IF NOT EXISTS #__lit_defaultvalues (
-	statusid int,
-	roleid int,
-	factionroleid int,
-	confirmationid int,
-	CONSTRAINT defaultvalues_statusconstr FOREIGN KEY (statusid)
-	REFERENCES #__lit_charastatus (id) ON DELETE SET NULL,
-	CONSTRAINT defaultvalues_roleconstr FOREIGN KEY (roleid)
-	REFERENCES #__lit_role (id) ON DELETE SET NULL,
-	CONSTRAINT defaultvalues_factionroleconstr FOREIGN KEY (factionroleid)
-	REFERENCES #__lit_role (id) ON DELETE SET NULL,
-	CONSTRAINT defaultvalues_confirmationconstr FOREIGN KEY (confirmationid)
-	REFERENCES #__lit_confirmation (id) ON DELETE SET NULL
+  statusid int,
+  roleid int,
+  factionroleid int,
+  confirmationid int,
+  CONSTRAINT defaultvalues_statusconstr FOREIGN KEY (statusid)
+  REFERENCES #__lit_charastatus (id) ON DELETE SET NULL,
+  CONSTRAINT defaultvalues_roleconstr FOREIGN KEY (roleid)
+  REFERENCES #__lit_role (id) ON DELETE SET NULL,
+  CONSTRAINT defaultvalues_factionroleconstr FOREIGN KEY (factionroleid)
+  REFERENCES #__lit_role (id) ON DELETE SET NULL,
+  CONSTRAINT defaultvalues_confirmationconstr FOREIGN KEY (confirmationid)
+  REFERENCES #__lit_confirmation (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
 
 CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
-	#__lit_person.*,
-	#__users.username
-	FROM #__lit_person
-	LEFT OUTER JOIN #__users ON #__lit_person.id = #__users.id
+  #__lit_person.*,
+  #__users.username
+  FROM #__lit_person
+  LEFT OUTER JOIN #__users ON #__lit_person.id = #__users.id
 ;
 
 
-CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT 
-	#__lit_event.*,
-	#__lit_vperson.id AS personid,
-	#__lit_vperson.username,
-	#__lit_registration.roleid,
-	#__lit_registration.payment,
-	#__lit_registration.timeofpayment,
-	#__lit_registration.confirmationid,
-	#__lit_registration.timeofconfirmation,
-	#__lit_confirmation.name AS confirmationname
-	FROM #__lit_event
-	INNER JOIN #__lit_vperson
-	LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid AND
-	#__lit_vperson.id = #__lit_registration.personid
-	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
+CREATE OR REPLACE VIEW #__lit_veventsandregistrations AS SELECT
+  #__lit_event.*,
+  #__lit_vperson.id AS personid,
+  #__lit_vperson.username,
+  #__lit_registration.roleid,
+  #__lit_registration.payment,
+  #__lit_registration.timeofpayment,
+  #__lit_registration.confirmationid,
+  #__lit_registration.timeofconfirmation,
+  #__lit_confirmation.name AS confirmationname
+  FROM #__lit_event
+  INNER JOIN #__lit_vperson
+  LEFT OUTER JOIN #__lit_registration ON #__lit_event.id = #__lit_registration.eventid AND
+  #__lit_vperson.id = #__lit_registration.personid
+  LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_veventroles AS SELECT
-	#__lit_registration.eventid,
-	#__lit_registration.personid,
-	#__lit_event.name AS eventname,
-	#__lit_role.*
-	FROM #__lit_registration
-	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
-	LEFT OUTER JOIN #__lit_event ON #__lit_registration.eventid = #__lit_event.id
+  #__lit_registration.eventid,
+  #__lit_registration.personid,
+  #__lit_event.name AS eventname,
+  #__lit_role.*
+  FROM #__lit_registration
+  LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
+  LEFT OUTER JOIN #__lit_event ON #__lit_registration.eventid = #__lit_event.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vconceptroles AS SELECT
-	#__lit_registrationcharaconceptrole.eventid,
-	#__lit_registrationcharaconceptrole.personid,
-	#__lit_registrationcharaconceptrole.cultureid,
-	#__lit_registrationcharaconceptrole.conceptid,
-	#__lit_characulture.name AS culturename,
-	#__lit_characoncept.name AS conceptname,
-	#__lit_role.*
-	FROM #__lit_registrationcharaconceptrole
-	LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
-	LEFT OUTER JOIN #__lit_characulture ON #__lit_registrationcharaconceptrole.cultureid = #__lit_characulture.id
-	LEFT OUTER JOIN #__lit_characoncept ON #__lit_registrationcharaconceptrole.conceptid = #__lit_characoncept.id
+  #__lit_registrationcharaconceptrole.eventid,
+  #__lit_registrationcharaconceptrole.personid,
+  #__lit_registrationcharaconceptrole.cultureid,
+  #__lit_registrationcharaconceptrole.conceptid,
+  #__lit_characulture.name AS culturename,
+  #__lit_characoncept.name AS conceptname,
+  #__lit_role.*
+  FROM #__lit_registrationcharaconceptrole
+  LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
+  LEFT OUTER JOIN #__lit_characulture ON #__lit_registrationcharaconceptrole.cultureid = #__lit_characulture.id
+  LEFT OUTER JOIN #__lit_characoncept ON #__lit_registrationcharaconceptrole.conceptid = #__lit_characoncept.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharaconceptroles AS SELECT
-	#__lit_chara.id AS charaid,
-	#__lit_registrationcharaconceptrole.eventid,
-	#__lit_registrationcharaconceptrole.personid,
-	#__lit_registrationcharaconceptrole.cultureid,
-	#__lit_registrationcharaconceptrole.conceptid,
-	#__lit_role.*
-	FROM #__lit_chara
-	LEFT OUTER JOIN #__lit_registrationcharaconceptrole ON #__lit_chara.cultureid = #__lit_registrationcharaconceptrole.cultureid AND #__lit_chara.conceptid = #__lit_registrationcharaconceptrole.conceptid
-	LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
+  #__lit_chara.id AS charaid,
+  #__lit_registrationcharaconceptrole.eventid,
+  #__lit_registrationcharaconceptrole.personid,
+  #__lit_registrationcharaconceptrole.cultureid,
+  #__lit_registrationcharaconceptrole.conceptid,
+  #__lit_role.*
+  FROM #__lit_chara
+  LEFT OUTER JOIN #__lit_registrationcharaconceptrole ON #__lit_chara.cultureid = #__lit_registrationcharaconceptrole.cultureid AND #__lit_chara.conceptid = #__lit_registrationcharaconceptrole.conceptid
+  LEFT OUTER JOIN #__lit_role ON #__lit_registrationcharaconceptrole.roleid = #__lit_role.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vfactionroles AS SELECT
-	#__lit_registrationfactionrole.eventid,
-	#__lit_registrationfactionrole.personid,
-	#__lit_registrationfactionrole.factionid,
-	#__lit_charafaction.name AS factionname,
-	#__lit_role.*
-	FROM #__lit_registrationfactionrole
-	LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
-	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id
+  #__lit_registrationfactionrole.eventid,
+  #__lit_registrationfactionrole.personid,
+  #__lit_registrationfactionrole.factionid,
+  #__lit_charafaction.name AS factionname,
+  #__lit_role.*
+  FROM #__lit_registrationfactionrole
+  LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
+  LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharafactionroles AS SELECT
-	#__lit_chara.id AS charaid,
-	#__lit_registrationfactionrole.eventid,
-	#__lit_registrationfactionrole.personid,
-	#__lit_registrationfactionrole.factionid,
-	#__lit_charafaction.name AS factionname,
-	#__lit_role.*
-	FROM #__lit_chara
-	LEFT OUTER JOIN #__lit_registrationfactionrole ON #__lit_chara.factionid = #__lit_registrationfactionrole.factionid
-	LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
-	LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id	
+  #__lit_chara.id AS charaid,
+  #__lit_registrationfactionrole.eventid,
+  #__lit_registrationfactionrole.personid,
+  #__lit_registrationfactionrole.factionid,
+  #__lit_charafaction.name AS factionname,
+  #__lit_role.*
+  FROM #__lit_chara
+  LEFT OUTER JOIN #__lit_registrationfactionrole ON #__lit_chara.factionid = #__lit_registrationfactionrole.factionid
+  LEFT OUTER JOIN #__lit_role ON #__lit_registrationfactionrole.roleid = #__lit_role.id
+  LEFT OUTER JOIN #__lit_charafaction ON #__lit_registrationfactionrole.factionid = #__lit_charafaction.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacters AS SELECT
-	#__lit_chara.*,
-	#__lit_charafaction.name AS factionname,
-	#__lit_charafaction.url AS factionurl,
-	#__lit_characulture.name AS culturename,
-	#__lit_characulture.url AS cultureurl,
-	#__lit_characoncept.name AS conceptname,
-	#__lit_characoncept.url AS concepturl
-	FROM #__lit_chara
-	LEFT OUTER JOIN #__lit_charafaction ON #__lit_chara.factionid = #__lit_charafaction.id
-	LEFT OUTER JOIN #__lit_characulture ON #__lit_chara.cultureid = #__lit_characulture.id
-	LEFT OUTER JOIN #__lit_characoncept ON #__lit_chara.conceptid = #__lit_characoncept.id
+  #__lit_chara.*,
+  #__lit_charafaction.name AS factionname,
+  #__lit_charafaction.url AS factionurl,
+  #__lit_characulture.name AS culturename,
+  #__lit_characulture.url AS cultureurl,
+  #__lit_characoncept.name AS conceptname,
+  #__lit_characoncept.url AS concepturl
+  FROM #__lit_chara
+  LEFT OUTER JOIN #__lit_charafaction ON #__lit_chara.factionid = #__lit_charafaction.id
+  LEFT OUTER JOIN #__lit_characulture ON #__lit_chara.cultureid = #__lit_characulture.id
+  LEFT OUTER JOIN #__lit_characoncept ON #__lit_chara.conceptid = #__lit_characoncept.id
 ;
 
 CREATE OR REPLACE VIEW #__lit_vcharacterregistrations AS SELECT
-	#__lit_registrationchara.eventid,
-	#__lit_registrationchara.personid,
-	#__lit_vcharacters.*,
-	#__lit_registrationchara.statusid,
-	#__lit_charastatus.name AS statusname,
-	#__lit_charastatus.hidden AS hidden,
-	#__lit_registration.roleid,
-	#__lit_role.name AS rolename,
-	#__lit_registration.payment,
-	#__lit_registration.confirmationid,
-	#__lit_confirmation.name AS confirmationname,
-	#__lit_registration.timeofconfirmation,
-	CONCAT(#__lit_vperson.givenname, ' ', #__lit_vperson.surname) AS personname,
-	#__lit_vperson.pnumber,
-	#__lit_vperson.username 
-	FROM #__lit_registrationchara
-	LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
-	LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
-	LEFT OUTER JOIN #__lit_registration ON #__lit_registrationchara.eventid = #__lit_registration.eventid AND #__lit_registrationchara.personid = #__lit_registration.personid
-	LEFT OUTER JOIN #__lit_vperson ON #__lit_registrationchara.personid = #__lit_vperson.id
-	LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
-	LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
+  #__lit_registrationchara.eventid,
+  #__lit_registrationchara.personid,
+  #__lit_vcharacters.*,
+  #__lit_registrationchara.statusid,
+  #__lit_charastatus.name AS statusname,
+  #__lit_charastatus.hidden AS hidden,
+  #__lit_registration.roleid,
+  #__lit_role.name AS rolename,
+  #__lit_registration.payment,
+  #__lit_registration.confirmationid,
+  #__lit_confirmation.name AS confirmationname,
+  #__lit_registration.timeofconfirmation,
+  CONCAT(#__lit_vperson.givenname, ' ', #__lit_vperson.surname) AS personname,
+  #__lit_vperson.pnumber,
+  #__lit_vperson.username
+  FROM #__lit_registrationchara
+  LEFT OUTER JOIN #__lit_vcharacters ON #__lit_registrationchara.charaid = #__lit_vcharacters.id
+  LEFT OUTER JOIN #__lit_charastatus ON #__lit_registrationchara.statusid = #__lit_charastatus.id
+  LEFT OUTER JOIN #__lit_registration ON #__lit_registrationchara.eventid = #__lit_registration.eventid AND #__lit_registrationchara.personid = #__lit_registration.personid
+  LEFT OUTER JOIN #__lit_vperson ON #__lit_registrationchara.personid = #__lit_vperson.id
+  LEFT OUTER JOIN #__lit_confirmation ON #__lit_registration.confirmationid = #__lit_confirmation.id
+  LEFT OUTER JOIN #__lit_role ON #__lit_registration.roleid = #__lit_role.id
 ;

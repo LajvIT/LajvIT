@@ -18,20 +18,36 @@ class LajvITControllerGroup extends LajvITController {
   const ADMINISTRATOR = "Super Administrator";
 
   public function create() {
-    $this->groupModel = &$this->getModel('groupmodel');
-    $this->lajvitModel =&$this->getModel('lajvit');
-    $this->person = &$this->lajvitModel->getPerson();
     $data = $this->getGroupDataFromPostedForm();
     if (!$this->verifyGroupData($data)) {
-      $this->setRedirect($this->listGroupsLink());
+      $this->setRedirect($this->defaultGroupsLink());
       return;
     }
     $groupId = $this->groupModel->createGroup($data);
     if (is_int($groupId) && $groupId > 0) {
-      $this->setRedirect($this->createGroupCompletedLink($groupId));
+      $this->setRedirect($this->showEditGroupLink($groupId));
     } else {
-      $this->setRedirect($this->listGroupsLink());
+      $this->setRedirect($this->defaultGroupsLink());
     }
+  }
+
+  public function edit() {
+    $this->initModels();
+    $data = $this->getGroupDataFromPostedForm();
+    if (!$this->verifyGroupData($data)) {
+      $this->setRedirect($this->showEditGroupLink());
+      return;
+    }
+    $updateResult = $this->groupModel->updateGroup($data);
+    echo "updateResult: " . print_r($updateResult) . "<br>\n";
+    echo $updateResult . "<br>\n";
+    if ($updateResult === NULL || $updateResult == "") {
+      echo "Updated group<br>\n";
+      //$this->setRedirect($this->showEditGroupLink($data->id));
+    } else {
+      echo "Failed to update group<br>\n";
+    }
+    //$this->setRedirect($this->defaultGroupsLink());
   }
 
   private function allowedToDeleteEvent($eventId) {
@@ -47,7 +63,10 @@ class LajvITControllerGroup extends LajvITController {
 
   private function getGroupDataFromPostedForm() {
     $db =& JFactory::getDBO();
-    $groupId = JRequest::getInt('groupId', NULL);
+    $groupId = JRequest::getInt('groupId', -1);
+    if ($groupId <= 0) {
+      $groupId = NULL;
+    }
     $groupName = JRequest::getString('groupName', '');
     $groupDescription = JRequest::getString('groupDescription', '');
     $groupUrl = JRequest::getString('groupUrl', '');
@@ -86,18 +105,21 @@ class LajvITControllerGroup extends LajvITController {
     return TRUE;
   }
 
-  private function registrationForEventCompletedLink($eventId) {
-    $link = 'index.php?option=com_lajvit&view=event&layout=registered&eid=' . $eventId;
+  private function showEditGroupLink($groupId) {
+    $link = $this->defaultGroupsLink();
+    $link .= '&layout=edit&groupId=' . $groupId;
+    return $link;
+  }
+
+  private function defaultGroupsLink() {
+    $link = 'index.php?option=com_lajvit&view=group';
     $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
     return $link;
   }
 
-  private function createGroupCompletedLink($groupId) {
-    return $this->listGroupsLink();
-  }
-  private function listGroupsLink() {
-    $link = 'index.php?option=com_lajvit&view=group';
-    $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
-    return $link;
+  private function initModels() {
+    $this->groupModel = &$this->getModel('groupmodel');
+    $this->lajvitModel =&$this->getModel('lajvit');
+    $this->person = &$this->lajvitModel->getPerson();
   }
 }
