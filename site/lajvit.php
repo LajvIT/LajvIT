@@ -12,8 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 {
   $auth = &JFactory::getACL();
 
-  $auth->addACL('com_lajvit', 'admin', 'users', 'super administrator');
-  $auth->addACL('com_lajvit', 'admin', 'users', 'administrator');
+//   $auth->addACL('com_lajvit', 'admin', 'users', 'super administrator');
+//   $auth->addACL('com_lajvit', 'admin', 'users', 'administrator');
   //        $auth->addACL('com_lajvit', 'admin', 'users', 'manager');
 }
 

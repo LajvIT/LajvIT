@@ -34,7 +34,7 @@ class LajvITController extends JController {
       return;
     }
 
-    $view = &$this->getView($viewName, $viewType, '', array('base_path' => $this->_basePath));
+    $view = &$this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
 
     // Get/Create the model
     //    if ($model = &$this->getModel($viewName)) {
