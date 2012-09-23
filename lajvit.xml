@@ -1,145 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install type="component" version="1.5.0">
- <name>LajvIT</name>
- <!-- The following elements are optional and free of formatting constraints -->
- <creationDate>2011-02-15</creationDate>
- <author>Emil Djupfeldt</author>
- <authorEmail>emil@djupfeldt.se</authorEmail>
- <authorUrl>http://www.example.org</authorUrl>
- <copyright>Copyright Info</copyright>
- <license>License Info</license>
- <!--  The version string is recorded in the components table -->
- <version>dev</version>
- <!-- The description is optional and defaults to the name -->
- <description>Verktyg för att hantera lajv.</description>
- 
- <!-- Site Main File Copy Section -->
- <!-- Note the folder attribute: This attribute describes the folder
-      to copy FROM in the package to install therefore files copied
-      in this section are copied from /site/ in the package -->
- <files folder="images">
-  <filename>copy.gif</filename>
-  <filename>cut.gif</filename>
-  <filename>delete_character.png</filename>
-  <filename>delete_organizer.gif</filename>
-  <filename>edit_character.png</filename>
-  <filename>edit_organizer.gif</filename>
-  <filename>info.png</filename>
-  <filename>list.png</filename>
-  <filename>new_character.png</filename>
-  <filename>new_organizer.gif</filename>
-  <filename>person.jpg</filename>
-  <filename>plot.png</filename>
-  <filename>roll.jpg</filename>
- </files>
- 
- <files folder="site">
-  <filename>index.html</filename>
-  <filename>lajvit.php</filename>
-  
-  <filename>controller.php</filename>
-  <filename>controllers/index.html</filename>
-  <filename>controllers/character.php</filename>
-  <filename>controllers/event.php</filename>
-  <filename>controllers/person.php</filename>
-  <filename>controllers/plot.php</filename>
-  <filename>controllers/registrations.php</filename>
-  
-  
-  <filename>models/index.html</filename>
-  <filename>models/lajvit.php</filename>
-  <filename>models/eventmodel.php</filename>
-  
-  <filename>views/index.html</filename>
-  
-  <filename>views/anmalan/index.html</filename>
-  <filename>views/anmalan/view.html.php</filename>
-  <filename>views/anmalan/tmpl/default.php</filename>
-  <filename>views/anmalan/tmpl/index.html</filename>
-  
-  <filename>views/character/index.html</filename>
-  <filename>views/character/view.html.php</filename>
-  <filename>views/character/tmpl/create.php</filename>
-  <filename>views/character/tmpl/default.php</filename>
-  <filename>views/character/tmpl/delete.php</filename>
-  <filename>views/character/tmpl/edit.php</filename>
-  <filename>views/character/tmpl/updated.php</filename>
-  <filename>views/character/tmpl/index.html</filename>
-  
-  <filename>views/person/index.html</filename>
-  <filename>views/person/view.html.php</filename>
-  <filename>views/person/tmpl/default.php</filename>
-  <filename>views/person/tmpl/edit.php</filename>
-  <filename>views/person/tmpl/index.html</filename>
-  
-  <filename>views/mypages/index.html</filename>
-  <filename>views/mypages/view.html.php</filename>
-  <filename>views/mypages/tmpl/default.php</filename>
-  <filename>views/mypages/tmpl/index.html</filename>
-  
-  <filename>views/event/index.html</filename>
-  <filename>views/event/view.html.php</filename>
-  <filename>views/event/tmpl/add.php</filename>
-  <filename>views/event/tmpl/edit.php</filename>
-  <filename>views/event/tmpl/default.php</filename>
-  <filename>views/event/tmpl/delete.php</filename>
-  <filename>views/event/tmpl/register.php</filename>
-  <filename>views/event/tmpl/registered.php</filename>
-  <filename>views/event/tmpl/index.html</filename>
-  
-  <filename>views/plot/index.html</filename>
-  <filename>views/plot/view.html.php</filename>
-  <filename>views/plot/tmpl/addsubplotrelation.php</filename>
-  <filename>views/plot/tmpl/default.php</filename>
-  <filename>views/plot/tmpl/editplot.php</filename>
-  <filename>views/plot/tmpl/editsubplot.php</filename>
-  <filename>views/plot/tmpl/listplots.php</filename>
-  <filename>views/plot/tmpl/listdistributedplots.php</filename>
-  <filename>views/plot/tmpl/index.html</filename>
-  
-  <filename>views/registrations/index.html</filename>
-  <filename>views/registrations/view.html.php</filename>
-  <filename>views/registrations/tmpl/charimg.php</filename>
-  <filename>views/registrations/tmpl/charlist.php</filename>
-  <filename>views/registrations/tmpl/default.php</filename>
-  <filename>views/registrations/tmpl/export.php</filename>
-  <filename>views/registrations/tmpl/medicine.php</filename>
-  <filename>views/registrations/tmpl/index.html</filename>
- </files>
- 
- <administration>
-  <!-- Administration Menu Section -->
-  <menu>LajvIT</menu>
- 
-  <!-- Administration Main File Copy Section -->
-  <files folder="admin">
-   <filename>index.html</filename>
-   <filename>lajvit.php</filename>
-   <filename>install.sql</filename>
-   <filename>uninstall.sql</filename>
-   <filename>testdata.sql</filename>
-   
-   <filename>tables/index.html</filename>
-   <filename>tables/littable.php</filename>
-   <filename>tables/lit_chara.php</filename>
-   <filename>tables/lit_event.php</filename>
-   <filename>tables/lit_person.php</filename>
-   <filename>tables/lit_plot.php</filename>
+<extension type="component" version="2.5.0" method="upgrade">
+<!-- <install type="component" version="1.5.0"> -->
+  <name>LajvIT</name>
+  <!-- The following elements are optional and free of formatting constraints -->
+  <creationDate>2011-02-15</creationDate>
+  <author>Emil Djupfeldt</author>
+  <authorEmail>emil@djupfeldt.se</authorEmail>
+  <authorUrl>http://www.example.org</authorUrl>
+  <copyright>Copyright Info</copyright>
+  <license>License Info</license>
+  <!-- The version string is recorded in the components table -->
+  <version>0.0.1</version>
+  <!-- The description is optional and defaults to the name -->
+  <description>Verktyg för att hantera lajv.</description>
+
+  <update> <!-- Runs on update; New in 2.5 -->
+  <!--   <schemas>
+      <schemapath type="mysql">sql/updates/mysql</schemapath>
+    </schemas> -->
+  </update>
+  <!-- Site Main File Copy Section -->
+  <!-- Note the folder attribute: This attribute describes the folder to copy FROM in the package to 
+    install therefore files copied in this section are copied from /site/ in the package -->
+  <!-- <files folder="images">
+    <filename>copy.gif</filename>
+    <filename>cut.gif</filename>
+    <filename>delete_character.png</filename>
+    <filename>delete_organizer.gif</filename>
+    <filename>edit_character.png</filename>
+    <filename>edit_organizer.gif</filename>
+    <filename>info.png</filename>
+    <filename>list.png</filename>
+    <filename>new_character.png</filename>
+    <filename>new_organizer.gif</filename>
+    <filename>person.jpg</filename>
+    <filename>plot.png</filename>
+    <filename>roll.jpg</filename>
+  </files> -->
+
+  <files folder="site">
+    <filename>index.html</filename>
+    <filename>lajvit.php</filename>
+    <folder>views</folder>
+    <folder>models</folder>
+    <folder>controllers</folder>
   </files>
- 
- </administration>
- 
- <install>
-  <sql>
-   <file charset="utf8" driver="mysql">install.sql</file>
-<!--
-   <file charset="utf8" driver="mysql">testdata.sql</file>
--->
-  </sql>
- </install>
- <uninstall>
-  <sql>
-   <file charset="utf8" driver="mysql">uninstall.sql</file>
-  </sql>
- </uninstall>
-</install>
+
+  <administration>
+    <!-- Administration Menu Section -->
+    <menu>LajvIT</menu>
+
+    <!-- Administration Main File Copy Section -->
+    <files folder="admin">
+      <filename>index.html</filename>
+      <filename>lajvit.php</filename>
+<!--       <filename>install.sql</filename>
+      <filename>uninstall.sql</filename>
+      <filename>testdata.sql</filename>
+      <folder>tables</folder> 
+      <folder>sql</folder> -->
+    </files>
+  </administration>
+
+</extension>
