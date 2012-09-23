@@ -57,7 +57,7 @@ class LajvITController extends JController {
 
     // Display the view
     if ($cachable && $viewType != 'feed') {
-      global $option;
+      $option = JRequest::getCmd('option');
       $cache =& JFactory::getCache($option, 'view');
       $cache->get($view, 'display');
     } else {

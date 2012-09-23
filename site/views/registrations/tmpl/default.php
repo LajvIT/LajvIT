@@ -193,11 +193,10 @@ foreach ($this->factions as $faction) { ?>
               <td colspan="3">
                 <strong><?php
       echo $char->knownas . " - " . $char->culturename . ", " . $char->conceptname;
-      if (!is_NULL($char->concepttext) && strlen($char->concepttext) > 0) {
+      if (!is_null($char->concepttext) && strlen($char->concepttext) > 0) {
         echo " (" . $char->concepttext . ")";
       } ?>
-                </strong>
-                &nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a><?php
+                </strong>&nbsp;<a href="index.php?option=com_lajvit&view=character&eid=<?php echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Info"><img src="components/com_lajvit/info.png" alt="Info" /></a><?php
       if (FALSE) { ?>
                   &nbsp;<a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php
                   echo $this->event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php
