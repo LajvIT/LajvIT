@@ -143,7 +143,7 @@ class LajvITModelLajvIT extends JModel {
 
     $row = &JTable::getInstance('lit_person', 'Table');
 
-    if (!$row->load($user->id)) {
+    if ($row && !$row->load($user->id)) {
       $row->_forcenew = TRUE;
       $row->id = $user->id;
       $names = explode(" ", $user->name);

@@ -3,7 +3,7 @@
 	<name>LajvIT Git</name>
 	<comment></comment>
 	<projects>
-		<project>Joomla 1.5</project>
+		<project>Joomla 2.5</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

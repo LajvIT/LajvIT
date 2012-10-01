@@ -45,7 +45,7 @@
     <echo message="Copying images to test server..." />
     <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
         pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
-        todir="${testServerDirectory}/components/com_lajvit">
+        todir="${testServerDirectory}/media/com_lajvit/images">
         <fileset refid="image_files"/>
     </scp>
   </target>
