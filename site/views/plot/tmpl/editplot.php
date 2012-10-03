@@ -76,7 +76,7 @@ if ($this->plotId > 0) { ?>
       $this->statusId == 100 || $this->statusId == 101 ) { ?>
       <tr>
         <td colspan="2">
-          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>
+          <a href="index.php?option=com_lajvit&view=plot&eid=<?php echo $this->eventId; ?>&pid=<?php echo $this->plotId; ?>&layout=editsubplot&Itemid=<?php echo $this->itemId; ?>" title="Add subplot">Lägg till delintrig <img src="media/com_lajvit/images/new_character.png" alt="Lägg till" /></a>
         </td>
       </tr><?php
   }
@@ -117,7 +117,7 @@ function printPlotObjectHeaderAndDescription($plotObject, $eventId, $mergedrole,
           $mergedrole->registration_setstatus ||
           $mergedrole->registration_setrole ) ||
         $statusId == 100 || $statusId == 101 ) {
-    echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'&Itemid=' . $itemId . '" title="Edit subplot"><img src="components/com_lajvit/edit_character.png" alt="Redigera" /></a>';
+    echo ' <a href="index.php?option=com_lajvit&view=plot&eid='. $eventId .'&pid='. $plotObject->plotid .'&layout=editsubplot&poid='. $plotObject->id .'&Itemid=' . $itemId . '" title="Edit subplot"><img src="media/com_lajvit/images/edit_character.png" alt="Redigera" /></a>';
   }
   echo "</h3></td>\n";
   echo "        </tr>\n";

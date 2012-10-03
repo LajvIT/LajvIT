@@ -12,7 +12,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
   <?php echo $this->character->fullname; ?>
   <a href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php echo $this->eventid; ?>
     &cid=<?php echo $this->characterid; ?>&Itemid=<?php echo $this->itemid; ?>">
-      <img src="components/com_lajvit/edit_character.png"/>
+      <img src="media/com_lajvit/images/edit_character.png"/>
     </a>
 </strong></p>
 <p>

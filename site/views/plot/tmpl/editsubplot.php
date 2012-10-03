@@ -54,11 +54,11 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
   echo "<tr><td><h4>Karaktär";
     echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=char&eid=' . $eventId;
     echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
-    echo '<img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>';
+    echo '<img src="media/com_lajvit/images/new_character.png" alt="Lägg till" /></a>';
   echo "</h4></td><td><h4>Koncept";
     echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=concept&eid=' . $eventId;
     echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
-    echo '<img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>';
+    echo '<img src="media/com_lajvit/images/new_character.png" alt="Lägg till" /></a>';
   echo "</h4></td></tr>\n";
   for ($i = 0; $i < $characterAndConceptHeight; $i++) {
     echo "        <tr><td>";
@@ -66,25 +66,25 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
       echo $characterRelations[$i]->name;
         echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=char&eid=' . $eventId;
         echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $characterRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
-        echo '<img src="components/com_lajvit/delete_character.png" alt="Ta bort" /></a>';
+        echo '<img src="media/com_lajvit/images/delete_character.png" alt="Ta bort" /></a>';
     }
     echo "</td><td>";
     if (array_key_exists($i, $conceptRelations)) {
       echo $conceptRelations[$i]->culturename . "-" . $conceptRelations[$i]->name;
         echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=concept&eid=' . $eventId;
         echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $conceptRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
-        echo '<img src="components/com_lajvit/delete_character.png" alt="Ta bort" /></a>';
+        echo '<img src="media/com_lajvit/images/delete_character.png" alt="Ta bort" /></a>';
     }
     echo "</td></tr>\n";
   }
   echo "<tr><td><h4>Kultur";
     echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=culture&eid=' . $eventId;
     echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
-    echo '<img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>';
+    echo '<img src="media/com_lajvit/images/new_character.png" alt="Lägg till" /></a>';
   echo "</h4></td><td><h4>Faktion";
     echo ' <a href="index.php?option=com_lajvit&view=plot&layout=addsubplotrelation&rel=faction&eid=' . $eventId;
     echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&Itemid=' . $itemId . '">';
-    echo '<img src="components/com_lajvit/new_character.png" alt="Lägg till" /></a>';
+    echo '<img src="media/com_lajvit/images/new_character.png" alt="Lägg till" /></a>';
   echo "</h4></td></tr>\n";
   for ($i = 0; $i < $cultureAndFactionHeight; $i++) {
     echo "        <tr><td>";
@@ -92,14 +92,14 @@ function printPlotObjectRelations($plotId, $plotObject, $eventId, $characterRela
       echo $cultureRelations[$i]->name;
         echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=culture&eid=' . $eventId;
         echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $cultureRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
-        echo '<img src="components/com_lajvit/delete_character.png" alt="Ta bort" /></a>';
+        echo '<img src="media/com_lajvit/images/delete_character.png" alt="Ta bort" /></a>';
     }
     echo "</td><td>";
     if (array_key_exists($i, $factionRelations)) {
       echo $factionRelations[$i]->name;
         echo ' <a href="index.php?option=com_lajvit&view=plot&layout=deletesubplotrelation&rel=faction&eid=' . $eventId;
         echo '&pid=' . $plotId . '&poid=' . $plotObject->id . '&relid=' . $factionRelations[$i]->id . '&Itemid=' . $itemId . '" title="Delete">';
-        echo '<img src="components/com_lajvit/delete_character.png" alt="Ta bort" /></a>';
+        echo '<img src="media/com_lajvit/images/delete_character.png" alt="Ta bort" /></a>';
     }
     echo "</td></tr>\n";
   }
