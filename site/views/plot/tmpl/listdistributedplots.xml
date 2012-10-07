@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <layout title="COM_LAJVIT_PLOT_LIST_DISTRIBUTED_TITLE">
+    <message>
+      <![CDATA[COM_LAJVIT_PLOT_LIST_DISTRIBUTED_DESC]]>
+    </message>
+  </layout>
+  <fields name="request">
+    <fieldset name="request">
+      <field 
+      name="eid" 
+      type="text" 
+      label="COM_LAJVIT_PLOT_FIELD_EVENT_LABEL" 
+      description="COM_LAJVIT_PLOT_FIELD_EVENT_DESC"
+      default="1" 
+      required="true" />
+    </fieldset>
+  </fields>
+</metadata>
