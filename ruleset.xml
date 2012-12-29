@@ -5,6 +5,7 @@
 
   <exclude-pattern>*/tests/*</exclude-pattern>
   <exclude-pattern>*/data/*</exclude-pattern>
+  <exclude-pattern>*/tmpl/*</exclude-pattern>
 
   <rule ref="Generic.CodeAnalysis.UnusedFunctionParameter" /> 
   <rule ref="Generic.Commenting.Todo"/>
