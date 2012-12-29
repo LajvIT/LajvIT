@@ -22,6 +22,7 @@
   <!-- Site Main File Copy Section -->
   <media destination="com_lajvit" folder="">
     <folder>images</folder>
+    <folder>css</folder>
   </media>
 
   <files folder="site">

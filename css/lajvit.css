@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+.group {
+  margin-bottom: 10px;
+}
+
+.container {
+  width: 100%;
+  overflow: auto;
+  margin-bottom: 0px;
+}
+
+.event {
+  margin-bottom: 25px;
+}
+
+.eventName {
+  font-size: 20px;
+  float: left;
+  padding-right: 5px;
+}
+
+.infoText {
+  font-weight: bold;
+  float: left;
+  margin-right: 5px;
+}
+
+.icon {
+  background-repeat: no-repeat;
+  background-position: left top;
+  height:16px;
+  width: 16px;
+  margin-right: 5px;
+  float: left;
+}
+
+.info {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/info.png);
+}
+.list {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/list.png);
+}
+.new_character {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/new_character.png);
+}
+.edit_character {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/edit_character.png);
+}
+.delete_character {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/delete_character.png);
+}
+.plot {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/plot.png);
+}
+.delete_organizer {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/delete_organizer.gif);
+}
+.edit_organizer {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/edit_organizer.gif);
+}

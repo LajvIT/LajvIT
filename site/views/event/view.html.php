@@ -54,6 +54,7 @@ class LajvITViewEvent extends JView {
     $this->assignRef('userType', $user->usertype);
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
     $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
+    JHtml::stylesheet('com_lajvit/lajvit.css', array(), true);
     parent::display($tpl);
   }
 

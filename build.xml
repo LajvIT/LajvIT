@@ -14,6 +14,9 @@
   <fileset dir="./images" id="image_files">
     <include name="**" />
   </fileset>
+  <fileset dir="./css" id="css_files">
+    <include name="**" />
+  </fileset>
   <fileset dir="./admin/tables" id="table_files">
     <include name="**" />
   </fileset>
@@ -32,6 +35,11 @@
       pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
       todir="${testServerDirectory}/components/com_lajvit">
       <fileset refid="component_files"/>
+    </scp>
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
+        pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+        todir="${testServerDirectory}/media/com_lajvit/css">
+      <fileset refid="css_files"/>
     </scp>
     <echo message="Copying table files to test server..." />
     <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
