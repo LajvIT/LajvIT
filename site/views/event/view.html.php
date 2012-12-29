@@ -15,8 +15,10 @@ class LajvITViewEvent extends JView {
     $events = $model->getEventsForPerson();
     $eventId = JRequest::getInt('eid', -1);
     $currentEventStatus = '';
+    $currentEventName = '';
     if ($eventId > 0) {
       $currentEventStatus = $events[$eventId]->status;
+      $currentEventName = $events[$eventId]->name;
     }
     $this->assignRef('eventid', $eventId);
     $this->assignRef('eventId', $eventId);
@@ -35,6 +37,8 @@ class LajvITViewEvent extends JView {
       }
     }
 
+    $this->displayBreadcrumb($eventId);
+
     foreach ($events as $event) {
       if (is_null($event->roleid)) {
         $event->registered = FALSE;
@@ -51,6 +55,36 @@ class LajvITViewEvent extends JView {
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
     $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
     parent::display($tpl);
+  }
+
+  private function displayBreadcrumb($eventId) {
+    $app = JFactory::getApplication();
+    $pathway = $app->getPathway();
+    $layout = $this->getLayout();
+    $model = &$this->getModel();
+    $events = $model->getEventsForPerson();
+    if ($layout != 'default' && $eventId > 0) {
+      $currentEventName = $events[$eventId]->name;
+      $pathway->addItem($currentEventName, '');
+    }
+    switch ($layout) {
+      case 'add':
+        $pathway->addItem('Skapa', '');
+        break;
+      case 'delete':
+        $pathway->addItem('Ta bort', '');
+        break;
+      case 'edit':
+        $pathway->addItem('Redigera', '');
+        break;
+      case 'register':
+        $pathway->addItem('Registrera', '');
+        break;
+      case 'registered':
+        break;
+      default:
+        break;
+    }
   }
 
   private function setRegisterData($model) {

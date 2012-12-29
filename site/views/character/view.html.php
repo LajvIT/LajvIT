@@ -78,6 +78,39 @@ class LajvITViewCharacter extends JView {
       }
     }
 
+    $this->displayBreadcrumb($eventid);
+
     parent::display($tpl);
+  }
+
+  private function displayBreadcrumb($eventId) {
+    $app = JFactory::getApplication();
+    $pathway = $app->getPathway();
+    $layout = $this->getLayout();
+    $model = &$this->getModel();
+    $events = $model->getEventsForPerson();
+    if ($eventId > 0) {
+      $currentEventName = $events[$eventId]->name;
+      $pathway->addItem($currentEventName, '');
+    }
+    switch ($layout) {
+      case 'create':
+        $pathway->addItem('Skapa karaktär', '');
+        break;
+      case 'edit':
+        $pathway->addItem('Uppdatera karaktär', '');
+        break;
+      case 'default':
+        $pathway->addItem('Visa karaktär', '');
+        break;
+      case 'delete':
+        $pathway->addItem('Ta bort karaktär', '');
+        break;
+      case 'updated':
+        $pathway->addItem('Karaktär sparad', '');
+        break;
+      default:
+        break;
+    }
   }
 }
