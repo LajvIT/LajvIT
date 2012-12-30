@@ -21,8 +21,10 @@ class LITTable extends JTable {
     $k = $this->_tbl_key;
 
     if (!$this->_forcenew && $this->$k) {
+      echo "updating<br>\n";
       $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
     } else {
+      echo "creating<br>\n";
       $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
     }
 
