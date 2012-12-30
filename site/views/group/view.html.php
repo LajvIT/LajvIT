@@ -17,9 +17,9 @@ class LajvITViewGroup extends JView {
     $this->model =& JModel::getInstance('groupmodel', 'lajvitmodel');
     $layout = $this->getLayout();
     $user = &JFactory::getUser();
+    $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
-    $minusOne = -1;
 
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);

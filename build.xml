@@ -3,6 +3,8 @@
   <!-- Build file for Phing -->
 
   <property file="./build.properties" />
+  <property name="settingsDir" value=".settings" />
+  <property name="projectFile" value=".project" />
 
   <fileset dir="${project.basedir}" id="allFiles">
     <include name="*" />
@@ -56,5 +58,46 @@
         todir="${testServerDirectory}/media/com_lajvit/images">
         <fileset refid="image_files"/>
     </scp>
+  </target>
+  
+  <target name="generate-eclipse-files" description="Generates Eclipse project definition files">
+    <if>
+      <not>
+        <available file="${projectFile}" type="file" />
+      </not>
+      <then>
+        <echo>Creating .project</echo>
+      	<echo file="${projectFile}" msg="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;${line.separator}&lt;projectDescription&gt;${line.separator}  &lt;name&gt;LajvIT&lt;/name&gt;${line.separator}  &lt;comment&gt;&lt;/comment&gt;${line.separator}  &lt;projects&gt;${line.separator}    &lt;project&gt;Joomla 2.5&lt;/project&gt;${line.separator}  &lt;/projects&gt;${line.separator}  &lt;buildSpec&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.wst.validation.validationbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.dltk.core.scriptbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}  &lt;/buildSpec&gt;${line.separator}  &lt;natures&gt;${line.separator}    &lt;nature&gt;org.eclipse.php.core.PHPNature&lt;/nature&gt;${line.separator}  &lt;/natures&gt;${line.separator}&lt;/projectDescription&gt;${line.separator}${line.separator}" append="false" />
+      </then>
+    </if>
+    <if>
+      <not>
+        <available file="${settingsDir}" type="dir" />
+      </not>
+      <then>
+        <echo>Creating .settings</echo>
+        <mkdir dir="${settingsDir}" />
+        <echo file="${settingsDir}/org.eclipse.ltk.core.refactoring.prefs" msg="eclipse.preferences.version=1${line.separator}org.eclipse.ltk.core.refactoring.enable.project.refactoring.history=false${line.separator}" append="false" />
+        <echo file="${settingsDir}/org.eclipse.php.core.prefs" msg="eclipse.preferences.version=1${line.separator}include_path=2;/Joomla 2.5${line.separator}org.eclipse.php.core.phpForamtterArrayInitSize=2${line.separator}org.eclipse.php.core.phpForamtterIndentationSize=2${line.separator}org.eclipse.php.core.phpForamtterIndentationWrappedLineSize=2${line.separator}org.eclipse.php.core.phpForamtterUseTabs=false${line.separator}" append="false" />
+        <echo file="${settingsDir}/org.eclipse.php.ui.prefs" msg="cleanup.remove_trailing_whitespaces=true${line.separator}cleanup.remove_trailing_whitespaces_all=true${line.separator}cleanup.remove_trailing_whitespaces_ignore_empty=false${line.separator}eclipse.preferences.version=1${line.separator}org.eclipse.php.ui.text.custom_code_templates=&lt;?xml version\=&quot;1.0&quot; encoding\=&quot;UTF-8&quot; standalone\=&quot;no&quot;?&gt;&lt;templates/&gt;${line.separator}" append="false" />
+        <echo file="${settingsDir}/org.phpsrc.eclipse.pti.tools.codesniffer.prefs" msg="active_standards=MyCodingStandard${line.separator}custom_standard_names=MyCodingStandard${line.separator}custom_standard_paths=${project.basedir}${line.separator}debug_print_output=true${line.separator}default_tab_width=2${line.separator}eclipse.preferences.version=1${line.separator}file_extension=${line.separator}ignore_pattern=*/tmpl/*, */Joomla 2.5/*${line.separator}pear_library=PEAR${line.separator}php_executable=PHP5.3${line.separator}pref_ignore_sniffs=${line.separator}" append="false" />
+        <if>
+          <os family="windows" />
+          <then>
+            <reflexive>
+                <fileset dir="${settingsDir}">
+                    <include pattern="org.phpsrc.eclipse.pti.tools.codesniffer.prefs" />
+                </fileset>
+                <filterchain>
+                  <replaceregexp>
+                    <regexp pattern="\\" replace="\\\\"/>
+                    <regexp pattern=":" replace="\:"/>
+                  </replaceregexp>
+                </filterchain>
+            </reflexive>
+          </then>
+        </if>
+      </then>
+    </if>
   </target>
 </project>
