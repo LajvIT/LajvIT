@@ -7,6 +7,14 @@ jimport('joomla.application.component.view');
  * HTML View class for the HelloWorld Component.
  */
 class LajvITViewEvent extends JView {
+  function getModel($name = "LajvIT") {
+    return parent::getModel($name);
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
     $model = &$this->getModel();
     $eventModel =& JModel::getInstance('eventmodel', 'lajvitmodel');

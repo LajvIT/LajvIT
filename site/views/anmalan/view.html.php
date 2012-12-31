@@ -6,6 +6,14 @@ jimport('joomla.application.component.view');
  * View for anmalan.
  */
 class LajvITViewAnmalan extends JView {
+  function getModel($name) {
+    return parent::getModel($name = "LajvIT");
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
     $model = &$this->getModel();
     $greeting = $model->getGreeting();

@@ -8,18 +8,14 @@
  * @license    GNU/GPL
  */
 
-// No direct access
-
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.model');
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_lajvit'.DS.'tables');
 
 /**
  * LajvIT Model.
  */
-class LajvITModelLajvIT extends JModel {
+class LajvITModelLajvIT extends JModelLegacy {
   /**
    * Gets the greeting
    * @return string The greeting to be displayed to the user

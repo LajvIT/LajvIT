@@ -13,6 +13,15 @@ jimport('joomla.application.component.view');
  * View for My pages.
  */
 class LajvITViewMyPages extends JView {
+
+  function getModel($name = "LajvIT") {
+    return parent::getModel($name);
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
     $model = &$this->getModel();
     $person = &$model->getPerson();

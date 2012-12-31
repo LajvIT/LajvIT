@@ -3,66 +3,66 @@
  * @package    LajvIT
  */
 
-// No direct access
-
 defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
-jimport('joomla.filesystem.file');
 
 /**
  * LajvIT Component Controller.
  */
-class LajvITController extends JController {
+class LajvITController extends JControllerLegacy {
   /**
   * Method to display the view
   *
   * @access    public
   */
-  function display( $cachable = FALSE) {
-    $document = &JFactory::getDocument();
-
+  public function display($cachable = FALSE, $urlparams = FALSE) {
+    $document = JFactory::getDocument();
     $viewType = $document->getType();
-    $viewName = JRequest::getCmd('view', $this->getName());
+    $viewName = JRequest::getCmd('view', $this->default_view);
     $viewLayout = JRequest::getCmd('layout', 'default');
 
-    $user = &JFactory::getUser();
-    if (!$user || $user->guest) {
-      $redirectUrl = 'index.php?option=com_lajvit&view=' . $viewName . '&layout=' . $viewLayout;
-      $redirectUrl .= '&Itemid='.JRequest::getInt('Itemid', 0);
-      $this->setRedirect('index.php?option=com_user&view=login&return='.base64_encode($redirectUrl));
-      return;
+    $view = $this->getView($viewName, $viewType, '',
+        array('base_path' => $this->basePath, 'layout' => $viewLayout));
+
+    if ($model = $this->getModel("LajvIT")) {
+      $view->setModel($model, TRUE);
     }
-
-    $view = &$this->getView($viewName, $viewType, '', array('base_path' => $this->basePath));
-
-    // Get/Create the model
-    //    if ($model = &$this->getModel($viewName)) {
-    if ($model = &$this->getModel($this->getName())) {
-      // Push the model into the view (as default)
+    if ($model = $this->getModel($viewName)) {
       $view->setModel($model, TRUE);
     }
 
-    if ($viewName != 'person' || $viewLayout != 'edit') {
-      $person = &$model->getPerson();
-
-      if (!$person || $person->_nodata) {
-        $this->setRedirect('index.php?option=com_lajvit&view=person&layout=edit&Itemid='.JRequest::getInt('Itemid', 0));
-        return;
-      }
-    }
-
-    // Set the layout
+    $view->assignRef('document', $document);
     $view->setLayout($viewLayout);
 
+    $conf = JFactory::getConfig();
+
     // Display the view
-    if ($cachable && $viewType != 'feed') {
+    if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
       $option = JRequest::getCmd('option');
-      $cache =& JFactory::getCache($option, 'view');
+      $cache = JFactory::getCache($option, 'view');
+
+      if (is_array($urlparams)) {
+        $app = JFactory::getApplication();
+
+        if (!empty($app->registeredurlparams)) {
+          $registeredurlparams = $app->registeredurlparams;
+        } else {
+          $registeredurlparams = new stdClass;
+        }
+
+        foreach ($urlparams as $key => $value) {
+          // Add your safe url parameters with variable type as value {@see JFilterInput::clean()}.
+          $registeredurlparams->$key = $value;
+        }
+
+        $app->registeredurlparams = $registeredurlparams;
+      }
+
       $cache->get($view, 'display');
     } else {
       $view->display();
     }
+
+    return $this;
   }
 
   function mypages() {
@@ -118,7 +118,8 @@ class LajvITController extends JController {
 
     $validmimetypes = array('image/jpeg', 'image/pjpeg', 'image/png', 'image/x-png', 'image/gif');
 
-    if (!is_int($imageinfo[0]) || !is_int($imageinfo[1]) || !in_array($imageinfo['mime'], $validmimetypes)) {
+    if (!is_int($imageinfo[0]) || !is_int($imageinfo[1]) ||
+        !in_array($imageinfo['mime'], $validmimetypes)) {
       echo 'Invalid file type';
       return FALSE;
     }

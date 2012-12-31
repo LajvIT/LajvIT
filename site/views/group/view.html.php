@@ -13,6 +13,14 @@ class LajvITViewGroup extends JView {
    */
   private $model;
 
+  function getModel($name) {
+    return parent::getModel($name);
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
     $this->model =& JModel::getInstance('groupmodel', 'lajvitmodel');
     $layout = $this->getLayout();

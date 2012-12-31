@@ -1,13 +1,21 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-jimport('joomla.application.component.view');
 
 /**
  * View for person.
  */
-class LajvITViewPerson extends JView {
+class LajvITViewPerson extends JViewLegacy {
+
+  function getModel($name = "LajvIT") {
+    return parent::getModel($name);
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
-    $model = &$this->getModel();
+    $model = $this->getModel();
 
     $eventid = JRequest::getInt('eid', -1);
     $role = $model->getRoleForEvent($eventid);

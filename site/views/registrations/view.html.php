@@ -6,6 +6,14 @@ jimport('joomla.application.component.view');
  * View for registrations.
  */
 class LajvITViewRegistrations extends JView {
+  function getModel($name = "LajvIT") {
+    return parent::getModel($name);
+  }
+
+  function setModel($name, $default = FALSE) {
+    return parent::setModel($name, $default);
+  }
+
   function display($tpl = NULL) {
     $model = &$this->getModel();
 
