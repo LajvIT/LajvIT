@@ -29,6 +29,10 @@ class LajvITViewGroup extends JView {
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
 
+    if ($layout == 'default') {
+      $layout = 'edit';
+      $this->setLayout($layout);
+    }
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));

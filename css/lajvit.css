@@ -25,6 +25,11 @@
   margin-right: 5px;
 }
 
+.text {
+  float: left;
+  margin-right: 5px;
+}
+
 .icon {
   background-repeat: no-repeat;
   background-position: left top;
@@ -48,6 +53,18 @@
 }
 .delete_character {
   background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/delete_character.png);
+}
+.new_group {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2_new.png);
+}
+.delete_group {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2_delete.png);
+}
+.show_group {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-1.png);
+}
+.show_group2 {
+  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2.png);
 }
 .plot {
   background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/plot.png);

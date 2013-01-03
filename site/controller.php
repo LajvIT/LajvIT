@@ -36,7 +36,7 @@ class LajvITController extends JControllerLegacy {
     $conf = JFactory::getConfig();
 
     // Display the view
-    if ($cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
+    if (FALSE && $cachable && $viewType != 'feed' && $conf->get('caching') >= 1) {
       $option = JRequest::getCmd('option');
       $cache = JFactory::getCache($option, 'view');
 
