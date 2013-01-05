@@ -58,6 +58,10 @@ foreach ($groupStatuses as $status) {
         </td>
       </tr>
       <tr>
+        <td><strong>Gruppledare:</strong></td>
+        <td><?php echo $this->groupLeaderPersonName; ?></td>
+      </tr>
+      <tr>
         <td></td>
         <td>
           <input type="submit" value="Spara grupp" />

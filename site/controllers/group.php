@@ -35,7 +35,6 @@ class LajvITControllerGroup extends LajvITController {
   public function edit() {
     $this->initModels();
     $data = $this->getGroupDataFromPostedForm();
-    echo "group: <br>" . print_r($data, TRUE) . "<br>";
     if (!$this->verifyGroupData($data)) {
       $this->setRedirect($this->showEditGroupLink());
       return;

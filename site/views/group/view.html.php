@@ -9,11 +9,11 @@ jimport('joomla.application.component.view');
 class LajvITViewGroup extends JView {
 
   /**
-   * @var LajvITModelGroupModel
+   * @var LajvITModelGroup
    */
   private $model;
 
-  function getModel($name) {
+  function getModel($name = NULL) {
     return parent::getModel($name);
   }
 
@@ -22,7 +22,7 @@ class LajvITViewGroup extends JView {
   }
 
   function display($tpl = NULL) {
-    $this->model =& JModel::getInstance('groupmodel', 'lajvitmodel');
+    $this->model = $this->getModel();
     $layout = $this->getLayout();
     $user = &JFactory::getUser();
     $minusOne = -1;
@@ -60,6 +60,7 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupVisible', $group['visible']);
     $this->assignRef('groupStatus', $group['status']);
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
+    $this->assignRef('groupLeaderPersonName', $group['groupLeaderPersonName']);
     $this->assignRef('eventId', $group['eventId']);
   }
 }

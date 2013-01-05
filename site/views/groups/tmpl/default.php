@@ -15,7 +15,7 @@ foreach ($this->items as $item) { ?>
       </div>
     </div>
     <div class="container">
-      <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonId; ?></div>
+      <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>
       <div class="text">Max: <?php echo $item->maxParticipants; ?></div>
       <div class="text">Förväntat: <?php echo $item->expectedParticipants; ?></div>
       <div class="text">Synlig: <?php echo $item->visible; ?></div>
