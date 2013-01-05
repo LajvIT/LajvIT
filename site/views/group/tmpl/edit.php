@@ -38,8 +38,8 @@ $groupStatuses = Array('created','approved','rejected','open','closed');
         <td><strong>Synlighet för alla deltagare:</strong></td>
         <td>
           <select name="groupVisible">
-            <option value="0">Gömd</option>
-            <option value="1">Synlig</option>
+            <option value="0" <?php echo $this->groupVisible == 0 ? "selected": "";?>>Gömd</option>
+            <option value="1" <?php echo $this->groupVisible == 1 ? "selected": "";?>>Synlig</option>
           </select>
         </td>
       </tr>
@@ -66,6 +66,7 @@ foreach ($groupStatuses as $status) {
           <input type="hidden" name="controller" value="group" />
           <input type="hidden" name="eventId" value="<?php echo $this->eventId; ?>" />
           <input type="hidden" name="groupId" value="<?php echo $this->groupId; ?>" />
+          <input type="hidden" name="groupLeaderPersonId" value="<?php echo $this->groupLeaderPersonId; ?>" />
           <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />
         </td>
       </tr>

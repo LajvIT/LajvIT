@@ -60,5 +60,6 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupVisible', $group['visible']);
     $this->assignRef('groupStatus', $group['status']);
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
+    $this->assignRef('eventId', $group['eventId']);
   }
 }
