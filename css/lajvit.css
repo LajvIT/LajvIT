@@ -40,38 +40,38 @@
 }
 
 .info {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/info.png);
+  background-image: url(../images/info.png);
 }
 .list {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/list.png);
+  background-image: url(../images/list.png);
 }
 .new_character {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/new_character.png);
+  background-image: url(../images/new_character.png);
 }
 .edit_character {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/edit_character.png);
+  background-image: url(../images/edit_character.png);
 }
 .delete_character {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/delete_character.png);
+  background-image: url(../images/delete_character.png);
 }
 .new_group {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2_new.png);
+  background-image: url(../images/group-2_new.png);
 }
 .delete_group {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2_delete.png);
+  background-image: url(../images/group-2_delete.png);
 }
 .show_group {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-1.png);
+  background-image: url(../images/group-1.png);
 }
 .show_group2 {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/group-2.png);
+  background-image: url(../images/group-2.png);
 }
 .plot {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/plot.png);
+  background-image: url(../images/plot.png);
 }
 .delete_organizer {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/delete_organizer.gif);
+  background-image: url(../images/delete_organizer.gif);
 }
 .edit_organizer {
-  background-image: url(/kh/devtest/jupgrade2/media/com_lajvit/images/edit_organizer.gif);
+  background-image: url(../images/edit_organizer.gif);
 }
