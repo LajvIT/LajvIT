@@ -5,6 +5,7 @@
 
 CREATE TABLE IF NOT EXISTS #__lit_event (
  id int(11) NOT NULL auto_increment,
+ `asset_id` INT(10) NOT NULL DEFAULT '0',
  shortname text NOT NULL,
  name text NOT NULL,
  url text NOT NULL,
@@ -469,6 +470,28 @@ CREATE TABLE IF NOT EXISTS #__lit_defaultvalues (
   REFERENCES #__lit_confirmation (id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=100;
 
+-- --------------------------------------------------------
+--
+-- Structure for table defaultvalues
+--
+
+CREATE TABLE IF NOT EXISTS #__lit_groups (
+ `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+ `asset_id` int(10) unsigned NOT NULL DEFAULT '0',
+ `name` varchar(55) DEFAULT 'unnamed',
+ `groupLeaderPersonId` int(11) DEFAULT NULL,
+ `description` text,
+ `maxParticipants` int(10) unsigned NOT NULL DEFAULT '0',
+ `expectedParticipants` int(11) NOT NULL DEFAULT '0',
+ `url` varchar(255) DEFAULT '',
+ `status` enum('created','approved','rejected','open','closed','hidden') NOT NULL DEFAULT 'created',
+ `adminInformation` text,
+ `eventId` int(11) DEFAULT NULL,
+ `visible` tinyint(1) NOT NULL DEFAULT '0',
+ PRIMARY KEY (`id`),
+ KEY `groupleader` (`groupLeaderPersonId`),
+ KEY `event` (`eventId`)
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8
 
 CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
   #__lit_person.*,

@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+  addrulepath="/administrator/components/com_lajvit/models/rules"
+>
+  <fieldset name="details">
+    <field
+      name="id"
+      type="hidden"
+    />
+    <field
+      name="name"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_NAME_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_NAME_DESC"
+      size="40"
+      class="inputbox"
+      required="true"
+      default=""
+    />
+    <field
+      name="shortname"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_SHORTNAME_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_SHORTNAME_DESC"
+      size="40"
+      class="inputbox"
+      required="true"
+      default=""
+    />
+    <field
+      name="startdate"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_STARTDATE_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_STARTDATE_DESC"
+      size="10"
+      class="inputbox"
+      required="true"
+      default=""
+    />
+    <field
+      name="enddate"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_ENDDATE_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_ENDDATE_DESC"
+      size="10"
+      class="inputbox"
+      required="true"
+      default=""
+    />
+    <field
+      name="status"
+      type="list"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_STATUS_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_STATUS_DESC"
+      default="closed"
+    >
+      <option value="created">Created</option>
+      <option value="open">Open</option>
+      <option value="closed">Closed</option>
+      <option value="hidden">Hidden</option>
+    </field>
+    <field
+      name="url"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_URL_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_URL_DESC"
+      size="40"
+      class="inputbox"
+      required="false"
+      default=""
+    />
+    <field
+      name="description"
+      type="text"
+      label="COM_LAJVIT_EVENT_FIELD_EVENT_DESCRIPTION_LABEL"
+      description="COM_LAJVIT_EVENT_FIELD_EVENT_DESCRIPTION_DESC"
+      size="40"
+      class="inputbox"
+      required="false"
+      default=""
+    />
+  </fieldset>
+  <fields name="params">
+    <fieldset
+      name="params"
+      label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+    >
+    </fieldset>
+  </fields>
+  <fieldset name="accesscontrol">
+    <field name="asset_id" type="hidden" filter="unset" />
+    <field name="rules"
+            type="rules"
+            label="JFIELD_RULES_LABEL"
+            translate_label="false"
+            filter="rules"
+            validate="rules"
+            class="inputbox"
+            component="com_lajvit"
+            section="event"
+    />
+  </fieldset>
+</form>
+

@@ -1,0 +1,1 @@
+-- The first Joomla 2.5 LajvIT version

@@ -1,0 +1,1 @@
+-- SQL file for adding the basic database structure from pre-Joomla 2.5

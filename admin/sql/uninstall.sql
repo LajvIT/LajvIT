@@ -14,3 +14,5 @@ DROP VIEW #__lit_veventsandregistrations;
 -- DROP TABLE #__lit_person;
 -- DROP TABLE #__lit_eventspecifics;
 -- DROP TABLE #__lit_event;
+
+-- DROP TABLE #__lit_groups;
