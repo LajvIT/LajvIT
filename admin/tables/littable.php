@@ -8,29 +8,80 @@ defined('_JEXEC') or die();
 class LITTable extends JTable {
   var $_forcenew = FALSE;
 
-      /**
-     * Inserts a new row if id is zero or updates an existing row in the database table
-     *
-     * Can be overloaded/supplemented by the child class
-     *
-     * @access public
-     * @param boolean If FALSE, null object variables are not updated
-     * @return null|stringnull if successful otherwise returns and error message
-     */
+  /**
+   * Inserts a new row if id is zero or updates an existing row in the database table
+   *
+   * Can be overloaded/supplemented by the child class
+   *
+   * @access public
+   * @param boolean If FALSE, null object variables are not updated
+   * @return null|stringnull if successful otherwise returns and error message
+   */
   function store($updateNulls = FALSE) {
     $k = $this->_tbl_key;
 
     if (!$this->_forcenew && $this->$k) {
-      echo "updating<br>\n";
       $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
     } else {
-      echo "creating<br>\n";
       $ret = $this->_db->insertObject($this->_tbl, $this, $this->_tbl_key);
     }
 
     if (!$ret) {
       $this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
       return FALSE;
+    }
+
+    $parentId = $this->_getAssetParentId();
+    $name = $this->_getAssetName();
+    $title = $this->_getAssetTitle();
+
+    $asset = JTable::getInstance('Asset', 'JTable', array('dbo' => $this->getDbo()));
+    $asset->loadByName($name);
+
+    // Re-inject the asset id.
+    $this->asset_id = $asset->id;
+
+    // Check for an error.
+    if ($error = $asset->getError()) {
+      $this->setError($error);
+      return FALSE;
+    }
+
+    // Specify how a new or moved node asset is inserted into the tree.
+    if (empty($this->asset_id) || $asset->parent_id != $parentId) {
+      $asset->setLocation($parentId, 'last-child');
+    }
+
+    // Prepare the asset to be stored.
+    $asset->parent_id = $parentId;
+    $asset->name = $name;
+    $asset->title = $title;
+
+    if ($this->_rules instanceof JAccessRules) {
+      $asset->rules = (string) $this->_rules;
+    }
+
+    if (!$asset->check() || !$asset->store($updateNulls)) {
+      $this->setError($asset->getError());
+      return FALSE;
+    }
+
+    // Create an asset_id or heal one that is corrupted.
+    if (empty($this->asset_id) || ($currentAssetId != $this->asset_id && !empty($this->asset_id))) {
+      // Update the asset_id field in this table.
+      $this->asset_id = (int) $asset->id;
+
+      $query = $this->_db->getQuery(TRUE);
+      $query->update($this->_db->quoteName($this->_tbl));
+      $query->set('asset_id = ' . (int) $this->asset_id);
+      $query->where($this->_db->quoteName($k) . ' = ' . (int) $this->$k);
+      $this->_db->setQuery($query);
+
+      if (!$this->_db->execute()) {
+        $e = new JException(JText::sprintf('JLIB_DATABASE_ERROR_STORE_FAILED_UPDATE_ASSET_ID', $this->_db->getErrorMsg()));
+        $this->setError($e);
+        return FALSE;
+      }
     }
 
     return TRUE;
