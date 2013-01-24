@@ -8,10 +8,13 @@
     <action name="core.delete" title="JACTION_DELETE" description="JACTION_EDIT_COMPONENT_DESC" />
   </section>
   <section name="event">
-    <action name="core.admin" title="JACTION_ADMIN" description="JACTION_ADMIN_COMPONENT_DESC" />
-    <action name="core.manage" title="JACTION_MANAGE" description="JACTION_MANAGE_COMPONENT_DESC" />
-    <action name="core.create" title="JACTION_CREATE" description="JACTION_CREATE_COMPONENT_DESC" />
-    <action name="core.edit" title="JACTION_EDIT" description="JACTION_EDIT_COMPONENT_DESC" />
-    <action name="core.delete" title="JACTION_DELETE" description="JACTION_EDIT_COMPONENT_DESC" />
+    <action name="core.admin" title="JACTION_ADMIN" description="COM_LAJVIT_ACCESS_EVENT_ADMIN_DESC" />
+    <action name="core.manage" title="JACTION_MANAGE" description="COM_LAJVIT_ACCESS_EVENT_MANAGE_DESC" />
+    <action name="core.create" title="JACTION_CREATE" description="COM_LAJVIT_ACCESS_EVENT_CREATE_DESC" />
+    <action name="core.delete" title="JACTION_DELETE" description="COM_LAJVIT_ACCESS_EVENT_EDIT_DESC" />
+    <action name="core.edit" title="JACTION_EDIT" description="COM_LAJVIT_ACCESS_EVENT_EDIT_DESC" />
+    <action name="core.edit.own" title="JACTION_EDITOWN" description="COM_LAJVIT_ACCESS_EVENT_EDIT_OWN_DESC" />
+    <action name="lajvit.view.visible" title="COM_LAJVIT_LIST_VISIBLE" description="COM_LAJVIT_ACCESS_EVENT_LIST_VISIBLE_DESC" />
+    <action name="lajvit.view.hidden" title="COM_LAJVIT_LIST_HIDDEN" description="COM_LAJVIT_ACCESS_EVENT_LIST_HIDDEN_DESC" />
   </section>
 </access>
