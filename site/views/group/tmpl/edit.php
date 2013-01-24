@@ -6,6 +6,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 <?php
 $groupStatuses = Array('created','approved','rejected','open','closed');
+if (isset($this->errorMsg)) { echo $this->errorMsg . "<br>"; }
 ?>
 <form action="index.php" method="post" name="groupCreateForm">
   <table>

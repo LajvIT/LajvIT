@@ -468,7 +468,7 @@ class LajvITModelLajvIT extends JModelLegacy {
       return FALSE;
     */
 
-    $row = &JTable::getInstance('lit_event', 'Table');
+    $row = JTable::getInstance('lit_event', 'Table');
     $row->load($eventid);
 
     return $row;

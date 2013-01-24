@@ -39,8 +39,9 @@ class LajvITViewGroup extends JView {
     if ($layout == 'edit' && $groupId > 0) {
       $group = $this->model->getGroup($groupId);
       if (!$group) {
-        echo "Failed fetching group<br>\n";
+        $this->errorMsg = "GET_GROUP_FAILED";
         $this->assignRef('groupId', $minusOne);
+        $this->setLayout('error');
       } else {
         $currentGroupStatus = '';
         $currentGroupStatus = $group['status'];
