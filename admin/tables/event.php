@@ -10,6 +10,7 @@ require_once('littable.php');
 class TableLIT_Event extends LITTable {
   static $tableName = '#__lit_event';
   var $id = 0;
+  var $asset_id = 0;
   var $shortname = '';
   var $name = '';
   var $url = '';

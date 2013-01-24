@@ -10,6 +10,7 @@ require_once('littable.php');
 class TableLIT_Groups extends LITTable {
   static $tableName = '#__lit_groups';
   var $id = 0;
+  var $asset_id = 0;
   var $name = '';
   var $groupLeaderPersonId = NULL;
   var $description = NULL;
@@ -34,8 +35,6 @@ class TableLIT_Groups extends LITTable {
    * @since 1.5
    */
   public function bind($array, $ignore = '') {
-    echo "TableLIT_Groups.bind <br>";
-    echo print_r($array, TRUE) . "<br>";
     // Bind the rules.
     if (isset($array->rules) && is_array($array->rules)) {
       $rules = new JAccessRules($array->rules);
@@ -81,7 +80,6 @@ class TableLIT_Groups extends LITTable {
 
     // Find the parent-asset
     if (($this->eventId) && !empty($this->eventId)) {
-      // The item has a category as asset-parent
       $assetParent->loadByName('com_lajvit.event.' . (int) $this->eventId);
     } else {
       // The item has the component as asset-parent
