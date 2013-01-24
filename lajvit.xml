@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
-<!-- <install type="component" version="1.5.0"> -->
   <name>LajvIT</name>
-  <!-- The following elements are optional and free of formatting constraints -->
   <creationDate>2011-02-15</creationDate>
   <author>Emil Djupfeldt</author>
   <authorEmail>emil@djupfeldt.se</authorEmail>
   <authorUrl>http://www.example.org</authorUrl>
   <copyright>Copyright Info</copyright>
   <license>License Info</license>
-  <!-- The version string is recorded in the components table -->
-  <version>0.0.1</version>
-  <!-- The description is optional and defaults to the name -->
+  <version>0.0.3</version>
   <description>Verktyg för att hantera lajv.</description>
 
+  <install>
+    <sql>
+      <file driver="mysql" charset="utf8">sql/install.sql</file>
+    </sql>
+  </install>
+  <uninstall>
+    <sql>
+      <file driver="mysql" charset="utf8">sql/install.sql</file>
+    </sql>
+  </uninstall>
   <update> <!-- Runs on update; New in 2.5 -->
-  <!--   <schemas>
-      <schemapath type="mysql">sql/updates/mysql</schemapath>
-    </schemas> -->
+     <schemas>
+      <schemapath type="mysql">sql/updates</schemapath>
+    </schemas>
   </update>
+
   <!-- Site Main File Copy Section -->
   <media destination="com_lajvit" folder="">
     <folder>images</folder>
@@ -40,13 +47,19 @@
 
     <!-- Administration Main File Copy Section -->
     <files folder="admin">
-      <filename>index.html</filename>
+      <filename>access.xml</filename>
+      <filename>lajvit.php</filename>
+      <filename>config.xml</filename>
+      <filename>controller.php</filename>
       <filename>lajvit.php</filename>
 <!--       <filename>install.sql</filename>
       <filename>uninstall.sql</filename>
-      <filename>testdata.sql</filename>
-      <folder>tables</folder> 
-      <folder>sql</folder> -->
+      <filename>testdata.sql</filename> -->
+      <folder>sql</folder>
+      <folder>controllers</folder>
+      <folder>helpers</folder>
+      <folder>views</folder>
+      <folder>tables</folder>
     </files>
   </administration>
 

@@ -13,6 +13,9 @@
   <fileset dir="./site" id="component_files">
     <include name="**" />
   </fileset>
+  <fileset dir="./admin" id="admin_files">
+    <include name="**" />
+  </fileset>
   <fileset dir="./images" id="image_files">
     <include name="**" />
   </fileset>
@@ -33,33 +36,38 @@
 
   <target name="scp" description="SCP files to test server">
     <echo message="Copying component files to test server..." />
-    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
-      pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}"
+      pubkeyfile="${testServerPubKeyfile}" host="${testServer}"
       todir="${testServerDirectory}/components/com_lajvit">
       <fileset refid="component_files"/>
     </scp>
-    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
-        pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}"
+        pubkeyfile="${testServerPubKeyfile}" host="${testServer}"
         todir="${testServerDirectory}/media/com_lajvit/css">
       <fileset refid="css_files"/>
     </scp>
     <echo message="Copying table files to test server..." />
-    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
-            pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+    <!-- <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}"
+            pubkeyfile="${testServerPubKeyfile}" host="${testServer}"
       todir="${testServerDirectory}/administrator/components/com_lajvit/tables">
       <fileset refid="table_files"/>
+    </scp> -->
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}"
+            pubkeyfile="${testServerPubKeyfile}" host="${testServer}"
+      todir="${testServerDirectory}/administrator/components/com_lajvit">
+      <fileset refid="admin_files"/>
     </scp>
   </target>
 
   <target name="scpImages" description="SCP images to test server">
     <echo message="Copying images to test server..." />
-    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}" 
-        pubkeyfile="${testServerPubKeyfile}" host="${testServer}" 
+    <scp username="${testServerUser}" privkeyfile="${testServerPrivKeyfile}"
+        pubkeyfile="${testServerPubKeyfile}" host="${testServer}"
         todir="${testServerDirectory}/media/com_lajvit/images">
         <fileset refid="image_files"/>
     </scp>
   </target>
-  
+
   <target name="generate-eclipse-files" description="Generates Eclipse project definition files">
     <if>
       <not>
@@ -67,7 +75,7 @@
       </not>
       <then>
         <echo>Creating .project</echo>
-      	<echo file="${projectFile}" msg="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;${line.separator}&lt;projectDescription&gt;${line.separator}  &lt;name&gt;LajvIT&lt;/name&gt;${line.separator}  &lt;comment&gt;&lt;/comment&gt;${line.separator}  &lt;projects&gt;${line.separator}    &lt;project&gt;Joomla 2.5&lt;/project&gt;${line.separator}  &lt;/projects&gt;${line.separator}  &lt;buildSpec&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.wst.validation.validationbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.dltk.core.scriptbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}  &lt;/buildSpec&gt;${line.separator}  &lt;natures&gt;${line.separator}    &lt;nature&gt;org.eclipse.php.core.PHPNature&lt;/nature&gt;${line.separator}  &lt;/natures&gt;${line.separator}&lt;/projectDescription&gt;${line.separator}${line.separator}" append="false" />
+        <echo file="${projectFile}" msg="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;${line.separator}&lt;projectDescription&gt;${line.separator}  &lt;name&gt;LajvIT&lt;/name&gt;${line.separator}  &lt;comment&gt;&lt;/comment&gt;${line.separator}  &lt;projects&gt;${line.separator}    &lt;project&gt;Joomla 2.5&lt;/project&gt;${line.separator}  &lt;/projects&gt;${line.separator}  &lt;buildSpec&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.wst.validation.validationbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}    &lt;buildCommand&gt;${line.separator}      &lt;name&gt;org.eclipse.dltk.core.scriptbuilder&lt;/name&gt;${line.separator}      &lt;arguments&gt;${line.separator}      &lt;/arguments&gt;${line.separator}    &lt;/buildCommand&gt;${line.separator}  &lt;/buildSpec&gt;${line.separator}  &lt;natures&gt;${line.separator}    &lt;nature&gt;org.eclipse.php.core.PHPNature&lt;/nature&gt;${line.separator}  &lt;/natures&gt;${line.separator}&lt;/projectDescription&gt;${line.separator}${line.separator}" append="false" />
       </then>
     </if>
     <if>
