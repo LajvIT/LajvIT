@@ -19,6 +19,15 @@ class LITTable extends JTable {
    */
   function store($updateNulls = FALSE) {
     $k = $this->_tbl_key;
+    $currentAssetId = 0;
+    if (!empty($this->asset_id)) {
+      $currentAssetId = $this->asset_id;
+    }
+
+    // The asset id field is managed privately by this class.
+    if ($this->_trackAssets) {
+      unset($this->asset_id);
+    }
 
     if (!$this->_forcenew && $this->$k) {
       $ret = $this->_db->updateObject($this->_tbl, $this, $this->_tbl_key, $updateNulls);
@@ -29,6 +38,15 @@ class LITTable extends JTable {
     if (!$ret) {
       $this->setError(get_class( $this ).'::store failed - '.$this->_db->getErrorMsg());
       return FALSE;
+    }
+
+    // If the table is not set to track assets return true.
+    if (!$this->_trackAssets) {
+      return TRUE;
+    }
+
+    if ($this->_locked) {
+      $this->_unlock();
     }
 
     $parentId = $this->_getAssetParentId();
