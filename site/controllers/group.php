@@ -26,7 +26,7 @@ class LajvITControllerGroup extends LajvITController {
     }
     $groupId = $this->groupModel->createGroup($data);
     if (is_int($groupId) && $groupId > 0) {
-      //$this->setRedirect($this->showEditGroupLink($groupId));
+      $this->setRedirect($this->showEditGroupLink($groupId));
     } else {
       $this->setRedirect($this->defaultGroupsLink());
     }
@@ -43,10 +43,10 @@ class LajvITControllerGroup extends LajvITController {
     //echo "updateResult: " . print_r($updateResult) . "<br>\n";
     //echo $updateResult . "<br>\n";
     if ($updateResult === NULL || $updateResult == "" || $updateResult == 1) {
-      //echo "Updated group<br>\n";
-      //$this->setRedirect($this->showEditGroupLink($data->id));
+      echo "Updated group<br>\n";
+      $this->setRedirect($this->showEditGroupLink($data->id));
     } else {
-      //echo "Failed to update group<br>\n";
+      echo "Failed to update group<br>\n";
       $this->setRedirect($this->defaultGroupsLink());
     }
   }
@@ -76,7 +76,7 @@ class LajvITControllerGroup extends LajvITController {
     $groupExpectedParticipants = JRequest::getInt('groupExpectedParticipants', 0);
     $groupStatus = JRequest::getString('groupStatus', 'created');
     $groupEventId = JRequest::getInt('eventId', -1);
-    $groupLeaderPersonId = JRequest::getInt('groupLeaderId', 0);
+    $groupLeaderPersonId = JRequest::getInt('groupLeaderPersonId', 0);
     if ($groupLeaderPersonId == 0 ) {
       $groupLeaderPersonId = $this->person->id;
     }
