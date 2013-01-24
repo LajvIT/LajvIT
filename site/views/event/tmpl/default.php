@@ -103,7 +103,6 @@ foreach ($this->events as $event) {
         <div class="infoText">Grupper</div>
         <div class="icon new_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=create&eid=<?php echo $event->id; ?>" title="Ny grupp"></a></div>
         <div class="icon show_group"><a class="icon" href="index.php?option=com_lajvit&view=groups&eid=<?php echo $event->id; ?>" title="Visa grupper"></a></div>
-        <div class="icon show_group2"><a class="icon" href="index.php?option=com_lajvit&view=groups&eid=<?php echo $event->id; ?>" title="Visa grupper"></a></div>
       </div>
     </div>
   <?php

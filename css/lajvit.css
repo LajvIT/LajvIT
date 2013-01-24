@@ -55,16 +55,13 @@
   background-image: url(../images/delete_character.png);
 }
 .new_group {
-  background-image: url(../images/group-2_new.png);
+  background-image: url(../images/group_new.png);
 }
 .delete_group {
-  background-image: url(../images/group-2_delete.png);
+  background-image: url(../images/group_delete.png);
 }
 .show_group {
-  background-image: url(../images/group-1.png);
-}
-.show_group2 {
-  background-image: url(../images/group-2.png);
+  background-image: url(../images/group.png);
 }
 .plot {
   background-image: url(../images/plot.png);
