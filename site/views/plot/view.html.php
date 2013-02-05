@@ -85,7 +85,7 @@ class LajvITViewPlot extends JView {
   }
 
   private function isAdminUser($mergedRole) {
-    if (is_array($mergedRole) && ((array_key_exists('character_setstatus', $mergedRole) &&
+    if (is_array($mergedRole) || is_object($mergedRole) && ((array_key_exists('character_setstatus', $mergedRole) &&
           $mergedRole->character_setstatus) ||
         (array_key_exists('registration_setstatus', $mergedRole) &&
           $mergedRole->registration_setstatus) ||
