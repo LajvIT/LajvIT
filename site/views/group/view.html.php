@@ -24,34 +24,50 @@ class LajvITViewGroup extends JView {
   function display($tpl = NULL) {
     $this->model = $this->getModel();
     $layout = $this->getLayout();
-    $user = &JFactory::getUser();
     $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
+    $this->errorMsg = JRequest::getString('message', '');
+    $canDo = GroupHelper::getActions($groupId);
 
-    if ($layout == 'default') {
-      $layout = 'edit';
-      $this->setLayout($layout);
-    }
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
-    if ($layout == 'edit' && $groupId > 0) {
+    if ($layout == 'edit' && !$this->canEditGroup($groupId)) {
+      $this->setLayout('default');
+    }
+    if (($layout == 'edit' || $layout == 'default') && $groupId > 0) {
       $group = $this->model->getGroup($groupId);
       if (!$group) {
         $this->errorMsg = "GET_GROUP_FAILED";
         $this->assignRef('groupId', $minusOne);
         $this->setLayout('error');
       } else {
+        $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
         $currentGroupStatus = '';
         $currentGroupStatus = $group['status'];
-        $this->setEditData($group);
+        $this->setGroupData($group);
       }
+    } elseif ($layout == 'addchartogroup') {
+      $this->charactersForEvent($eventId, $groupId);
     }
     parent::display($tpl);
   }
 
-  private function setEditData($group) {
+  private function canEditGroup($groupId) {
+    $canDo = GroupHelper::getActions($groupId);
+    $user = JFactory::getUser();
+    if ($canDo->get('core.edit')) {
+      return TRUE;
+    }
+    if ($canDo->get('core.edit.own') &&
+        $this->model->getGroupOwner($groupId) == $user->id) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  private function setGroupData($group) {
     $this->assignRef('groupName', $group['name']);
     $this->assignRef('groupDescription', $group['description']);
     $this->assignRef('groupMaxParticipants', $group['maxParticipants']);
@@ -63,5 +79,25 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
     $this->assignRef('groupLeaderPersonName', $group['groupLeaderPersonName']);
     $this->assignRef('eventId', $group['eventId']);
+  }
+
+  private function charactersForEvent($eventId,$groupId) {
+    $lajvitModel = $this->getModel("LajvIT");
+    $user = &JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    $characters = Array();
+    if ($canDo->get('core.edit')) {
+      $characters = $lajvitModel->getAllCharactersForEvent($eventId);
+    } elseif ($canDo->get('core.edit.own') && $this->model->getGroupOwner($groupId) == $user->id) {
+      $characters = $lajvitModel->getAllCharactersForEvent($eventId);
+    } elseif ($this->model->isGroupVisible($groupId)) {
+      $characters = $lajvitModel->getCharactersForEvent($eventId);
+    } else {
+      $this->errorMsg = "NOT_AUTHORIZED_TO_ADD_CHAR_TO_GROUP";
+      $this->assignRef('groupId', $minusOne);
+      $this->setLayout('error');
+    }
+
+    $this->assignRef('characters', $characters);
   }
 }

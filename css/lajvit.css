@@ -57,6 +57,9 @@
 .new_group {
   background-image: url(../images/group_new.png);
 }
+.edit_group {
+  background-image: url(../images/edit_character.png);
+}
 .delete_group {
   background-image: url(../images/group_delete.png);
 }

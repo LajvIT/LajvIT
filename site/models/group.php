@@ -34,6 +34,7 @@ class LajvITModelGroup extends JModelItem {
   public function getGroup($groupId) {
     $personModel =& JModel::getInstance('person', 'lajvitmodel');
     $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
       return FALSE;
@@ -41,10 +42,14 @@ class LajvITModelGroup extends JModelItem {
     $groupData = $group->getProperties();
     $visible = $groupData['visible'];
     $groupId = $groupData['id'];
-    if ($visible == 1 && !$user->authorise('lajvit.view.visible', 'com_lajvit.group.' . $groupId)) {
+    if ($visible == 1 &&
+        (!$this->canEditGroup($groupId) &&
+          !$user->authorise('lajvit.view.visible', 'com_lajvit.group.' . $groupId))) {
       return FALSE;
     }
-    if ($visible == 0 && !$user->authorise('lajvit.view.hidden', 'com_lajvit.group.' . $groupId)) {
+    if ($visible == 0 &&
+        ( !$this->canEditGroup($groupId) &&
+          !$user->authorise('lajvit.view.hidden', 'com_lajvit.group.' . $groupId)) ) {
       return FALSE;
     }
     $personId = $groupData['groupLeaderPersonId'];
@@ -59,28 +64,82 @@ class LajvITModelGroup extends JModelItem {
   public function updateGroup($data) {
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($data->id);
-    if ($canDo->get('core.edit')) {
-      echo "LajvITModelGroup.updateGroup can edit ";
-    } elseif ($canDo->get('core.edit.own') && $this->getGroupOwner($data->id) == $user->id) {
-      echo "LajvITModelGroup.updateGroup can edit own ";
+    if ($this->canEditGroup($data->id)) {
+      $group = JTable::getInstance('lit_groups', 'Table');
+      $group->bind($data);
+      $result = $group->store();
+      return $result;
+    } else {
+      return FALSE;
     }
-    $group = JTable::getInstance('lit_groups', 'Table');
-    $group->bind($data);
-    $result = $group->store();
-    //echo "Result after store: " . $result . "<br>";
-    //echo "Error: " . print_r($group->getErrors(), TRUE) . "<br>\n";
-    return $result;
   }
 
   public function getGroupOwner($groupId) {
-    echo "LajvITModelGroup.getGroupOwner " . $groupId . "<br>";
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
-      echo "LajvITModelGroup.getGroupOwner could not load <br>";
       return FALSE;
     }
     $groupData = $group->getProperties();
-    echo "LajvITModelGroup.getGroupOwner returning: " . $groupData['groupLeaderPersonId'] . "<br>";
     return $groupData['groupLeaderPersonId'];
+  }
+
+  public function addCharacterToGroup($data) {
+    if ($this->canEditGroup($data->groupId)) {
+      $db = &JFactory::getDBO();
+      $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
+      $groupMember->bind($data);
+      $creationSuccess = $groupMember->store();
+      if ($creationSuccess) {
+        return $groupMember->id;
+      } else {
+        return $groupMember->getErrors();
+      }
+    }
+    return FALSE;
+  }
+
+  public function getEventForGroup($groupId) {
+    $group = JTable::getInstance('lit_groups', 'Table');
+    if (!$group->load($groupId)) {
+      return FALSE;
+    }
+    $groupData = $group->getProperties();
+    return $groupData['eventId'];
+  }
+
+  public function isGroupVisible($groupId) {
+    $group = JTable::getInstance('lit_groups', 'Table');
+    if (!$group->load($groupId)) {
+      return FALSE;
+    }
+    $groupData = $group->getProperties();
+    $visible = $groupData['visible'];
+    if ($visible == 1) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  public function getCharactersInGroup($groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT chara.* FROM #__lit_chara AS chara
+    INNER JOIN #__lit_group_members ON characterId = chara.id
+    WHERE groupId = '.$db->getEscaped($groupId).';';
+    $db->setQuery($query);
+
+    return $db->loadObjectList();
+  }
+
+  private function canEditGroup($groupId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($canDo->get('core.edit')) {
+      return TRUE;
+    }
+    if ($canDo->get('core.edit.own') &&
+        $this->getGroupOwner($groupId) == $user->id) {
+      return TRUE;
+    }
+    return FALSE;
   }
 }

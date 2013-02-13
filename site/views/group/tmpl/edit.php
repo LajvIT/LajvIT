@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 <?php
 $groupStatuses = Array('created','approved','rejected','open','closed');
-if (isset($this->errorMsg)) { echo $this->errorMsg . "<br>"; }
+if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
 ?>
 <form action="index.php" method="post" name="groupCreateForm">
   <table>
@@ -62,19 +62,30 @@ foreach ($groupStatuses as $status) {
         <td><strong>Gruppledare:</strong></td>
         <td><?php echo $this->groupLeaderPersonName; ?></td>
       </tr>
-      <tr>
-        <td></td>
-        <td>
-          <input type="submit" value="Spara grupp" />
-          <input type="hidden" name="option" value="com_lajvit" />
-          <input type="hidden" name="task" value="edit" />
-          <input type="hidden" name="controller" value="group" />
-          <input type="hidden" name="eventId" value="<?php echo $this->eventId; ?>" />
-          <input type="hidden" name="groupId" value="<?php echo $this->groupId; ?>" />
-          <input type="hidden" name="groupLeaderPersonId" value="<?php echo $this->groupLeaderPersonId; ?>" />
-          <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />
-        </td>
-      </tr>
     </tbody>
   </table>
+  <input type="submit" value="Spara grupp" />
+  <input type="hidden" name="option" value="com_lajvit" />
+  <input type="hidden" name="task" value="edit" />
+  <input type="hidden" name="controller" value="group" />
+  <input type="hidden" name="eventId" value="<?php echo $this->eventId; ?>" />
+  <input type="hidden" name="groupId" value="<?php echo $this->groupId; ?>" />
+  <input type="hidden" name="groupLeaderPersonId" value="<?php echo $this->groupLeaderPersonId; ?>" />
+  <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />
+  <br/><br/>
+      <?php
+echo '  <table>    <tbody>';
+echo '      <tr><td><strong>' . 'Karaktärer<strong> ';
+echo '<a href="index.php?option=com_lajvit&view=group&layout=addchartogroup&eid=' . $this->eventId . '&groupId=' . $this->groupId . '">Lägg till karaktär</a>';
+echo '</td></tr>';
+if (isset($this->charactersInGroup)) {
+  foreach ($this->charactersInGroup as $character) {
+    echo '<tr><td>';
+    echo $character->knownas;
+  }
+}
+echo '</td></tr>';
+echo '    </tbody>  </table>';
+?>
+
 </form>

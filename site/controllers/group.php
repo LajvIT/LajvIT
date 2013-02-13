@@ -43,12 +43,70 @@ class LajvITControllerGroup extends LajvITController {
     //echo "updateResult: " . print_r($updateResult) . "<br>\n";
     //echo $updateResult . "<br>\n";
     if ($updateResult === NULL || $updateResult == "" || $updateResult == 1) {
-      echo "Updated group<br>\n";
       $this->setRedirect($this->showEditGroupLink($data->id));
     } else {
-      echo "Failed to update group<br>\n";
       $this->setRedirect($this->defaultGroupsLink());
     }
+  }
+
+  public function addCharacterToGroup() {
+    $this->initModels();
+    $data = $this->getGroupMemberDataFromRequest();
+    JRequest::setVar('option', 'com_lajvit');
+    if (!$this->allowedToAddCharacterToGroup($data)) {
+      JRequest::setVar('view', 'event');
+      JRequest::setVar('message', 'Not allowed to update group');
+      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      return;
+    }
+    JRequest::setVar('groupId', $data->groupId);
+    JRequest::setVar('view', 'group');
+    JRequest::setVar('layout', 'edit');
+    $groupMemberId = $this->groupModel->addCharacterToGroup($data);
+
+    if (is_int($groupMemberId) && $groupMemberId > 0) {
+      JRequest::setVar('message', 'Updated group');
+      parent::display();
+    } else {
+      JRequest::setVar('message', 'Failed to update group');
+      parent::display();
+    }
+  }
+
+  private function allowedToAddCharacterToGroup($data) {
+    $canDo = GroupHelper::getActions($data->groupId);
+    $characterId = $data->characterId;
+    $groupId = $data->groupId;
+    $personId = $this->person->id;
+    $eventId = $this->groupModel->getEventForGroup($groupId);
+    if ($canDo->get('core.edit')) {
+      return TRUE;
+    }
+    if ($canDo->get('core.edit.own') &&
+        $this->groupModel->getGroupOwner($groupId) == $personId) {
+      return TRUE;
+    }
+    if ($this->lajvitModel->isCharacterOwnedByPerson($characterId, $personId) &&
+        $this->lajvitModel->isCharacterRegisteredOnEvent($characterId, $eventId) &&
+        $this->groupModel->isGroupVisible($groupId)) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  private function getGroupMemberDataFromRequest() {
+    $data = new stdClass();
+    $groupId = JRequest::getInt('gid', -1);
+    if ($groupId <= 0) {
+      $groupId = NULL;
+    }
+    $characterId = JRequest::getInt('cid', '');
+    if ($characterId <= 0) {
+      $characterId = NULL;
+    }
+    $data->groupId = $groupId;
+    $data->characterId = $characterId;
+    return $data;
   }
 
   private function allowedToDeleteEvent($eventId) {
@@ -118,6 +176,12 @@ class LajvITControllerGroup extends LajvITController {
   private function defaultGroupsLink() {
     $link = 'index.php?option=com_lajvit&view=group';
     $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
+    return $link;
+  }
+
+  private function defaultViewGroupLink($groupId) {
+    $link = $this->defaultGroupsLink();
+    $link .= '&groupId=' . $groupId;
     return $link;
   }
 

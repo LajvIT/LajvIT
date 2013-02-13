@@ -8,14 +8,22 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 $user = JFactory::getUser();
 foreach ($this->items as $item) {
-$assetName = "com_lajvit.group." . $item->id; ?>
+$assetName = "com_lajvit.group." . $item->id;
+$canDo = GroupHelper::getActions($item->id);
+?>
   <div class="group">
     <div class="container">
       <div class="infoText">
         <a href="index.php/component/lajvit/?view=group&groupId=<?php echo $item->id?>">
         <?php echo $item->name; ?></a>
-      </div>
-      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete&eid=<?php echo $event->id; ?>" title="Ta bort grupp"></a></div>
+      </div><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
+      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>" title="Redigera grupp"></a></div>
+      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete" title="Ta bort grupp"></a></div>
+      <?php
+  }
+      ?>
     </div>
     <div class="container">
       <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>

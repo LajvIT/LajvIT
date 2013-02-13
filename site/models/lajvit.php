@@ -449,6 +449,19 @@ class LajvITModelLajvIT extends JModelLegacy {
     return FALSE;
   }
 
+  function isCharacterRegisteredOnEvent($characterId, $eventId) {
+    $db = &JFactory::getDBO();
+
+    $query = 'SELECT * FROM #__lit_chara AS characters
+    INNER JOIN #__lit_registrationchara ON charaid = characters.id
+    WHERE eventid = '.$db->getEscaped($eventId).' AND charaid = '.$db->getEscaped($characterId).';';
+    $db->setQuery($query);
+    if (count($db->loadObjectList()) > 0) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   function hasCharacterPastFirstStatusCheck($characterId) {
     $db = &JFactory::getDBO();
 
@@ -468,7 +481,7 @@ class LajvITModelLajvIT extends JModelLegacy {
       return FALSE;
     */
 
-    $row = JTable::getInstance('lit_event', 'Table');
+    $row = JTable::getInstance('event', 'TableLIT_');
     $row->load($eventid);
 
     return $row;

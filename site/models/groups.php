@@ -77,7 +77,7 @@ class LajvITModelGroups extends JModelList {
   }
 
   /**
-   * Get the master query for retrieving a list of articles subject to the model state.
+   * Get the master query for retrieving a list of groups subject to the model state.
    *
    * @return	JDatabaseQuery
    * @since	1.6
@@ -129,15 +129,15 @@ class LajvITModelGroups extends JModelList {
   }
 
   public function getItems() {
-    $items	= parent::getItems();
-    $user	= JFactory::getUser();
-    $userId	= $user->get('id');
-    $guest	= $user->get('guest');
-    $groups	= $user->getAuthorisedViewLevels();
+    $items = parent::getItems();
+    $user = JFactory::getUser();
+    $userId = $user->get('id');
+    $guest = $user->get('guest');
+    $groups = $user->getAuthorisedViewLevels();
 
     foreach ($items as &$item) {
       if (!$guest) {
-        $asset	= 'com_lajvit.group.'.$item->id;
+        $asset = 'com_lajvit.group.'.$item->id;
 
         // Check general edit permission first.
         if ($user->authorise('core.edit', $asset)) {
@@ -145,7 +145,7 @@ class LajvITModelGroups extends JModelList {
           // Now check if edit.own is available.
         } elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
           // Check for a valid user and that they are the owner.
-          if ($userId == $item->created_by) {
+          if ($userId == $item->groupLeaderPersonId) {
             // $item->params->set('access-edit', true);
           }
         }
