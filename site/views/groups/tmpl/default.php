@@ -32,8 +32,8 @@ foreach ($this->items as $item) {
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
       <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>" title="Redigera grupp"></a></div>
-      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete" title="Ta bort grupp"></a></div>
       <?php
+//       <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete" title="Ta bort grupp"></a></div>
   }
       ?>
     </div>
@@ -51,11 +51,12 @@ foreach ($this->items as $item) {
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
     <div class="container">
-      <div class="text">Synlig: <?php echo $item->visible; ?></div>
+      <div class="text">Synlig: <?php echo $item->visible ? 'Ja' : 'Nej'; ?></div>
       <div class="text">Status: <?php echo $item->status; ?></div>
     </div><?php
   }
   ?>
+  <!--
     <div class="container">
       <div class="infoText">View:</div><div class="text"><?php echo $user->authorise('lajvit.view.visible', $assetName); ?></div>
       <div class="infoText">View hidden:</div><div class="text"><?php echo $user->authorise('lajvit.view.hidden', $assetName); ?></div>
@@ -63,6 +64,7 @@ foreach ($this->items as $item) {
       <div class="infoText">Edit:</div><div class="text"><?php echo $user->authorise('core.edit', $assetName); ?></div>
       <div class="infoText">Edit own:</div><div class="text"><?php echo $user->authorise('core.edit.own', $assetName); ?></div>
     </div>
+     -->
   </div>
 <?php } ?>
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />
