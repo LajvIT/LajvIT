@@ -139,7 +139,7 @@ class LajvITControllerGroup extends LajvITController {
       $groupLeaderPersonId = $this->person->id;
     }
     $visible = JRequest::getInt('groupVisible', 0);
-    if (!preg_match('/http:\/\/|https:\/\//', $groupUrl)) {
+    if ($groupUrl != "" && !preg_match('/http:\/\/|https:\/\//', $groupUrl)) {
       $groupUrl = 'http://' . $groupUrl;
     }
     $data = new stdClass();
