@@ -491,9 +491,9 @@ CREATE TABLE IF NOT EXISTS #__lit_groups (
  PRIMARY KEY (`id`),
  KEY `groupleader` (`groupLeaderPersonId`),
  KEY `event` (`eventId`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `j25_lit_group_members` (
+CREATE TABLE IF NOT EXISTS #__lit_group_members (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `groupId` int(10) unsigned NOT NULL,
  `characterId` int(11) NOT NULL DEFAULT '0',
@@ -501,7 +501,7 @@ CREATE TABLE `j25_lit_group_members` (
  KEY `person` (`characterId`),
  KEY `group` (`groupId`),
  UNIQUE `character_group` ( `groupId` , `characterId` )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE OR REPLACE VIEW #__lit_vperson AS SELECT
   #__lit_person.*,

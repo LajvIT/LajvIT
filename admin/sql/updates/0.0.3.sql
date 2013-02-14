@@ -1,5 +1,3 @@
-ALTER TABLE`#__lit_event` ADD COLUMN `asset_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
-
 CREATE TABLE IF NOT EXISTS #__lit_groups (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `asset_id` int(10) unsigned NOT NULL DEFAULT '0',
@@ -16,9 +14,9 @@ CREATE TABLE IF NOT EXISTS #__lit_groups (
  PRIMARY KEY (`id`),
  KEY `groupleader` (`groupLeaderPersonId`),
  KEY `event` (`eventId`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
-CREATE TABLE `j25_lit_group_members` (
+CREATE TABLE IF NOT EXISTS #__lit_group_members (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `groupId` int(10) unsigned NOT NULL,
  `characterId` int(11) NOT NULL DEFAULT '0',
@@ -26,4 +24,6 @@ CREATE TABLE `j25_lit_group_members` (
  KEY `person` (`characterId`),
  KEY `group` (`groupId`),
  UNIQUE `character_group` ( `groupId` , `characterId` )
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE`#__lit_event` ADD COLUMN `asset_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
