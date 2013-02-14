@@ -5,7 +5,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
   Redigera grupp
 </h1>
 <?php
-$groupStatuses = Array('created','approved','rejected','open','closed');
+$groupStatusesAll = Array('created','approved','rejected','open','closed');
+$groupStatusesCreated = Array('created');
+$groupStatusesAccepted = Array('open','closed');
+$groupStatusesRejected = Array('rejected');
+$canDo = GroupHelper::getActions($this->groupId);
 if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
 ?>
 <form action="index.php" method="post" name="groupCreateForm">
@@ -39,8 +43,10 @@ if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
         <td><strong>Synlighet för alla deltagare:</strong></td>
         <td>
           <select name="groupVisible">
-            <option value="0" <?php echo $this->groupVisible == 0 ? "selected": "";?>>Gömd</option>
-            <option value="1" <?php echo $this->groupVisible == 1 ? "selected": "";?>>Synlig</option>
+            <option value="0" <?php echo $this->groupVisible == 0 ? "selected": "";?>>Gömd</option><?php
+  if ($this->groupStatus == 'open') { ?>
+            <option value="1" <?php echo $this->groupVisible == 1 ? "selected": "";?>>Synlig</option><?php
+  } ?>
           </select>
         </td>
       </tr>
@@ -48,13 +54,25 @@ if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
         <td><strong>Gruppstatus:</strong></td>
         <td>
           <select name="groupStatus"><?php
-foreach ($groupStatuses as $status) {
-  echo '<option value="' . $status . '"';
-  if ($this->groupStatus == $status) {
-    echo 'selected="selected"';
+  if (!$canDo->get('core.edit')) {
+    if ($this->groupStatus == 'created') {
+      $groupStatuses = $groupStatusesCreated;
+    } elseif ($this->groupStatus != 'created' && $this->groupStatus != 'rejected') {
+      $groupStatuses = $groupStatusesAccepted;
+    } else {
+      $groupStatuses = $groupStatusesRejected;
+    }
+  } else {
+    $groupStatuses = $groupStatusesAll;
   }
-  echo ' >' . ucfirst($status) . '</option>\n';
-}?>
+  foreach ($groupStatuses as $status) {
+    echo '<option value="' . $status . '"';
+    if ($this->groupStatus == $status) {
+      echo ' selected';
+    }
+    echo ' >' . ucfirst($status) . '</option>\n';
+  }
+?>
         </select>
         </td>
       </tr>

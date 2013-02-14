@@ -102,10 +102,6 @@ class LajvITModelGroups extends JModelList {
     $query->select('CONCAT(p.givenname, " ", p.surname) AS groupLeaderPersonName');
     $query->join('LEFT', '#__lit_person AS p ON p.id = g.groupLeaderPersonId');
 
-    if (!$user->authorize('lajvit.list.hidden')) {
-      $query->where('g.visible = 1');
-    }
-
     if ($event = $this->getState('filter.event')) {
       $query->where('g.eventId = ' . (int) $event);
     }

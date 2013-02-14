@@ -120,6 +120,19 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
+  public function isGroupOpen($groupId) {
+    $group = JTable::getInstance('lit_groups', 'Table');
+    if (!$group->load($groupId)) {
+      return FALSE;
+    }
+    $groupData = $group->getProperties();
+    $status = $groupData['status'];
+    if ($status == 'open') {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
   public function getCharactersInGroup($groupId) {
     $db = &JFactory::getDBO();
     $query = 'SELECT chara.* FROM #__lit_chara AS chara

@@ -33,15 +33,6 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <td><input type="text" name="groupUrl" value="" size="40"></td>
       </tr>
       <tr>
-        <td><strong>Synlighet för alla deltagare:</strong></td>
-        <td>
-          <select name="groupVisible">
-            <option value="0">Gömd</option>
-            <option value="1">Synlig</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
         <td></td>
         <td>
           <input type="submit" value="Skapa grupp" />

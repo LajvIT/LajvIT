@@ -8,8 +8,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <?php
 $user = JFactory::getUser();
 foreach ($this->items as $item) {
-$assetName = "com_lajvit.group." . $item->id;
-$canDo = GroupHelper::getActions($item->id);
+  $assetName = "com_lajvit.group." . $item->id;
+  $canDo = GroupHelper::getActions($item->id);
+  if ($item->visible == 1 &&
+      (!$canDo->get('lajvit.view.visible') &&
+          !($canDo->get('core.edit.own') &&
+              $item->groupLeaderPersonId == $user->id))) {
+    continue;
+  }
+  if ($item->visible == 0 &&
+      (!$canDo->get('lajvit.view.hidden') &&
+          !($canDo->get('core.edit.own') &&
+              $item->groupLeaderPersonId == $user->id))) {
+    continue;
+  }
 ?>
   <div class="group">
     <div class="container">
@@ -29,15 +41,21 @@ $canDo = GroupHelper::getActions($item->id);
       <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>
       <div class="text">Max: <?php echo $item->maxParticipants; ?></div>
       <div class="text">Förväntat: <?php echo $item->expectedParticipants; ?></div>
-      <div class="text">Synlig: <?php echo $item->visible; ?></div>
-      <div class="text">Status: <?php echo $item->status; ?></div>
     </div>
     <div class="container">
       <div class="text"><?php echo $item->url; ?></div>
     </div>
     <div class="container">
       <div class="text"><?php echo $item->description; ?></div>
-    </div>
+    </div><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
+    <div class="container">
+      <div class="text">Synlig: <?php echo $item->visible; ?></div>
+      <div class="text">Status: <?php echo $item->status; ?></div>
+    </div><?php
+  }
+  ?>
     <div class="container">
       <div class="infoText">View:</div><div class="text"><?php echo $user->authorise('lajvit.view.visible', $assetName); ?></div>
       <div class="infoText">View hidden:</div><div class="text"><?php echo $user->authorise('lajvit.view.hidden', $assetName); ?></div>
@@ -47,3 +65,4 @@ $canDo = GroupHelper::getActions($item->id);
     </div>
   </div>
 <?php } ?>
+<input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />

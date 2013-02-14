@@ -90,7 +90,8 @@ class LajvITViewGroup extends JView {
       $characters = $lajvitModel->getAllCharactersForEvent($eventId);
     } elseif ($canDo->get('core.edit.own') && $this->model->getGroupOwner($groupId) == $user->id) {
       $characters = $lajvitModel->getAllCharactersForEvent($eventId);
-    } elseif ($this->model->isGroupVisible($groupId)) {
+    } elseif ($this->model->isGroupVisible($groupId) &&
+        $this->model->isGroupOpen($groupId)) {
       $characters = $lajvitModel->getCharactersForEvent($eventId);
     } else {
       $this->errorMsg = "NOT_AUTHORIZED_TO_ADD_CHAR_TO_GROUP";

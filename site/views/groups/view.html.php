@@ -23,7 +23,7 @@ class LajvITViewGroups extends JViewLegacy {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->assignRef('items', $items);
 
-    $this->assignRef('itemId', JRequest::getInt('itemId', JRequest::getInt('Itemid', 0)));
+    $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
 
     parent::display($tpl);
   }

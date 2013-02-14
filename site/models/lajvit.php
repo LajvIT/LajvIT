@@ -132,8 +132,8 @@ class LajvITModelLajvIT extends JModelLegacy {
     return $db->loadObjectList("id");
   }
 
-  function &getPerson($userid = NULL) {
-    $user = &JFactory::getUser($userid);
+  function getPerson($userid = NULL) {
+    $user = JFactory::getUser($userid);
     if (!$user || $user->guest)
       return FALSE;
 
