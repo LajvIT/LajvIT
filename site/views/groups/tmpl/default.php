@@ -10,11 +10,17 @@ $user = JFactory::getUser();
 foreach ($this->items as $item) {
   $assetName = "com_lajvit.group." . $item->id;
   $canDo = GroupHelper::getActions($item->id);
-  if ($item->visible == 1 &&
-      (!$canDo->get('lajvit.view.visible') &&
-          !($canDo->get('core.edit.own') &&
-              $item->groupLeaderPersonId == $user->id))) {
-    continue;
+  if ($item->visible == 1) {
+    if ($canDo->get('core.edit') ||
+        $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) {
+
+    } elseif ($canDo->get('lajvit.view.visible') && $item->status != 'open') {
+      continue;
+    } elseif ($canDo->get('lajvit.view.visible')) {
+
+    } else {
+      continue;
+    }
   }
   if ($item->visible == 0 &&
       (!$canDo->get('lajvit.view.hidden') &&
@@ -36,6 +42,7 @@ foreach ($this->items as $item) {
 //       <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete" title="Ta bort grupp"></a></div>
   }
       ?>
+      <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>" title="Lägg till karaktär"></a></div>
     </div>
     <div class="container">
       <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>

@@ -23,7 +23,7 @@ if (array_key_exists('charName', $this) && $this->charName != "") {
 foreach ($this->characters as $object) {
   echo "<tr>\n";
   echo "<td>";
-  echo ' <a href="index.php?option=com_lajvit&controller=group&task=addCharacterToGroup&eid=' . $this->eventId;
+  echo ' <a href="index.php?option=com_lajvit&controller=group&task=addCharacterToGroup';
   echo '&gid=' . $this->groupId . '&cid=' . $object->id . '&Itemid=' . $this->itemId . '">';
   echo $object->knownas;
   echo '</a>';

@@ -93,8 +93,8 @@ if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
   <br/><br/>
       <?php
 echo '  <table>    <tbody>';
-echo '      <tr><td><strong>' . 'Karaktärer<strong> ';
-echo '<a href="index.php?option=com_lajvit&view=group&layout=addchartogroup&eid=' . $this->eventId . '&groupId=' . $this->groupId . '">Lägg till karaktär</a>';
+echo '      <tr><td><strong style="float: left; margin-right: 5px;">' . 'Karaktärer</strong> ';
+echo '<div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=' . $this->groupId . '" title="Lägg till karaktär"></a></div>';
 echo '</td></tr>';
 if (isset($this->charactersInGroup)) {
   foreach ($this->charactersInGroup as $character) {

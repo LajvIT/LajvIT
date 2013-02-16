@@ -22,6 +22,7 @@ class LajvITViewGroup extends JView {
   }
 
   function display($tpl = NULL) {
+    JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->model = $this->getModel();
     $layout = $this->getLayout();
     $minusOne = -1;
@@ -49,7 +50,7 @@ class LajvITViewGroup extends JView {
         $this->setGroupData($group);
       }
     } elseif ($layout == 'addchartogroup') {
-      $this->charactersForEvent($eventId, $groupId);
+      $this->charactersForEvent($groupId);
     }
     parent::display($tpl);
   }
@@ -81,10 +82,11 @@ class LajvITViewGroup extends JView {
     $this->assignRef('eventId', $group['eventId']);
   }
 
-  private function charactersForEvent($eventId,$groupId) {
+  private function charactersForEvent($groupId) {
     $lajvitModel = $this->getModel("LajvIT");
     $user = &JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
+    $eventId = $this->model->getEventForGroup($groupId);
     $characters = Array();
     if ($canDo->get('core.edit')) {
       $characters = $lajvitModel->getAllCharactersForEvent($eventId);
