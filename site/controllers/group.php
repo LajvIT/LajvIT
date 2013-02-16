@@ -55,7 +55,7 @@ class LajvITControllerGroup extends LajvITController {
     JRequest::setVar('option', 'com_lajvit');
     if (!$this->allowedToAddCharacterToGroup($data)) {
       JRequest::setVar('view', 'event');
-      JRequest::setVar('message', 'Not allowed to update group');
+      JRequest::setVar('errorMsg', 'Not allowed to update group');
       $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
       return;
     }
@@ -65,10 +65,11 @@ class LajvITControllerGroup extends LajvITController {
     $groupMemberId = $this->groupModel->addCharacterToGroup($data);
 
     if (is_int($groupMemberId) && $groupMemberId > 0) {
-      JRequest::setVar('message', 'Updated group');
+      JRequest::setVar('message', 'COM_LAJVIT_ADDED_CHARACTER');
+      JRequest::setVar('character', $this->lajvitModel->getCharacter($data->characterId)->knownas);
       parent::display();
     } else {
-      JRequest::setVar('message', 'Failed to update group');
+      JRequest::setVar('errorMsg', 'COM_LAJVIT_COULD_NOT_ADD_CHARACTER');
       parent::display();
     }
   }

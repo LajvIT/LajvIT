@@ -28,7 +28,9 @@ class LajvITViewGroup extends JView {
     $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
-    $this->errorMsg = JRequest::getString('message', '');
+    $this->message = JRequest::getString('message', '');
+    $this->character = JRequest::getString('character', '');
+    $this->errorMsg = JRequest::getString('errorMsg', '');
     $canDo = GroupHelper::getActions($groupId);
 
     $this->assignRef('eventId', $eventId);
@@ -40,7 +42,7 @@ class LajvITViewGroup extends JView {
     if (($layout == 'edit' || $layout == 'default') && $groupId > 0) {
       $group = $this->model->getGroup($groupId);
       if (!$group) {
-        $this->errorMsg = "GET_GROUP_FAILED";
+        $this->errorMsg = "COM_LAJVIT_GET_GROUP_FAILED";
         $this->assignRef('groupId', $minusOne);
         $this->setLayout('error');
       } else {
@@ -96,7 +98,7 @@ class LajvITViewGroup extends JView {
         $this->model->isGroupOpen($groupId)) {
       $characters = $lajvitModel->getCharactersForEvent($eventId);
     } else {
-      $this->errorMsg = "NOT_AUTHORIZED_TO_ADD_CHAR_TO_GROUP";
+      $this->errorMsg = "COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_CHAR_TO_GROUP";
       $this->assignRef('groupId', $minusOne);
       $this->setLayout('error');
     }

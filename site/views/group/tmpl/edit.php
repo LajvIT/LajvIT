@@ -10,7 +10,18 @@ $groupStatusesCreated = Array('created');
 $groupStatusesAccepted = Array('open','closed');
 $groupStatusesRejected = Array('rejected');
 $canDo = GroupHelper::getActions($this->groupId);
-if (isset($this->errorMsg)) { echo $this->errorMsg . "<br><br>"; }
+if (isset($this->errorMsg) && $this->errorMsg != '') {
+  echo '<div style="color: red; font-weight: bold;">' . JText::_($this->errorMsg) . '</div><br><br>';
+}
+if (isset($this->message) && $this->message != '') {
+  if (isset($this->character)) {
+    echo JText::_($this->message) . ": " . $this->character;
+  } else {
+    echo JText::_($this->message);
+  }
+  echo "<br><br>";
+}
+
 ?>
 <form action="index.php" method="post" name="groupCreateForm">
   <table>

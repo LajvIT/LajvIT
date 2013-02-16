@@ -84,7 +84,7 @@ class LajvITModelGroup extends JModelItem {
   }
 
   public function addCharacterToGroup($data) {
-    if ($this->canEditGroup($data->groupId)) {
+    if ($this->canAddCharacterToGroup($data->groupId, $data->characterId)) {
       $db = &JFactory::getDBO();
       $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
       $groupMember->bind($data);
@@ -151,6 +151,24 @@ class LajvITModelGroup extends JModelItem {
     }
     if ($canDo->get('core.edit.own') &&
         $this->getGroupOwner($groupId) == $user->id) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  private function canAddCharacterToGroup($groupId, $characterId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($canDo->get('core.edit')) {
+      return TRUE;
+    }
+    if ($canDo->get('core.edit.own') &&
+        $this->getGroupOwner($groupId) == $user->id) {
+      return TRUE;
+    }
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
+    if ($this->isGroupOpen($groupId) && $this->isGroupVisible($groupId) &&
+        $lajvitModel->isCharacterOwnedByPerson($characterId, $user->id)) {
       return TRUE;
     }
     return FALSE;
