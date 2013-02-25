@@ -488,9 +488,13 @@ CREATE TABLE IF NOT EXISTS #__lit_groups (
  `adminInformation` text,
  `eventId` int(11) DEFAULT NULL,
  `visible` tinyint(1) NOT NULL DEFAULT '0',
+ `factionId` int(11) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`),
  KEY `groupleader` (`groupLeaderPersonId`),
- KEY `event` (`eventId`)
+ KEY `event` (`eventId`),
+ INDEX `(`factionId`),
+ CONSTRAINT `faction` FOREIGN KEY (`factionId`)
+  REFERENCES #__lit_charafaction (id) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS #__lit_group_members (

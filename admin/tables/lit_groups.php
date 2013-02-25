@@ -21,6 +21,7 @@ class TableLIT_Groups extends LITTable {
   var $adminInformation = NULL;
   var $eventId = NULL;
   var $visible = 0;
+  var $factionId = NULL;
 
   function __construct(&$db) {
     parent::__construct(TableLIT_Groups::$tableName, 'id', $db);
