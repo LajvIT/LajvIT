@@ -136,6 +136,7 @@ class LajvITControllerGroup extends LajvITController {
     $groupStatus = JRequest::getString('groupStatus', 'created');
     $groupEventId = JRequest::getInt('eventId', -1);
     $groupLeaderPersonId = JRequest::getInt('groupLeaderPersonId', 0);
+    $groupFactionId = JRequest::getInt('groupFaction', 0);
     if ($groupLeaderPersonId == 0 ) {
       $groupLeaderPersonId = $this->person->id;
     }
@@ -155,6 +156,7 @@ class LajvITControllerGroup extends LajvITController {
     $data->id = $db->getEscaped($groupId);
     $data->groupLeaderPersonId = $db->getEscaped($groupLeaderPersonId);
     $data->visible = $db->getEscaped($visible);
+    $data->factionId = $db->getEscaped($groupFactionId);
     return $data;
   }
 

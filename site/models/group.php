@@ -173,4 +173,24 @@ class LajvITModelGroup extends JModelItem {
     }
     return FALSE;
   }
+
+  public function hasPersonApprovedCharacterInSameFaction($userId, $groupId) {
+    $eventId = $this->getEventForGroup($groupId);
+    $groupData = $this->getGroup($groupId);
+    if ($groupData == FALSE) {
+      return FALSE;
+    }
+    $groupFaction = $groupData['factionId'];
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
+    $charactersOnEvent = $lajvitModel->getCharactersOnEventForPerson($eventId, $userId->id);
+    foreach ($charactersOnEvent as $character) {
+      $faction = $character->factionid;
+      if ($faction == $groupFaction &&
+          ($character->statusid == 101 || $character->statusid == 102)) {
+        return TRUE;
+      } else {
+      }
+    }
+      return FALSE;
+  }
 }

@@ -33,6 +33,16 @@ defined('_JEXEC') or die('Restricted access'); ?>
         <td><input type="text" name="groupUrl" value="" size="40"></td>
       </tr>
       <tr>
+        <td><strong>Fraktion:</strong></td>
+        <td><select name="groupFaction"><?php
+foreach ($this->factions as $faction) {
+  echo '<option value="' . $faction->id . '"';
+  echo ' >' . ucfirst($faction->name) . '</option>\n';
+}
+?>
+          </select></td>
+      </tr>
+      <tr>
         <td></td>
         <td>
           <input type="submit" value="Skapa grupp" />

@@ -22,6 +22,8 @@ class LajvITViewGroups extends JViewLegacy {
     $model = $this->getModel();
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->assignRef('items', $items);
+    $groupModel = &JModel::getInstance('group', 'lajvitmodel');
+    $this->assignRef('groupModel', $groupModel);
 
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
 

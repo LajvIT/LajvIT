@@ -24,6 +24,7 @@ class LajvITViewGroup extends JView {
   function display($tpl = NULL) {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->model = $this->getModel();
+    $lajvitModel = $this->getModel("LajvIT");
     $layout = $this->getLayout();
     $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);
@@ -32,10 +33,12 @@ class LajvITViewGroup extends JView {
     $this->character = JRequest::getString('character', '');
     $this->errorMsg = JRequest::getString('errorMsg', '');
     $canDo = GroupHelper::getActions($groupId);
+    $factions = $lajvitModel->getCharacterFactions();
 
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
+    $this->assignRef('factions', $factions);
     if ($layout == 'edit' && !$this->canEditGroup($groupId)) {
       $this->setLayout('default');
     }
@@ -78,6 +81,7 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupAdminInfo', $group['adminInformation']);
     $this->assignRef('groupUrl', $group['url']);
     $this->assignRef('groupVisible', $group['visible']);
+    $this->assignRef('groupFaction', $group['factionId']);
     $this->assignRef('groupStatus', $group['status']);
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
     $this->assignRef('groupLeaderPersonName', $group['groupLeaderPersonName']);

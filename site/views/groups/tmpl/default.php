@@ -28,6 +28,10 @@ foreach ($this->items as $item) {
               $item->groupLeaderPersonId == $user->id))) {
     continue;
   }
+  if (!$canDo->get('core.edit') &&
+      !$this->groupModel->hasPersonApprovedCharacterInSameFaction($user, $item->id)) {
+    continue;
+  }
 ?>
   <div class="group">
     <div class="container">

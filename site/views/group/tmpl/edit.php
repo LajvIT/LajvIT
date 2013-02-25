@@ -88,6 +88,19 @@ if (isset($this->message) && $this->message != '') {
         </td>
       </tr>
       <tr>
+        <td><strong>Fraktion:</strong></td>
+        <td><select name="groupFaction"><?php
+  foreach ($this->factions as $faction) {
+    echo '<option value="' . $faction->id . '"';
+    if ($this->groupFaction == $faction->id) {
+      echo ' selected';
+    }
+    echo ' >' . ucfirst($faction->name) . '</option>\n';
+  }
+?>
+          </select></td>
+      </tr>
+      <tr>
         <td><strong>Gruppledare:</strong></td>
         <td><?php echo $this->groupLeaderPersonName; ?></td>
       </tr>

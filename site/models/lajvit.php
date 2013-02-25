@@ -427,7 +427,7 @@ class LajvITModelLajvIT extends JModelLegacy {
   function getCharactersOnEventForPerson($eventId, $personId) {
     $db = &JFactory::getDBO();
 
-    $query = 'SELECT chara.* FROM #__lit_chara AS chara
+    $query = 'SELECT * FROM #__lit_chara AS chara
     INNER JOIN #__lit_registrationchara ON charaid = chara.id
     WHERE personid = '.$db->getEscaped($personId).' AND eventid = '.$db->getEscaped($eventId).';';
 
