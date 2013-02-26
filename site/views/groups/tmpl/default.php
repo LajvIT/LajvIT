@@ -63,7 +63,7 @@ foreach ($this->items as $item) {
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
     <div class="container">
       <div class="text">Synlig: <?php echo $item->visible ? 'Ja' : 'Nej'; ?></div>
-      <div class="text">Status: <?php echo $item->status; ?></div>
+      <div class="text">Status: <?php echo ucfirst($item->status); ?></div>
     </div><?php
   }
   ?>
