@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="2.5.0" method="upgrade">
-  <name>LajvIT</name>
+  <name>COM_LAJVIT</name>
   <creationDate>2011-02-15</creationDate>
   <author>Emil Djupfeldt</author>
   <authorEmail>emil@djupfeldt.se</authorEmail>
@@ -8,7 +8,7 @@
   <copyright>Copyright Info</copyright>
   <license>License Info</license>
   <version>0.0.3</version>
-  <description>Verktyg för att hantera lajv.</description>
+  <description>COM_LAJVIT_DESCRIPTION</description>
 
   <install>
     <sql>
@@ -45,7 +45,7 @@
 
   <administration>
     <!-- Administration Menu Section -->
-    <menu>LajvIT</menu>
+    <menu>COM_LAJVIT_MENU</menu>
 
     <!-- Administration Main File Copy Section -->
     <files folder="admin">
@@ -62,6 +62,11 @@
       <folder>tables</folder>
       <folder>views</folder>
     </files>
+
+    <languages folder="admin">
+      <language tag="en-GB">language/en-GB/en-GB.com_lajvit.ini</language>
+      <language tag="en-GB">language/en-GB/en-GB.com_lajvit.sys.ini</language>
+    </languages>
   </administration>
 
 </extension>

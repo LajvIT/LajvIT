@@ -492,7 +492,7 @@ CREATE TABLE IF NOT EXISTS #__lit_groups (
  PRIMARY KEY (`id`),
  KEY `groupleader` (`groupLeaderPersonId`),
  KEY `event` (`eventId`),
- INDEX `(`factionId`),
+ INDEX (`factionId`),
  CONSTRAINT `faction` FOREIGN KEY (`factionId`)
   REFERENCES #__lit_charafaction (id) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
