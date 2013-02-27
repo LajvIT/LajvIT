@@ -12,6 +12,11 @@ class LajvITViewGroup extends JView {
    * @var LajvITModelGroup
    */
   private $model;
+  /**
+   *
+   * @var LajvITModelLajvIT
+   */
+  private $lajvitModel;
 
   function getModel($name = NULL) {
     return parent::getModel($name);
@@ -24,7 +29,7 @@ class LajvITViewGroup extends JView {
   function display($tpl = NULL) {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->model = $this->getModel();
-    $lajvitModel = $this->getModel("LajvIT");
+    $this->lajvitModel = $this->getModel("LajvIT");
     $layout = $this->getLayout();
     $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);
@@ -33,7 +38,7 @@ class LajvITViewGroup extends JView {
     $this->character = JRequest::getString('character', '');
     $this->errorMsg = JRequest::getString('errorMsg', '');
     $canDo = GroupHelper::getActions($groupId);
-    $factions = $lajvitModel->getCharacterFactions();
+    $factions = $this->lajvitModel->getCharacterFactions();
 
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);
@@ -89,18 +94,23 @@ class LajvITViewGroup extends JView {
   }
 
   private function charactersForEvent($groupId) {
-    $lajvitModel = $this->getModel("LajvIT");
     $user = &JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
     $eventId = $this->model->getEventForGroup($groupId);
+    $group = $this->model->getGroup($groupId);
+    $charactersInGroup = $this->model->getCharacterIdsInGroup($groupId);
+    $factionId = $group['factionId'];
+    $this->assignRef('charactersInGroup', $charactersInGroup);
     $characters = Array();
     if ($canDo->get('core.edit')) {
-      $characters = $lajvitModel->getAllCharactersForEvent($eventId);
+      $characters = $this->lajvitModel->getCharactersForFaction(
+          $eventId, $factionId, 'knownas', 'ASC', NULL, NULL);
     } elseif ($canDo->get('core.edit.own') && $this->model->getGroupOwner($groupId) == $user->id) {
-      $characters = $lajvitModel->getAllCharactersForEvent($eventId);
+      $characters = $this->lajvitModel->getCharactersForFaction(
+          $eventId, $factionId, 'knownas', 'ASC', NULL, NULL);
     } elseif ($this->model->isGroupVisible($groupId) &&
         $this->model->isGroupOpen($groupId)) {
-      $characters = $lajvitModel->getCharactersForEvent($eventId);
+      $characters = $this->lajvitModel->getCharactersForEvent($eventId);
     } else {
       $this->errorMsg = "COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_CHAR_TO_GROUP";
       $this->assignRef('groupId', $minusOne);

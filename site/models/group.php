@@ -133,6 +133,11 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
+  /**
+   *
+   * @param int $groupId
+   * @return array characterObjects
+   */
   public function getCharactersInGroup($groupId) {
     $db = &JFactory::getDBO();
     $query = 'SELECT chara.* FROM #__lit_chara AS chara
@@ -141,6 +146,21 @@ class LajvITModelGroup extends JModelItem {
     $db->setQuery($query);
 
     return $db->loadObjectList();
+  }
+
+  /**
+   *
+   * @param int $groupId
+   * @return array int
+   */
+  public function getCharacterIdsInGroup($groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT chara.id FROM #__lit_chara AS chara
+    INNER JOIN #__lit_group_members ON characterId = chara.id
+    WHERE groupId = '.$db->getEscaped($groupId).';';
+    $db->setQuery($query);
+
+    return $db->loadResultArray(0);
   }
 
   private function canEditGroup($groupId) {

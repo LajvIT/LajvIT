@@ -21,6 +21,9 @@ if (array_key_exists('charName', $this) && $this->charName != "") {
     <tbody>
       <?php
 foreach ($this->characters as $object) {
+  if (in_array($object->id, $this->charactersInGroup)) {
+    continue;
+  }
   echo "<tr>\n";
   echo "<td>";
   echo ' <a href="index.php?option=com_lajvit&controller=group&task=addCharacterToGroup';

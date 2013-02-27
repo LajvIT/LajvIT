@@ -344,6 +344,20 @@ class LajvITModelLajvIT extends JModelLegacy {
     return $db->loadObjectList();
   }
 
+  function getAllCharactersForEventInFaction($event, $factionId, $person = NULL) {
+    $user = &JFactory::getUser($person);
+    if (!$user || $user->guest)
+      return FALSE;
+
+    $db = &JFactory::getDBO();
+
+    $query = 'SELECT * FROM #__lit_vcharacterregistrations WHERE eventid=' .
+        $db->getEscaped($event).' AND factionid=' . $db->getEscaped($factionId) . ';';
+
+    $db->setQuery($query);
+    return $db->loadObjectList();
+  }
+
   function getCharacterRegistrationForEvent($event, $characterId, $person = NULL) {
     $user = &JFactory::getUser($person);
     if (!$user || $user->guest)
