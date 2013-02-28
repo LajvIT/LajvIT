@@ -18,6 +18,14 @@ class LajvITViewEvent extends JView {
   function display($tpl = NULL) {
     $model = &$this->getModel();
     $eventModel =& JModel::getInstance('eventmodel', 'lajvitmodel');
+    $person = $model->getPerson();
+    if ($person->_nodata) {
+      $link = 'index.php?option=com_lajvit&view=person&layout=edit';
+      $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
+      $app =& JFactory::getApplication();
+      $app->redirect($link);
+      return;
+    }
     $layout = $this->getLayout();
     $user = &JFactory::getUser();
     $events = $model->getEventsForPerson();
