@@ -8,7 +8,20 @@ defined('_JEXEC') or die('Restricted access'); ?>
   </div>
 </div>
 <?php
+if (isset($this->errorMsg) && $this->errorMsg != '') {
+  echo '<div style="color: red; font-weight: bold;">' . JText::_($this->errorMsg) . '</div><br><br>';
+}
+if (isset($this->message) && $this->message != '') {
+  if (isset($this->group)) {
+    echo JText::_($this->message) . ": " . $this->group;
+  } else {
+    echo JText::_($this->message);
+  }
+  echo "<br><br>";
+}
+
 $user = JFactory::getUser();
+$visibleGroups = FALSE;
 foreach ($this->items as $item) {
   $assetName = "com_lajvit.group." . $item->id;
   $canDo = GroupHelper::getActions($item->id);
@@ -34,6 +47,7 @@ foreach ($this->items as $item) {
       !$this->groupModel->hasPersonApprovedCharacterInSameFaction($user, $item->id)) {
     continue;
   }
+  $visibleGroups = TRUE;
 ?>
   <div class="group">
     <div class="container">
@@ -44,6 +58,7 @@ foreach ($this->items as $item) {
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
       <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="Redigera grupp"></a></div>
+      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ta bort grupp"></a></div>
       <?php
       //       <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete&Itemid=<?php echo $this->itemId; " title="Ta bort grupp"></a></div>
   }
@@ -80,5 +95,11 @@ foreach ($this->items as $item) {
     </div>
      -->
   </div>
-<?php } ?>
+<?php
+}
+
+if (!$visibleGroups) {
+  echo "Inga öppna grupper finns skapade i din fraktion";
+}
+?>
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />

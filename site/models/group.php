@@ -9,7 +9,6 @@ JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_lajvit'.DS.'t
  * LajvIT Model.
  */
 class LajvITModelGroup extends JModelItem {
-
   /**
    * @param object $data
    * @return int|array
@@ -18,11 +17,24 @@ class LajvITModelGroup extends JModelItem {
     $db = &JFactory::getDBO();
     $group = JTable::getInstance('lit_groups', 'Table');
     $group->bind($data);
+
     $creationSuccess = $group->store();
     if ($creationSuccess) {
       return $group->id;
     } else {
       return $group->getErrors();
+    }
+  }
+
+  /**
+   * Deletes the group if the user has editing rights
+   * @param int $groupId
+   */
+  public function deleteGroup($groupId) {
+    if ($this->canEditGroup($groupId)) {
+      $db = &JFactory::getDBO();
+      $group = JTable::getInstance('lit_groups', 'Table');
+      $group->delete($groupId);
     }
   }
 

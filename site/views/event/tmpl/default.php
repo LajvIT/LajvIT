@@ -28,7 +28,7 @@ foreach ($this->events as $event) {
       <div class="container">
         <div class="eventName"><?php echo $event->name; ?></div>
         <div class="icon info">
-          <a href="<?php echo $event->url; ?>" title="Info"></a>
+          <a class="icon" href="<?php echo $event->url; ?>" title="Info"></a>
         </div>
   <?php
   if ($allowedToListRegistrations || $allowedToListCharacters) { ?>

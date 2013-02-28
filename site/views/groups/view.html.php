@@ -25,6 +25,9 @@ class LajvITViewGroups extends JViewLegacy {
     $groupModel = &JModel::getInstance('group', 'lajvitmodel');
     $this->assignRef('groupModel', $groupModel);
 
+    $this->message = JRequest::getString('message', '');
+    $this->group = JRequest::getString('group', '');
+    $this->errorMsg = JRequest::getString('errorMsg', '');
     $this->assignRef('eventId', JRequest::getInt('eid', 0));
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
 

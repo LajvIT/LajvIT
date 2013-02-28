@@ -49,9 +49,28 @@ class LajvITControllerGroup extends LajvITController {
     }
   }
 
+  public function delete() {
+    $this->initModels();
+    $data = $this->getGroupDataFromRequest();
+    $eventId = $this->groupModel->getEventForGroup($data->groupId);
+    JRequest::setVar('eid', $eventId);
+    JRequest::setVar('option', 'com_lajvit');
+    if (!$this->allowedToEditGroup($data->groupId)) {
+      JRequest::setVar('view', 'groups');
+      JRequest::setVar('errorMsg', 'Not allowed to delete group');
+      parent::display();
+      return;
+    }
+    $groupMemberId = $this->groupModel->deleteGroup($data->groupId);
+    JRequest::setVar('message', 'COM_LAJVIT_REMOVED_GROUP');
+    JRequest::setVar('view', 'groups');
+    JRequest::setVar('layout', 'default');
+    parent::display();
+  }
+
   public function addCharacterToGroup() {
     $this->initModels();
-    $data = $this->getGroupMemberDataFromRequest();
+    $data = $this->getGroupDataFromRequest();
     JRequest::setVar('option', 'com_lajvit');
     if (!$this->allowedToAddCharacterToGroup($data)) {
       JRequest::setVar('view', 'event');
@@ -95,9 +114,9 @@ class LajvITControllerGroup extends LajvITController {
     return FALSE;
   }
 
-  private function getGroupMemberDataFromRequest() {
+  private function getGroupDataFromRequest() {
     $data = new stdClass();
-    $groupId = JRequest::getInt('gid', -1);
+    $groupId = JRequest::getInt('groupId', -1);
     if ($groupId <= 0) {
       $groupId = NULL;
     }
@@ -110,12 +129,14 @@ class LajvITControllerGroup extends LajvITController {
     return $data;
   }
 
-  private function allowedToDeleteEvent($eventId) {
-    $user = &JFactory::getUser($userid);
-    if ($eventId == -1) {
-      return FALSE;
+  private function allowedToEditGroup($groupId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($canDo->get('core.edit')) {
+      return TRUE;
     }
-    if ($user->usertype == $this->ADMINISTRATOR) {
+    if ($canDo->get('core.edit.own') &&
+        $this->groupModel->getGroupOwner($groupId) == $user->id) {
       return TRUE;
     }
     return FALSE;
