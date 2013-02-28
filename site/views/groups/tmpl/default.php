@@ -1,10 +1,12 @@
 <?php
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<h1>
-  Grupper
-</h1>
-
+<div class="group">
+  <div class="container">
+    <div class="eventName">Grupper</div>
+    <div class="icon new_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=create&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ny grupp"></a></div>
+  </div>
+</div>
 <?php
 $user = JFactory::getUser();
 foreach ($this->items as $item) {
