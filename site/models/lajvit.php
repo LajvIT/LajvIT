@@ -516,6 +516,28 @@ class LajvITModelLajvIT extends JModelLegacy {
     return TRUE;
   }
 
+  function getFaction ($factionId) {
+    $db = &JFactory::getDBO();;
+    $query = 'SELECT * FROM  #__lit_charafaction WHERE id = ' . $db->getEscaped($factionId) . ';';
+    $db->setQuery($query);
+    $ret = $db->loadObject();
+    return $ret;
+  }
+
+  /**
+   *
+   * @param int $factionId
+   * @return mixed String if faction found, or NULL if not
+   */
+  function getFactionName ($factionId) {
+    $faction = $this->getFaction($factionId);
+    if (is_null($faction)) {
+      return NULL;
+    } else {
+      return $faction->name;
+    }
+  }
+
   function getPlotHeading($plotId) {
     $plot = $this->getPlot($plotId);
     if (is_null($plot)) {

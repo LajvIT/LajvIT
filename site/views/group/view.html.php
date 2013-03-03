@@ -11,12 +11,12 @@ class LajvITViewGroup extends JView {
   /**
    * @var LajvITModelGroup
    */
-  private $model;
+  protected $model;
   /**
    *
    * @var LajvITModelLajvIT
    */
-  private $lajvitModel;
+  protected $lajvitModel;
 
   function getModel($name = NULL) {
     return parent::getModel($name);
@@ -44,6 +44,7 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupId', $groupId);
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
     $this->assignRef('factions', $factions);
+    $this->assignRef('mymodel', $this->getModel("LajvIT"));
     if ($layout == 'edit' && !$this->canEditGroup($groupId)) {
       $this->setLayout('default');
     }
@@ -87,6 +88,7 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupUrl', $group['url']);
     $this->assignRef('groupVisible', $group['visible']);
     $this->assignRef('groupFaction', $group['factionId']);
+    $this->assignRef('groupFactionName', $group['groupFactionName']);
     $this->assignRef('groupStatus', $group['status']);
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
     $this->assignRef('groupLeaderPersonName', $group['groupLeaderPersonName']);

@@ -76,6 +76,9 @@ foreach ($this->items as $item) {
     </div>
     <div class="container">
       <div class="text"><?php echo $item->description; ?></div>
+    </div>
+    <div class="container">
+      <div class="text">Fraktion: <?php echo $item->factionName; ?></div>
     </div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>

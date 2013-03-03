@@ -123,7 +123,17 @@ echo '</td></tr>';
 if (isset($this->charactersInGroup)) {
   foreach ($this->charactersInGroup as $character) {
     echo '<tr><td>';
-    echo $character->knownas;
+    echo '<div class="text">';
+    echo $character->knownas . " - " . $character->cultureName . ", " . $character->conceptName;
+    echo '</div>';
+    echo '<div class="icon info"><a class="icon" ';
+    echo 'href="index.php?option=com_lajvit&view=character&eid=' . $this->eventId;
+    echo '&cid=' . $character->id . '&Itemid=' . $this->itemId .'" title="Info"></a></div>';
+
+    echo '<div class="icon delete_character"><a class="icon" ';
+    echo 'href="index.php?option=com_lajvit&controller=group&task=removeCharacterFromGroup';
+    echo '&groupId=' . $this->groupId . '&characterId=' . $character->id;
+    echo '&Itemid=' . $this->itemId . '"></a></div>';
   }
 }
 echo '</td></tr>';

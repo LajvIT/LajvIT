@@ -72,7 +72,7 @@ class LajvITControllerGroup extends LajvITController {
     $this->initModels();
     $data = $this->getGroupDataFromRequest();
     JRequest::setVar('option', 'com_lajvit');
-    if (!$this->allowedToAddCharacterToGroup($data)) {
+    if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
       JRequest::setVar('view', 'event');
       JRequest::setVar('errorMsg', 'Not allowed to update group');
       $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
@@ -93,7 +93,34 @@ class LajvITControllerGroup extends LajvITController {
     }
   }
 
-  private function allowedToAddCharacterToGroup($data) {
+  public function removeCharacterFromGroup() {
+    $this->initModels();
+    $data = $this->getGroupDataFromRequest();
+    $characterId = $data->characterId;
+    $groupId = $data->groupId;
+    JRequest::setVar('option', 'com_lajvit');
+    if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
+      JRequest::setVar('view', 'event');
+      JRequest::setVar('errorMsg', 'Not allowed to update group');
+      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      return;
+    }
+    JRequest::setVar('groupId', $groupId);
+    JRequest::setVar('view', 'group');
+    JRequest::setVar('layout', 'edit');
+    $outcome = $this->groupModel->removeCharFromGroup($characterId, $groupId);
+
+    if ($outcome === TRUE) {
+      JRequest::setVar('message', 'COM_LAJVIT_REMOVED_CHARACTER');
+      JRequest::setVar('character', $this->lajvitModel->getCharacter($characterId)->knownas);
+      parent::display();
+    } else {
+      JRequest::setVar('errorMsg', 'COM_LAJVIT_COULD_NOT_REMOVE_CHARACTER');
+      parent::display();
+    }
+  }
+
+  private function allowedToAddOrRemoveCharacterInGroup($data) {
     $canDo = GroupHelper::getActions($data->groupId);
     $characterId = $data->characterId;
     $groupId = $data->groupId;
@@ -120,7 +147,7 @@ class LajvITControllerGroup extends LajvITController {
     if ($groupId <= 0) {
       $groupId = NULL;
     }
-    $characterId = JRequest::getInt('cid', '');
+    $characterId = JRequest::getInt('characterId', '');
     if ($characterId <= 0) {
       $characterId = NULL;
     }

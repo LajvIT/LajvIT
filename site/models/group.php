@@ -45,6 +45,7 @@ class LajvITModelGroup extends JModelItem {
    */
   public function getGroup($groupId) {
     $personModel =& JModel::getInstance('person', 'lajvitmodel');
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
     $group = JTable::getInstance('lit_groups', 'Table');
@@ -66,6 +67,8 @@ class LajvITModelGroup extends JModelItem {
     }
     $personId = $groupData['groupLeaderPersonId'];
     $groupData['groupLeaderPersonName'] = $personModel->getPersonNameFromId($personId);
+    $factionName = $lajvitModel->getFactionName($groupData['factionId']);
+    $groupData['groupFactionName'] = $lajvitModel->getFactionName($groupData['factionId']);
     return $groupData;
   }
 
@@ -96,7 +99,7 @@ class LajvITModelGroup extends JModelItem {
   }
 
   public function addCharacterToGroup($data) {
-    if ($this->canAddCharacterToGroup($data->groupId, $data->characterId)) {
+    if ($this->canAddOrRemoveCharacterToGroup($data->groupId, $data->characterId)) {
       $db = &JFactory::getDBO();
       $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
       $groupMember->bind($data);
@@ -105,6 +108,26 @@ class LajvITModelGroup extends JModelItem {
         return $groupMember->id;
       } else {
         return $groupMember->getErrors();
+      }
+    }
+    return FALSE;
+  }
+
+  public function removeCharFromGroup($characterId, $groupId) {
+    if (!is_int($characterId) || !is_int($groupId)) {
+      return FALSE;
+    }
+    if ($this->canAddOrRemoveCharacterToGroup($groupId, $characterId)) {
+      $db = &JFactory::getDBO();
+      $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
+      $tableName = $groupMember->getTableName();
+      $sql = 'DELETE FROM ' . $tableName . ' WHERE groupId = ' . $groupId .
+      ' AND characterId = ' . $characterId;
+      $db->setQuery($sql);
+      if ($db->query()) {
+        return TRUE;
+      } else {
+        return $db->getErrorMsg();
       }
     }
     return FALSE;
@@ -152,8 +175,11 @@ class LajvITModelGroup extends JModelItem {
    */
   public function getCharactersInGroup($groupId) {
     $db = &JFactory::getDBO();
-    $query = 'SELECT chara.* FROM #__lit_chara AS chara
+    $query = 'SELECT chara.*, concept.name AS conceptName, culture.name AS cultureName
+    FROM #__lit_chara AS chara
     INNER JOIN #__lit_group_members ON characterId = chara.id
+    INNER JOIN #__lit_characoncept AS concept ON concept.id = chara.conceptid
+    INNER JOIN #__lit_characulture AS culture ON culture.id = chara.cultureid
     WHERE groupId = '.$db->getEscaped($groupId).';';
     $db->setQuery($query);
 
@@ -188,7 +214,7 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
-  private function canAddCharacterToGroup($groupId, $characterId) {
+  private function canAddOrRemoveCharacterToGroup($groupId, $characterId) {
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
     if ($canDo->get('core.edit')) {
