@@ -6,7 +6,9 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </h1>
 
 <?php
+
 foreach ($this->events as $event) {
+  $canDo = EventHelper::getActions($event->id);
   $isEventOpen = ($event->status == 'open' ? TRUE : FALSE);
   $isEventHidden = ($event->status == 'hidden' ? TRUE : FALSE);
   $allowedToListRegistrations = FALSE;
@@ -80,8 +82,11 @@ foreach ($this->events as $event) {
       echo $char->knownas . ' - ' . $char->statusname; ?>
         </div>
         <div class="icon edit_character"><a class="icon" href="index.php?option=com_lajvit&view=character&layout=edit&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Redigera karaktär"></a></div>
-        <div class="icon delete_character"><a class="icon" href="index.php?option=com_lajvit&view=character&layout=delete&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Ta bort karaktär"></a></div>
-        <div class="icon plot"><a class="icon" href="index.php?option=com_lajvit&view=plot&layout=listdistributedplots&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Intriger för karaktär"></a></div>
+        <div class="icon delete_character"><a class="icon" href="index.php?option=com_lajvit&view=character&layout=delete&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Ta bort karaktär"></a></div><?php
+        if ($canDo->get('lajvit.plot.enabled')) { ?>
+        <div class="icon plot"><a class="icon" href="index.php?option=com_lajvit&view=plot&layout=listdistributedplots&eid=<?php echo $event->id; ?>&cid=<?php echo $char->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Intriger för karaktär"></a></div><?php
+        } ?>
+
       </div>
       <div class="eventCharacterDetails"><?php
       echo $char->culturename . ' - ' . $char->conceptname;
