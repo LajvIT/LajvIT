@@ -125,6 +125,7 @@ if (isset($this->charactersInGroup)) {
     echo '<tr><td>';
     echo '<div class="text">';
     echo $character->knownas . " - " . $character->cultureName . ", " . $character->conceptName;
+    echo ' (' . $character->personGivenName . ' ' . $character->personLastName . ')';
     echo '</div>';
     echo '<div class="icon info"><a class="icon" ';
     echo 'href="index.php?option=com_lajvit&view=character&eid=' . $this->eventId;

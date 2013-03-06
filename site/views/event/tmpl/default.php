@@ -69,7 +69,7 @@ foreach ($this->events as $event) {
     </div>
     <?php
   } else if ($isEventOpen) { ?>
-    <div class="group">
+    <div class="container">
       <div class="infoText" style="margin-bottom: 10px">Betalning: <?php
     echo $event->confirmationname;
     echo '(' . $event->payment . ' kr)'; ?>

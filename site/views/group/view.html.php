@@ -56,6 +56,7 @@ class LajvITViewGroup extends JView {
         $this->setLayout('error');
       } else {
         $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
+        $this->getPersonDataForCharacters($this->charactersInGroup, $eventId);
         $currentGroupStatus = '';
         $currentGroupStatus = $group['status'];
         $this->setGroupData($group);
@@ -118,7 +119,18 @@ class LajvITViewGroup extends JView {
       $this->assignRef('groupId', $minusOne);
       $this->setLayout('error');
     }
+    $this->getPersonDataForCharacters($characters, $eventId);
 
     $this->assignRef('characters', $characters);
+  }
+
+  private function getPersonDataForCharacters(&$characters, $eventId) {
+    foreach ($characters as $character) {
+      $personId = $this->lajvitModel->getPersonIdOwningCharacterOnEvent($character->id, $eventId);
+      $person = $this->lajvitModel->getPerson($personId);
+      $character->personId = $personId;
+      $character->personGivenName = $person->givenname;
+      $character->personLastName = $person->surname;
+    }
   }
 }

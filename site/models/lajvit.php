@@ -132,6 +132,13 @@ class LajvITModelLajvIT extends JModelLegacy {
     return $db->loadObjectList("id");
   }
 
+  /**
+   * Method to get a person, or an empty person structure if
+   * the person hasn't been created in the LajvIT module yet. Returns
+   * FALSE if the user doesn't exist in Joomla.
+   * @param int $userid
+   * @return boolean|TableLIT_Person
+   */
   function getPerson($userid = NULL) {
     $user = JFactory::getUser($userid);
     if (!$user || $user->guest)
@@ -155,6 +162,20 @@ class LajvITModelLajvIT extends JModelLegacy {
     $row->_username = $user->username;
 
     return $row;
+  }
+
+  /**
+   * Method to get the person id owning a character registered for an event
+   * @param int $characterId
+   * @param int $eventId
+   * @return Ambigous <int, NULL> The person id or NULL if query fails
+   */
+  public function getPersonIdOwningCharacterOnEvent($characterId, $eventId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT personid FROM #__lit_registrationchara WHERE charaid = '. $characterId .
+             ' AND eventid = ' . $eventId . ';';
+    $db->setQuery($query);
+    return $db->loadResult();
   }
 
   function mergeRoles($a, $b) {

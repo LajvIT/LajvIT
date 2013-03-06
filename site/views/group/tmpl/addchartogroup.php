@@ -28,7 +28,8 @@ foreach ($this->characters as $object) {
   echo "<td>";
   echo ' <a href="index.php?option=com_lajvit&controller=group&task=addCharacterToGroup';
   echo '&groupId=' . $this->groupId . '&characterId=' . $object->id . '&Itemid=' . $this->itemId . '">';
-  echo $object->knownas;
+  echo $object->knownas . ' (' . $object->personGivenName . ' ' . $object->personLastName . ')';
+
   echo '</a>';
   echo "</td>";
   echo "</tr>";
