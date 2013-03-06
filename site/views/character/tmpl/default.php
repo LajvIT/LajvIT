@@ -2,7 +2,10 @@
 
 // No direct access
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+$canDoOnEvent = EventHelper::getActions($this->eventid);
+// $canDoOnCharacter = CharacterHelper::getActions($this->character->id);
+?>
 
 <h1><?php echo $this->events[$this->eventid]->shortname; ?> - Karaktärsinfo</h1>
 
@@ -10,7 +13,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <tbody>
 <tr>
   <td>Karaktärens namn:</td>
-  <td><?php echo $this->character->fullname; ?></td>
+  <td><div class="text"><?php echo $this->character->fullname; ?></div><?php
+  if ($canDoOnEvent->get('core.edit')) { ?>
+    <div class="icon edit_character"><a class="icon" href="index.php?option=com_lajvit&view=character&layout=editconcept&cid=<?php echo $this->character->id; ?>&eid=<?php echo $this->eventid; ?>&Itemid=<?php echo $this->itemid; ?>" title="<?php echo JText::_('COM_LAJVIT_EDIT_CHARACTER'); ?>"></a></div><?php
+  }
+  ?>
+  </td>
 
   <td rowspan="6">
 <?php

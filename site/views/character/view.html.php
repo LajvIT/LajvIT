@@ -17,6 +17,7 @@ class LajvITViewCharacter extends JView {
   }
 
   function display($tpl = NULL) {
+    JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $model = &$this->getModel();
 
     $person = &$model->getPerson();
@@ -36,9 +37,10 @@ class LajvITViewCharacter extends JView {
     $concepts = $model->getCharacterConcepts();
     $this->assignRef('concepts', $concepts);
 
-      $role = $model->getRoleForEvent($eventid);
+    $role = $model->getRoleForEvent($eventid);
 
     $charid = JRequest::getInt('cid', -1);
+    $character = NULL;
     if ($charid >= 0) {
       $this->assignRef('characterid', $charid);
 
@@ -66,11 +68,6 @@ class LajvITViewCharacter extends JView {
     $cultureid = JRequest::getInt('cultureid', 0);
     $conceptid = JRequest::getInt('conceptid', 0);
 
-    $this->assignRef('fullname', $fullname);
-    $this->assignRef('factionid', $factionid);
-    $this->assignRef('cultureid', $cultureid);
-    $this->assignRef('conceptid', $conceptid);
-
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
 
     if ($this->getLayout() == 'edit') {
@@ -85,6 +82,23 @@ class LajvITViewCharacter extends JView {
          */
       }
     }
+    if ($this->getLayout() == 'editconcept') {
+      $canDo = EventHelper::getActions($eventid);
+      if (!$canDo->get('core.edit')) {
+        $this->setLayout('default');
+      }
+      if ($err == 0) {
+        $fullname = $character->fullname;
+        $factionid = $character->factionid;
+        $cultureid = $character->cultureid;
+        $conceptid = $character->conceptid;
+      }
+    }
+
+    $this->assignRef('fullname', $fullname);
+    $this->assignRef('factionid', $factionid);
+    $this->assignRef('cultureid', $cultureid);
+    $this->assignRef('conceptid', $conceptid);
 
     $this->displayBreadcrumb($eventid);
 

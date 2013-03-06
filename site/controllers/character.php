@@ -89,14 +89,12 @@ class LajvITControllerCharacter extends LajvITController {
     $this->setRedirect($oklink);
   }
 
-
   function save() {
     $errlink = 'index.php?option=com_lajvit&view=character&layout=edit';
     $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
     $model = &$this->getModel();
-
-    $person = &$model->getPerson();
+    $user = JFactory::getUser();
 
     $charid = JRequest::getInt('cid', -1);
     $character = &$model->getCharacter($charid);
@@ -105,7 +103,14 @@ class LajvITControllerCharacter extends LajvITController {
     $eventid = JRequest::getInt('eid', -1);
     $event = &$model->getEvent($eventid);
 
-    $reg = $model->getRegistration($person->id, $eventid, $charid);
+    $canDo = EventHelper::getActions($eventid);
+    $personId = $model->getPersonIdOwningCharacterOnEvent($charid, $eventid);
+    if ($personId != $user->id &&
+        !$canDo->get('core.edit')) {
+      echo '<h1>Not Allowed</h1>';
+      return;
+    }
+    $reg = $model->getRegistration($personId, $eventid, $charid);
     if (!$reg) {
       echo '<h1>not registered</h1>';
       //      $this->setRedirect($errlink, 'Not registered';
