@@ -23,7 +23,7 @@ if (isset($this->message) && $this->message != '') {
         <td><div class="text"><?php echo $this->groupName; ?></div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $this->groupLeaderPersonId == $user->id) { ?>
-      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div><?php
+      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $this->groupId; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div><?php
   }
   ?>
 
@@ -66,7 +66,7 @@ if (isset($this->message) && $this->message != '') {
   <br /><?php
 echo '  <table>    <tbody>';
 echo '      <tr><td><strong style="float: left; margin-right: 5px;">' . JText::_('COM_LAJVIT_CHARACTERS') . '</strong> ';
-echo '<div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=' . $this->groupId . '" title="Lägg till karaktär"></a></div>';
+echo '<div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=' . $this->groupId . '&Itemid=' . $this->itemId . '" title="' . JText::_('COM_LAJVIT_ADD_CHARACTER') .'"></a></div>';
 echo '</td></tr>';
 if (isset($this->charactersInGroup)) {
   foreach ($this->charactersInGroup as $character) {

@@ -118,7 +118,7 @@ if (isset($this->message) && $this->message != '') {
       <?php
 echo '  <table>    <tbody>';
 echo '      <tr><td><strong style="float: left; margin-right: 5px;">' . JText::_('COM_LAJVIT_CHARACTERS') . '</strong> ';
-echo '<div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=' . $this->groupId . '" title="Lägg till karaktär"></a></div>';
+echo '<div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=' . $this->groupId . '&Itemid=' . $this->itemId . '" title="' .  JText::_('COM_LAJVIT_ADD_CHARACTER') . '"></a></div>';
 echo '</td></tr>';
 if (isset($this->charactersInGroup)) {
   foreach ($this->charactersInGroup as $character) {

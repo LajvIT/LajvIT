@@ -57,14 +57,13 @@ foreach ($this->items as $item) {
       </div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
-      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="Redigera grupp"></a></div>
-      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ta bort grupp"></a></div>
+      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div>
+      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_REMOVE'); ?>"></a></div>
       <?php
-      //       <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=delete&Itemid=<?php echo $this->itemId; " title="Ta bort grupp"></a></div>
   }
   ?>
 
-      <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="Lägg till karaktär"></a></div>
+      <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"></a></div>
     </div>
     <div class="container">
       <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>
@@ -88,15 +87,6 @@ foreach ($this->items as $item) {
     </div><?php
   }
   ?>
-  <!--
-    <div class="container">
-      <div class="infoText">View:</div><div class="text"><?php echo $user->authorise('lajvit.view.visible', $assetName); ?></div>
-      <div class="infoText">View hidden:</div><div class="text"><?php echo $user->authorise('lajvit.view.hidden', $assetName); ?></div>
-      <div class="infoText">Create:</div><div class="text"><?php echo $user->authorise('core.create', $assetName); ?></div>
-      <div class="infoText">Edit:</div><div class="text"><?php echo $user->authorise('core.edit', $assetName); ?></div>
-      <div class="infoText">Edit own:</div><div class="text"><?php echo $user->authorise('core.edit.own', $assetName); ?></div>
-    </div>
-     -->
   </div>
 <?php
 }
