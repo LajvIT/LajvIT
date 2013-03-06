@@ -3,6 +3,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <?php
 $user = JFactory::getUser();
+$canDo = GroupHelper::getActions($this->groupId);
 if (isset($this->errorMsg) && $this->errorMsg != '') {
   echo '<div style="color: red; font-weight: bold;">' . JText::_($this->errorMsg) . '</div><br><br>';
 }
@@ -19,7 +20,14 @@ if (isset($this->message) && $this->message != '') {
     <tbody>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_NAME');?>:</strong></td>
-        <td><?php echo $this->groupName; ?></td>
+        <td><div class="text"><?php echo $this->groupName; ?></div><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $this->groupLeaderPersonId == $user->id) { ?>
+      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div><?php
+  }
+  ?>
+
+      </td>
       </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION');?>:</strong></td>
@@ -48,6 +56,10 @@ if (isset($this->message) && $this->message != '') {
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_FACTION');?>:</strong></td>
         <td><?php echo $this->groupFactionName ?></td>
+      </tr>
+      <tr>
+        <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>:</strong></td>
+        <td><?php echo $this->groupLeaderPersonName; ?></td>
       </tr>
     </tbody>
   </table>
