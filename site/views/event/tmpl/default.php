@@ -2,7 +2,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <h1>
-  Mina Arrangemang
+  <?php echo JText::_('COM_LAJVIT_EVENT_MY'); ?>
 </h1>
 
 <?php
@@ -56,21 +56,21 @@ foreach ($this->events as $event) {
     </div>
 
     <div class="group">
-      <div class="eventDuration">Start: <?php echo $event->startdate; ?> Slut: <?php echo $event->enddate; ?></div>
+      <div class="eventDuration"><?php echo JText::_('COM_LAJVIT_EVENT_STARTDATE'); ?>: <?php echo $event->startdate; ?> <?php echo JText::_('COM_LAJVIT_EVENT_ENDDATE'); ?>: <?php echo $event->enddate; ?></div>
     </div>
 
   <?php
   if (!$event->registered && $isEventOpen) { ?>
     <div class="group">
       <div class="container">
-        <div class="infoText">Ej Registrerad</div>
+        <div class="infoText"><?php echo JText::_('COM_LAJVIT_EVENT_NOT_REGISTERED'); ?></div>
         <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=event&layout=register&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Registrera"></a></div>
       </div>
     </div>
     <?php
   } else if ($isEventOpen) { ?>
     <div class="container">
-      <div class="infoText" style="margin-bottom: 10px">Betalning: <?php
+      <div class="infoText" style="margin-bottom: 10px"><?php echo JText::_('COM_LAJVIT_EVENT_PAYMENT'); ?>: <?php
     echo $event->confirmationname;
     echo '(' . $event->payment . ' kr)'; ?>
       </div>
@@ -99,13 +99,13 @@ foreach ($this->events as $event) {
 
     <div class="group">
       <div class="container">
-        <div class="infoText">Lägg till karaktär</div>
-        <a class="icon" href="index.php?option=com_lajvit&view=character&layout=create&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Lägg till karaktär"><img src="media/com_lajvit/images/new_character.png" alt="Lägg till karaktär"/></a>
+        <div class="infoText"><?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?></div>
+        <a class="icon" href="index.php?option=com_lajvit&view=character&layout=create&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"><img src="media/com_lajvit/images/new_character.png" alt="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"/></a>
       </div>
     </div>
     <div class="group">
       <div class="container">
-        <div class="infoText">Grupper</div>
+        <div class="infoText"><?php echo JText::_('COM_LAJVIT_GROUPS'); ?></div>
         <div class="icon show_group"><a class="icon" href="index.php?option=com_lajvit&view=groups&eid=<?php echo $event->id; ?>&Itemid=<?php echo $this->itemid; ?>" title="Visa grupper"></a></div>
       </div>
     </div>
