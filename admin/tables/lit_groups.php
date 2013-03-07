@@ -27,6 +27,12 @@ class TableLIT_Groups extends LITTable {
     parent::__construct(TableLIT_Groups::$tableName, 'id', $db);
   }
 
+  function check() {
+    if (is_null($this->eventId) || $this->eventId == 0) {
+      return FALSE;
+    }
+  }
+
   /**
    * Overridden bind function
    *
