@@ -3,8 +3,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <div class="group">
   <div class="container">
-    <div class="eventName">Grupper</div>
-    <div class="icon new_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=create&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ny grupp"></a></div>
+    <div class="eventName">Grupper</div><?php
+if ($this->eventId > 0) { ?>
+    <div class="icon new_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=create&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ny grupp"></a></div><?php
+} ?>
   </div>
 </div>
 <?php
