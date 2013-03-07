@@ -73,11 +73,19 @@ if (isset($this->charactersInGroup)) {
     echo '<tr><td>';
     echo '<div class="text">';
     echo $character->knownas . " - " . $character->cultureName . ", " . $character->conceptName;
-    echo ' (' . $character->personGivenName . ' ' . $character->personLastName . ')';
     echo '</div>';
     echo '<div class="icon info"><a class="icon" ';
     echo 'href="index.php?option=com_lajvit&view=character&eid=' . $this->eventId;
     echo '&cid=' . $character->id . '&Itemid=' . $this->itemId .'" title="Info"></a></div>';
+    echo '<div class="text">';
+    echo ' (' . $character->personGivenName . ' ' . $character->personLastName;
+    echo '</div>';
+    echo '<div class="icon info"><a class="icon" ';
+    echo 'href="index.php?option=com_lajvit&view=person&eid=' . $this->eventId;
+    echo '&pid=' . $character->personId . '&Itemid=' . $this->itemId .'" title="Info"></a></div>';
+    echo '<div class="text">';
+    echo ')';
+    echo '</div>';
 
     if ($this->lajvitModel->isCharacterOwnedByPerson($character->id, $user->id)) {
       echo '<div class="icon delete_character"><a class="icon" ';

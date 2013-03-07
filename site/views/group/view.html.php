@@ -56,7 +56,7 @@ class LajvITViewGroup extends JView {
         $this->setLayout('error');
       } else {
         $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
-        $this->getPersonDataForCharacters($this->charactersInGroup, $eventId);
+        $this->getPersonDataForCharacters($this->charactersInGroup, $group['eventId']);
         $currentGroupStatus = '';
         $currentGroupStatus = $group['status'];
         $this->setGroupData($group);
