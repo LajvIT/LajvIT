@@ -24,6 +24,7 @@ class TableLIT_Chara extends LITTable {
   var $description1 = NULL;
   var $description2 = NULL;
   var $description3 = NULL;
+  var $infoforgroupleader = NULL;
 
   function __construct(&$db) {
     parent::__construct('#__lit_chara', 'id', $db);

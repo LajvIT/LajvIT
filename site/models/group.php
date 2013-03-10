@@ -251,4 +251,70 @@ class LajvITModelGroup extends JModelItem {
     }
       return FALSE;
   }
+
+  /**
+   *
+   * @param int $userId
+   * @param int $groupId
+   * @return boolean
+   */
+  public function hasPersonCharacterInGroup($userId, $groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT characterId FROM #__lit_group_members
+      INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
+      WHERE groupId = '.$db->getEscaped($groupId).' AND personid = ' . $db->getEscaped($userId) . ';';
+    $db->setQuery($query);
+    if (count($db->loadObjectList()) > 0) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Returns TRUE if person is a group leader for any of the groups the
+   * character is registered in.
+   * @param int $userId
+   * @param int $characterId
+   * @return boolean
+   */
+  public function isPersonGroupLeaderForCharacter($userId, $characterId) {
+    $groupIds = $this->getGroupsThatCharacterIsRegisteredIn($characterId);
+    foreach ($groupIds as $groupId) {
+      if ($this->getGroupOwner($groupId) == $userId) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Returns TRUE if person is a group member for any of the groups the
+   * character is registered in.
+   * @param int $userId
+   * @param int $characterId
+   * @return boolean
+   */
+  public function isPersonGroupMemberInAGroupOfCharacter($userId, $characterId) {
+    $groupIds = $this->getGroupsThatCharacterIsRegisteredIn($characterId);
+    foreach ($groupIds as $groupId) {
+      if ($this->hasPersonCharacterInGroup($userId, $groupId)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   * Returns an array of group id, or NULL
+   * @param int $characterId
+   * @return mixed: NULL, array(int)
+   */
+  public function getGroupsThatCharacterIsRegisteredIn($characterId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT groupId FROM #__lit_group_members
+    WHERE characterId = '.$db->getEscaped($characterId).';';
+    $db->setQuery($query);
+
+    return $db->loadResultArray(0);
+  }
 }

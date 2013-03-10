@@ -285,6 +285,7 @@ CREATE TABLE IF NOT EXISTS #__lit_chara (
  description1 text,
  description2 text,
  description3 text,
+ `infoforgroupleader` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
 
  PRIMARY KEY  (id),
  CONSTRAINT chara_factionconstr FOREIGN KEY (factionid)

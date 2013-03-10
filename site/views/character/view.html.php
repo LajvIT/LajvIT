@@ -18,9 +18,11 @@ class LajvITViewCharacter extends JView {
 
   function display($tpl = NULL) {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
-    $model = &$this->getModel();
+    $user = JFactory::getUser();
+    $model = $this->getModel();
+    $groupModel =& JModel::getInstance('Group', 'lajvitmodel');
 
-    $person = &$model->getPerson();
+    $person = $model->getPerson();
 
     $events = $model->getEventsForPerson();
     $this->assignRef('events', $events);
@@ -45,6 +47,11 @@ class LajvITViewCharacter extends JView {
       $this->assignRef('characterid', $charid);
 
       $character = $model->getCharacterExtended($charid);
+      $groupLeaderForCharacter = $groupModel->isPersonGroupLeaderForCharacter($user->id, $charid);
+      $memberInSameGroup = $groupModel->isPersonGroupMemberInAGroupOfCharacter($user->id, $charid);
+
+      $this->assignRef('groupLeaderForCharacter', $groupLeaderForCharacter);
+      $this->assignRef('memberInSameGroup', $memberInSameGroup);
 
       if (!is_null($character->bornyear)) {
         $character->age = $events[$eventid]->ingameyear - $character->bornyear;

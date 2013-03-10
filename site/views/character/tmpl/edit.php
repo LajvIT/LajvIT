@@ -100,6 +100,17 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER'); ?>:</td>
+</tr>
+<tr>
+  <td colspan="3">
+    <textarea name="infoforgroupleader" cols="70" rows="10">
+      <?php echo $this->character->infoforgroupleader; ?>
+    </textarea>
+  </td>
+</tr>
+
+<tr>
   <td colspan="3">Privat information (För Spelaren/Arrangören/Rollcoachen):</td>
 </tr>
 <tr>

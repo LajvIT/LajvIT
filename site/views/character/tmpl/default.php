@@ -59,9 +59,11 @@ if (!is_null($this->character->image)) {
   <td></td>
 </tr>
 
-<?php  if ($this->role->character_view_lvl3) { ?>
+<?php  if ($canDoOnEvent->get('core.edit') ||
+    $this->groupLeaderForCharacter ||
+    $this->memberInSameGroup && $canDoOnEvent->get('lajvit.char.groupmember')) { ?>
   <tr>
-    <td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
+    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>:</td>
   </tr>
   <tr>
     <td colspan="3">
@@ -72,7 +74,8 @@ if (!is_null($this->character->image)) {
   </tr>
 <?php  } ?>
 
-<?php  if ($this->role->character_view_lvl2) { ?>
+<?php  if ($this->role->character_view_lvl2 ||
+    $canDoOnEvent->get('core.edit')) { ?>
     <tr>
       <td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
     </tr>
@@ -85,7 +88,8 @@ if (!is_null($this->character->image)) {
     </tr>
 <?php  } ?>
 
-<?php  if ($this->role->character_view_lvl1) { ?>
+<?php  if ($this->role->character_view_lvl1 ||
+    $canDoOnEvent->get('core.edit')) { ?>
   <tr>
     <td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
   </tr>
@@ -98,7 +102,21 @@ if (!is_null($this->character->image)) {
   </tr>
 <?php  } ?>
 
-<?php  if ($this->role->character_view_private) { ?>
+<?php  if ($this->groupLeaderForCharacter) { ?>
+  <tr>
+    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER'); ?>:</td>
+  </tr>
+  <tr>
+    <td colspan="3">
+      <textarea name="infoforgroupleader" cols="70" rows="10" disabled="disabled">
+        <?php echo $this->character->infoforgroupleader; ?>
+      </textarea>
+    </td>
+  </tr>
+<?php  } ?>
+
+<?php  if ($this->role->character_view_private ||
+    $canDoOnEvent->get('core.edit')) { ?>
   <tr>
     <td colspan="3">Privat information (För spelaren, arrangörer och rollcoach):</td>
   </tr>

@@ -22,7 +22,8 @@ abstract class EventHelper
 
     $actions = Array(
         'core.create', 'core.edit', 'core.edit.own', 'core.delete',
-        'lajvit.view.visible', 'lajvit.view.hidden', 'lajvit.plot.enabled');
+        'lajvit.view.visible', 'lajvit.view.hidden', 'lajvit.plot.enabled',
+        'lajvit.char.groupmember');
 
     foreach ($actions as $action) {
       $result->set($action, $user->authorise($action, $assetName));
