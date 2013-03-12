@@ -67,7 +67,7 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
-  <td colspan="3">Beskrivning nivå 3 (För vänner, familj...):</td>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>:</td>
 </tr>
 <tr>
   <td colspan="3">
@@ -76,7 +76,7 @@ if (!is_null($this->character->image)) {
     </textarea>
   </td>
 </tr>
-
+<?php if (FALSE) { ?>
 <tr>
   <td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
 </tr>
@@ -87,9 +87,9 @@ if (!is_null($this->character->image)) {
     </textarea>
   </td>
 </tr>
-
+<?php } ?>
 <tr>
-  <td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS'); ?>:</td>
 </tr>
 <tr>
   <td colspan="3">
@@ -111,7 +111,7 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
-  <td colspan="3">Privat information (För Spelaren/Arrangören/Rollcoachen):</td>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_PRIVATE'); ?>:</td>
 </tr>
 <tr>
   <td colspan="3">
@@ -133,18 +133,11 @@ if (!is_null($this->character->image)) {
 <td colspan="2">
 <p><strong>Förklaring:</strong></p>
 <p>Ålder - Din karaktärs ålder</p>
-<p>Beskrivning nivå 3 - Den mest detaljerade beskrivningen av din karaktär. Det som dina
-  närmaste vänner och familj känner till.</p>
-<p>Beskrivning nivå 2 - Det som dina bekanta och grannar känner till.</p>
-<p>Beskrivning nivå 1 - Din karaktärs rykte, eller det som man mycket lätt kan ta reda på
-  genom att fråga folk i trakten. Bör vara mycket kortfattat. Denna information kommer vara
-  synlig för nästan alla spelare.</p>
-<p>Notera att varje nivå måste vara självförklarande.</p>
-<p>Privat information (För spelaren och arrangören) - Här skriver du information som du
-  inte vill att någon annan spelare ska läsa, men som kan vara bra för arrangören att känna
-  till om din karaktär. Här kan du också skriva eventuella intrigförslag.</p>
-<p>Beskriv viktiga saker kring din karaktär. Men skriv överlag kort och koncist för både
-  dina arrangörers och medspelares skull.</p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS_EXPLANATION'); ?></p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS'); ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS_EXPLANATION'); ?></p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_NOTE1'); ?></p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_PRIVATE'); ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_PRIVATE_EXPLANATION'); ?></p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_NOTE2'); ?></p>
 </td>
 </tr>
 

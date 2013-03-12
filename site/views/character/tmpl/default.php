@@ -74,8 +74,8 @@ if (!is_null($this->character->image)) {
   </tr>
 <?php  } ?>
 
-<?php  if ($this->role->character_view_lvl2 ||
-    $canDoOnEvent->get('core.edit')) { ?>
+<?php  if (FALSE && ($this->role->character_view_lvl2 ||
+    $canDoOnEvent->get('core.edit'))) { ?>
     <tr>
       <td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
     </tr>
@@ -91,7 +91,7 @@ if (!is_null($this->character->image)) {
 <?php  if ($this->role->character_view_lvl1 ||
     $canDoOnEvent->get('core.edit')) { ?>
   <tr>
-    <td colspan="3">Beskrivning nivå 1 (Rykten...):</td>
+    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS'); ?>:</td>
   </tr>
   <tr>
     <td colspan="3">
