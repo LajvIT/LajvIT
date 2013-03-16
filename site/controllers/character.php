@@ -123,9 +123,10 @@ class LajvITControllerCharacter extends LajvITController {
 
     $data = JRequest::get('post');
 
-    if (strlen($data['age']) > 0 && (int) $data['age'] > 0) {
+    if (key_exists('age', $data) && strlen($data['age']) > 0 && (int) $data['age'] > 0) {
       $data['bornyear'] = $event->ingameyear - (int) $data['age'];
     }
+    $data['knownas'] = $data['fullname'];
 
     // Bind the form fields to the record
     if (!$character->bind($data)) {
@@ -134,11 +135,11 @@ class LajvITControllerCharacter extends LajvITController {
       return;
     }
 
-    $photo = $this->saveimage('photo');
-    if ($photo) {
-      $character->image = $photo;
-    } else {
-      //      $character->image = $oldcharacter->image;
+    if (key_exists('photo', $data)) {
+      $photo = $this->saveimage('photo');
+      if ($photo) {
+        $character->image = $photo;
+      }
     }
 
     // Make sure the record is valid
