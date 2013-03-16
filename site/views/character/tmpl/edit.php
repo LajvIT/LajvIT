@@ -15,7 +15,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 <tbody>
 <tr>
   <td>Karaktärens namn:</td>
-  <td><?php echo $this->character->fullname; ?></td>
+  <td>
+    <div class="text"><?php echo $this->character->fullname; ?></div>
+    <div class="icon edit_character"><a class="icon"
+    href="index.php?option=com_lajvit&view=character&layout=editconcept&cid=<?php echo $this->character->id; ?>&eid=<?php echo $this->eventid; ?>&Itemid=<?php echo $this->itemid; ?>"
+    title="<?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT'); ?>"></a></div>
+  </td>
 
   <td rowspan="6">
 <?php
