@@ -68,11 +68,11 @@ foreach ($this->items as $item) {
       <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"></a></div>
     </div>
     <div class="container">
-      <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div><?php
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>: <?php echo $item->groupLeaderPersonName;?></div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
-      <div class="text">Max: <?php echo $item->maxParticipants; ?></div>
-      <div class="text">Förväntat: <?php echo $item->expectedParticipants; ?></div><?php
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_MAX_NO_MEMBERS');?>: <?php echo $item->maxParticipants; ?></div>
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_EXPECTED_NO_MEMBERS');?>: <?php echo $item->expectedParticipants; ?></div><?php
   } ?>
 
     </div><?php
@@ -83,13 +83,13 @@ foreach ($this->items as $item) {
     </div><?php
   } ?>
     <div class="container">
-      <div class="text">Fraktion: <?php echo $item->factionName; ?></div>
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_FACTION');?>: <?php echo $item->factionName; ?></div>
     </div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
     <div class="container">
-      <div class="text">Synlig: <?php echo $item->visible ? 'Ja' : 'Nej'; ?></div>
-      <div class="text">Status: <?php echo ucfirst($item->status); ?></div>
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_VISIBLE');?>: <?php echo $item->visible ? JText::_('COM_LAJVIT_YES') : JText::_('COM_LAJVIT_NO'); ?></div>
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS');?>: <?php echo JText::_('COM_LAJVIT_GROUP_STATUS_' . strtoupper($item->status)); ?></div>
     </div><?php
   }
   ?>
@@ -101,7 +101,7 @@ foreach ($this->items as $item) {
 }
 
 if (!$visibleGroups) {
-  echo "Inga öppna grupper finns skapade i din fraktion";
+  echo JText::_('COM_LAJVIT_GROUP_NO_OPEN_GROUPS');
 }
 ?>
 <input type="hidden" name="Itemid" value="<?php echo $this->itemId; ?>" />
