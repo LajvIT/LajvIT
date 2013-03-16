@@ -56,6 +56,22 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
+  <td>Grupper:</td>
+  <td><?php
+  $firstGroup = TRUE;
+  foreach ($this->character->groupMemberships as $groupId) {
+    $group = $this->groupModel->getGroup($groupId);
+    if ($group) {
+      if (!$firstGroup) {
+        echo ", ";
+      }
+      echo $group['name'];
+      $firstGroup = FALSE;
+    }
+  } ?></td>
+</tr>
+
+<tr>
   <td></td>
   <td></td>
 </tr>

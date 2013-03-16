@@ -52,6 +52,7 @@ class LajvITViewCharacter extends JView {
       //$memberInSameGroup = $groupModel->isPersonGroupMemberInAGroupOfCharacter($user->id,$charid);
       $character->groupLeaderInfos = $groupModel->getAllGroupLeaderInfoForCharacter($charid);
       $character->groupMemberInfos = $groupModel->getAllGroupMemberInfoForCharacter($charid);
+      $character->groupMemberships = $groupModel->getGroupsThatCharacterIsRegisteredIn($charid);
 
       //       $this->assignRef('groupLeaderForCharacter', $groupLeaderForCharacter);
       //       $this->assignRef('memberInSameGroup', $memberInSameGroup);
