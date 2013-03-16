@@ -59,7 +59,7 @@ if (isset($this->message) && $this->message != '') {
         <td>
           <select name="groupVisible">
             <option value="0" <?php echo $this->groupVisible == 0 ? "selected": "";?>><?php echo JText::_('COM_LAJVIT_GROUP_HIDDEN'); ?></option><?php
-  if ($this->groupStatus == 'open') { ?>
+  if ($this->groupStatus == 'open' || $this->groupStatus == 'closed') { ?>
             <option value="1" <?php echo $this->groupVisible == 1 ? "selected": "";?>><?php echo JText::_('COM_LAJVIT_GROUP_VISIBLE'); ?></option><?php
   } ?>
           </select>
