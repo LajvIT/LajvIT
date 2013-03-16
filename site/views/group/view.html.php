@@ -17,6 +17,11 @@ class LajvITViewGroup extends JView {
    * @var LajvITModelLajvIT
    */
   protected $lajvitModel;
+  /**
+   *
+   * @var LajvITModelGroup
+   */
+  protected $groupModel;
 
   function getModel($name = NULL) {
     return parent::getModel($name);
@@ -30,6 +35,7 @@ class LajvITViewGroup extends JView {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->model = $this->getModel();
     $this->lajvitModel = $this->getModel("LajvIT");
+    $this->groupModel = $this->getModel("Group");
     $layout = $this->getLayout();
     $minusOne = -1;
     $eventId = JRequest::getInt('eid', -1);

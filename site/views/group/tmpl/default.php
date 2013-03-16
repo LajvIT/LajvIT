@@ -32,7 +32,10 @@ if (isset($this->message) && $this->message != '') {
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION');?>:</strong></td>
         <td><?php echo $this->groupDescription; ?></td>
-      </tr>
+      </tr><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $this->groupLeaderPersonId == $user->id ||
+      $this->groupModel->hasPersonCharacterInGroup($user->id, $this->groupId)) { ?>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_MAX_NO_MEMBERS');?>:</strong></td>
         <td><?php echo $this->groupMaxParticipants; ?></td>
@@ -52,7 +55,8 @@ if (isset($this->message) && $this->message != '') {
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_VISIBILITY');?>:</strong></td>
         <td><?php echo $this->groupVisible ? JText::_('COM_LAJVIT_GROUP_VISIBLE') : JText::_('COM_LAJVIT_GROUP_HIDDEN'); ?></td>
-      </tr>
+      </tr><?php
+  } ?>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_FACTION');?>:</strong></td>
         <td><?php echo $this->groupFactionName ?></td>

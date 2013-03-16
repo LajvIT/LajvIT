@@ -68,13 +68,20 @@ foreach ($this->items as $item) {
       <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"></a></div>
     </div>
     <div class="container">
-      <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div>
+      <div class="text">Gruppledare: <?php echo $item->groupLeaderPersonName;?></div><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
       <div class="text">Max: <?php echo $item->maxParticipants; ?></div>
-      <div class="text">Förväntat: <?php echo $item->expectedParticipants; ?></div>
-    </div>
+      <div class="text">Förväntat: <?php echo $item->expectedParticipants; ?></div><?php
+  } ?>
+
+    </div><?php
+  if ($canDo->get('core.edit') ||
+      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
     <div class="container">
       <div class="text"><?php echo $item->url; ?></div>
-    </div>
+    </div><?php
+  } ?>
     <div class="container">
       <div class="text"><?php echo $item->description; ?></div>
     </div>
