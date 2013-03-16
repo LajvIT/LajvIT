@@ -13,7 +13,8 @@ class TableLIT_Groups extends LITTable {
   var $asset_id = 0;
   var $name = '';
   var $groupLeaderPersonId = NULL;
-  var $description = NULL;
+  var $descriptionPublic = NULL;
+  var $descriptionPrivate = NULL;
   var $maxParticipants = 0;
   var $expectedParticipants = 0;
   var $url = '';

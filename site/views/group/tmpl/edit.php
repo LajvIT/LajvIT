@@ -32,7 +32,11 @@ if (isset($this->message) && $this->message != '') {
       </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION');?>:</strong></td>
-        <td><textArea name="groupDescription" cols="40" rows="5" ><?php echo $this->groupDescription; ?></textArea></td>
+        <td><textArea name="groupPublicDescription" cols="40" rows="5" ><?php echo $this->groupPublicDescription; ?></textArea></td>
+      </tr>
+      <tr>
+        <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION_PRIVATE');?>:</strong></td>
+        <td><textArea name="groupPrivateDescription" cols="40" rows="5" ><?php echo $this->groupPrivateDescription; ?></textArea></td>
       </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_MAX_NO_MEMBERS');?>:</strong></td>

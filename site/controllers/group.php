@@ -176,7 +176,8 @@ class LajvITControllerGroup extends LajvITController {
       $groupId = NULL;
     }
     $groupName = JRequest::getString('groupName', '');
-    $groupDescription = JRequest::getString('groupDescription', '');
+    $groupPublicDescription = JRequest::getString('groupPublicDescription', '');
+    $groupPrivateDescription = JRequest::getString('groupPrivateDescription', '');
     $groupUrl = JRequest::getString('groupUrl', '');
     $groupAdminInfo = JRequest::getString('groupAdminInfo', '');
     $groupMaxParticipants = JRequest::getInt('groupMaxParticipants', 0);
@@ -194,7 +195,8 @@ class LajvITControllerGroup extends LajvITController {
     }
     $data = new stdClass();
     $data->name = $db->getEscaped($groupName);
-    $data->description = $db->getEscaped($groupDescription);
+    $data->descriptionPublic = $db->getEscaped($groupPublicDescription);
+    $data->descriptionPrivate = $db->getEscaped($groupPrivateDescription);
     $data->url = $db->getEscaped($groupUrl);
     $data->adminInformation = $db->getEscaped($groupAdminInfo);
     $data->maxParticipants = $db->getEscaped($groupMaxParticipants);

@@ -91,8 +91,8 @@ class LajvITModelGroups extends JModelList {
     $query->select(
       $this->getState(
         'list.select',
-        'g.id, g.name, g.groupLeaderPersonId, g.description, g.maxParticipants, ' .
-        'g.expectedParticipants, g.url, ' .
+        'g.id, g.name, g.groupLeaderPersonId, g.descriptionPublic, g.descriptionPrivate, ' .
+        'g.maxParticipants, g.expectedParticipants, g.url, ' .
         'g.status, g.adminInformation, g.eventId, g.visible'
       )
     );

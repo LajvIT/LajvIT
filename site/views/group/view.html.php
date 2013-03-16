@@ -88,7 +88,8 @@ class LajvITViewGroup extends JView {
 
   private function setGroupData($group) {
     $this->assignRef('groupName', $group['name']);
-    $this->assignRef('groupDescription', $group['description']);
+    $this->assignRef('groupPublicDescription', $group['descriptionPublic']);
+    $this->assignRef('groupPrivateDescription', $group['descriptionPrivate']);
     $this->assignRef('groupMaxParticipants', $group['maxParticipants']);
     $this->assignRef('groupExpectedParticipants', $group['expectedParticipants']);
     $this->assignRef('groupAdminInfo', $group['adminInformation']);

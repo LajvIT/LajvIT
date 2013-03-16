@@ -83,9 +83,6 @@ foreach ($this->items as $item) {
     </div><?php
   } ?>
     <div class="container">
-      <div class="text"><?php echo $item->description; ?></div>
-    </div>
-    <div class="container">
       <div class="text">Fraktion: <?php echo $item->factionName; ?></div>
     </div><?php
   if ($canDo->get('core.edit') ||
@@ -96,6 +93,9 @@ foreach ($this->items as $item) {
     </div><?php
   }
   ?>
+    <div class="container">
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION');?>: <?php echo $item->descriptionPublic; ?></div>
+    </div>
   </div>
 <?php
 }

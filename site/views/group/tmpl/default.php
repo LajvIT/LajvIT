@@ -31,11 +31,15 @@ if (isset($this->message) && $this->message != '') {
       </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION');?>:</strong></td>
-        <td><?php echo $this->groupDescription; ?></td>
+        <td><?php echo $this->groupPublicDescription; ?></td>
       </tr><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $this->groupLeaderPersonId == $user->id ||
       $this->groupModel->hasPersonCharacterInGroup($user->id, $this->groupId)) { ?>
+      <tr>
+        <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION_PRIVATE');?>:</strong></td>
+        <td><?php echo $this->groupPrivateDescription; ?></td>
+      </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_MAX_NO_MEMBERS');?>:</strong></td>
         <td><?php echo $this->groupMaxParticipants; ?></td>
