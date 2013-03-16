@@ -29,7 +29,9 @@ CREATE TABLE IF NOT EXISTS #__lit_group_members (
  PRIMARY KEY (`id`),
  KEY `person` (`characterId`),
  KEY `group` (`groupId`),
- UNIQUE `character_group` ( `groupId` , `characterId` )
+ UNIQUE `character_group` ( `groupId` , `characterId` ),
+ CONSTRAINT `group` FOREIGN KEY (`groupId`) REFERENCES `#__lit_groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+ CONSTRAINT `character` FOREIGN KEY (`characterId`) REFERENCES `#__lit_chara` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `#__lit_event` ADD COLUMN `asset_id` INT(10) UNSIGNED NOT NULL DEFAULT '0' AFTER `id`;
