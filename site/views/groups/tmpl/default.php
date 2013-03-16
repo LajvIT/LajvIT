@@ -86,7 +86,7 @@ foreach ($this->items as $item) {
       <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_FACTION');?>: <?php echo $item->factionName; ?></div>
     </div>
     <div class="container">
-    <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS');?>: <?php echo JText::_('COM_LAJVIT_GROUP_STATUS_' . strtoupper($item->status)); ?></div><?php
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS');?>: <?php echo JText::_('COM_LAJVIT_GROUP_STATUS_' . strtoupper($item->status)); ?></div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
       <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_VISIBLE');?>: <?php echo $item->visible ? JText::_('COM_LAJVIT_YES') : JText::_('COM_LAJVIT_NO'); ?></div><?php
