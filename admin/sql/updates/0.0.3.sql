@@ -24,6 +24,8 @@ CREATE TABLE IF NOT EXISTS #__lit_group_members (
  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
  `groupId` int(10) unsigned NOT NULL,
  `characterId` int(11) NOT NULL DEFAULT '0',
+ `groupLeaderInfo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+ `groupMemberInfo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
  PRIMARY KEY (`id`),
  KEY `person` (`characterId`),
  KEY `group` (`groupId`),
