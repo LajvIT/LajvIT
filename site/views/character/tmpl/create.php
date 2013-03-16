@@ -46,7 +46,7 @@ if ($this->failed == 1) { ?>
 
 <tr>
 <td><strong>Rollens namn:</strong></td>
-<td><input type="text" name="fullname" value="<?php echo $this->fullname; ?>" size="40" >*</td>
+<td><input type="text" name="fullname" value="<?php echo $this->fullname; ?>" size="40" ></td>
 </tr>
 
 <tr>

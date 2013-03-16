@@ -49,10 +49,13 @@ class LajvITControllerCharacter extends LajvITController {
     if ($data->conceptid > 0) {
       $errlink .= '&conceptid='.$data->conceptid;
     }
+    if (is_null($data->fullname) || strlen($data->fullname) == 0) {
+      $name = "Inget namn angett";
+      $data->fullname = $name;
+      $data->knownas = $name;
+    }
 
-    if (is_null($data->fullname) || strlen($data->fullname) == 0 ||
-        is_null($data->knownas) || strlen($data->knownas) == 0 ||
-        $data->factionid == 0 || $data->cultureid == 0 || $data->conceptid == 0) {
+    if ($data->factionid == 0 || $data->cultureid == 0 || $data->conceptid == 0) {
       $errlink .= '&failed=1';
       $this->setRedirect($errlink);
       return;
