@@ -65,7 +65,10 @@ if (!is_null($this->character->image)) {
       if (!$firstGroup) {
         echo ", ";
       }
+      echo '<a href="index.php?option=com_lajvit&view=group&groupId=' . $groupId;
+      echo '&Itemid='. $this->itemid .'">';
       echo $group['name'];
+      echo '</a>';
       $firstGroup = FALSE;
     }
   } ?></td>
