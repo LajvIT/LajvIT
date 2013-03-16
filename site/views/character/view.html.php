@@ -21,6 +21,7 @@ class LajvITViewCharacter extends JView {
     $user = JFactory::getUser();
     $model = $this->getModel();
     $groupModel =& JModel::getInstance('Group', 'lajvitmodel');
+    $this->assignRef('groupModel', $groupModel);
 
     $person = $model->getPerson();
 
@@ -47,11 +48,13 @@ class LajvITViewCharacter extends JView {
       $this->assignRef('characterid', $charid);
 
       $character = $model->getCharacterExtended($charid);
-      $groupLeaderForCharacter = $groupModel->isPersonGroupLeaderForCharacter($user->id, $charid);
-      $memberInSameGroup = $groupModel->isPersonGroupMemberInAGroupOfCharacter($user->id, $charid);
+      //$groupLeaderForCharacter = $groupModel->isPersonGroupLeaderForCharacter($user->id, $charid);
+      //$memberInSameGroup = $groupModel->isPersonGroupMemberInAGroupOfCharacter($user->id,$charid);
+      $character->groupLeaderInfos = $groupModel->getAllGroupLeaderInfoForCharacter($charid);
+      $character->groupMemberInfos = $groupModel->getAllGroupMemberInfoForCharacter($charid);
 
-      $this->assignRef('groupLeaderForCharacter', $groupLeaderForCharacter);
-      $this->assignRef('memberInSameGroup', $memberInSameGroup);
+      //       $this->assignRef('groupLeaderForCharacter', $groupLeaderForCharacter);
+      //       $this->assignRef('memberInSameGroup', $memberInSameGroup);
 
       if (!is_null($character->bornyear)) {
         $character->age = $events[$eventid]->ingameyear - $character->bornyear;

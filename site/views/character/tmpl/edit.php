@@ -66,25 +66,30 @@ if (!is_null($this->character->image)) {
   </td>
 </tr>
 
+<?php
+foreach ($this->character->groupMemberInfos as $groupData) {
+  $group = $this->groupModel->getGroup($groupData->groupId);
+  if ($group) {?>
 <tr>
-  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>:</td>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?> (<?php echo $group['name']; ?>):</td>
 </tr>
 <tr>
   <td colspan="3">
-    <textarea name="description3" cols="70" rows="20">
-      <?php echo $this->character->description3; ?>
-    </textarea>
+    <textarea name="groupMemberInfo<?php echo $groupData->groupId?>" cols="70"
+    rows="20"><?php echo $groupData->groupMemberInfo; ?></textarea>
   </td>
-</tr>
-<?php if (FALSE) { ?>
+</tr><?php
+  }
+}
+
+if (FALSE) { ?>
 <tr>
   <td colspan="3">Beskrivning nivå 2 (För bekanta, grannar...):</td>
 </tr>
 <tr>
   <td colspan="3">
-    <textarea name="description2" cols="70" rows="10">
-      <?php echo $this->character->description2; ?>
-    </textarea>
+    <textarea name="description2" cols="70"
+    rows="10"><?php echo $this->character->description2; ?></textarea>
   </td>
 </tr>
 <?php } ?>
@@ -93,31 +98,34 @@ if (!is_null($this->character->image)) {
 </tr>
 <tr>
   <td colspan="3">
-    <textarea name="description1" cols="70" rows="5">
-      <?php echo $this->character->description1; ?>
-    </textarea>
+    <textarea name="description1" cols="70"
+    rows="5"><?php echo $this->character->description1; ?></textarea>
   </td>
 </tr>
 
+<?php
+foreach ($this->character->groupLeaderInfos as $groupData) {
+  $group = $this->groupModel->getGroup($groupData->groupId);
+  if ($group) {?>
 <tr>
-  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER'); ?>:</td>
+  <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER'); ?> (<?php echo $group['name']; ?>):</td>
 </tr>
 <tr>
   <td colspan="3">
-    <textarea name="infoforgroupleader" cols="70" rows="10">
-      <?php echo $this->character->infoforgroupleader; ?>
-    </textarea>
+    <textarea name="groupLeaderInfo<?php echo $groupData->groupId?>" cols="70"
+    rows="10"><?php echo $groupData->groupLeaderInfo; ?></textarea>
   </td>
-</tr>
+</tr><?php
+  }
+}?>
 
 <tr>
   <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_PRIVATE'); ?>:</td>
 </tr>
 <tr>
   <td colspan="3">
-  <textarea name="privateinfo" cols="70" rows="10">
-    <?php echo $this->character->privateinfo; ?>
-  </textarea>
+  <textarea name="privateinfo" cols="70"
+  rows="10"><?php echo $this->character->privateinfo; ?></textarea>
   </td>
 
 </tr>

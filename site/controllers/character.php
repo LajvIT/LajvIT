@@ -93,7 +93,8 @@ class LajvITControllerCharacter extends LajvITController {
     $errlink = 'index.php?option=com_lajvit&view=character&layout=edit';
     $errlink .= '&Itemid='.JRequest::getInt('Itemid', 0);
 
-    $model = &$this->getModel();
+    $model = $this->getModel();
+    $this->groupModel = $this->getModel('group');
     $user = JFactory::getUser();
 
     $charid = JRequest::getInt('cid', -1);
@@ -151,10 +152,27 @@ class LajvITControllerCharacter extends LajvITController {
       return;
     }
 
+    $this->storeGroupInfo($charid, $data);
+
     $oklink = 'index.php?option=com_lajvit&view=character&layout=updated&eid=' .
         $eventid.'&cid='.$charid;
     $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
     $this->setRedirect($oklink);
+  }
+
+  private function storeGroupInfo($characterId, $data) {
+    foreach ($data as $key => $value) {
+      $groupIdPosition = strpos($key, "groupMemberInfo");
+      if ($groupIdPosition !== FALSE) {
+        $groupId = intval(substr($key, strlen("groupMemberInfo") ));
+        $this->groupModel->storeGroupMemberInfo($characterId, $groupId, $value);
+      }
+      $groupIdPosition = strpos($key, "groupLeaderInfo");
+      if ($groupIdPosition !== FALSE) {
+        $groupId = intval(substr($key, strlen("groupLeaderInfo")));
+        $this->groupModel->storeGroupLeaderInfo($characterId, $groupId, $value);
+      }
+    }
   }
 
   function delete() {

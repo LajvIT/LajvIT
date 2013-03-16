@@ -89,6 +89,46 @@ class LajvITModelGroup extends JModelItem {
     }
   }
 
+  /**
+   *
+   * @param int $characterId
+   * @param int $groupId
+   * @param string $info
+   */
+  public function storeGroupLeaderInfo($characterId, $groupId, $info) {
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
+    $user = JFactory::getUser();
+    if ($lajvitModel->isCharacterOwnedByPerson($characterId, $user->id)) {
+      $db = &JFactory::getDBO();
+      $query = 'UPDATE #__lit_group_members
+        SET groupLeaderInfo = "' . $db->getEscaped($info) .'"
+        WHERE groupId = '.$db->getEscaped($groupId) .' AND
+        characterId = ' . $db->getEscaped($characterId). ';';
+      $db->setQuery($query);
+      $db->query();
+    }
+  }
+
+  /**
+   *
+   * @param int $characterId
+   * @param int $groupId
+   * @param string $info
+   */
+  public function storeGroupMemberInfo($characterId, $groupId, $info) {
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
+    $user = JFactory::getUser();
+    if ($lajvitModel->isCharacterOwnedByPerson($characterId, $user->id)) {
+      $db = &JFactory::getDBO();
+      $query = 'UPDATE #__lit_group_members
+        SET groupMemberInfo = "' . $db->getEscaped($info) .'"
+        WHERE groupId = '.$db->getEscaped($groupId) .' AND
+        characterId = ' . $db->getEscaped($characterId). ';';
+      $db->setQuery($query);
+      $db->query();
+    }
+  }
+
   public function getGroupOwner($groupId) {
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
@@ -262,7 +302,8 @@ class LajvITModelGroup extends JModelItem {
     $db = &JFactory::getDBO();
     $query = 'SELECT characterId FROM #__lit_group_members
       INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
-      WHERE groupId = '.$db->getEscaped($groupId).' AND personid = ' . $db->getEscaped($userId) . ';';
+      WHERE groupId = '.$db->getEscaped($groupId).' AND
+      personid = ' . $db->getEscaped($userId) . ';';
     $db->setQuery($query);
     if (count($db->loadObjectList()) > 0) {
       return TRUE;
@@ -285,6 +326,53 @@ class LajvITModelGroup extends JModelItem {
       }
     }
     return FALSE;
+  }
+
+  /**
+   * Returns TRUE if the person is the group leader for the group
+   * @param int $userId
+   * @param int $groupId
+   * @return boolean
+   */
+  public function isPersonGroupLeaderForGroup($userId, $groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT groupLeaderPersonId FROM #__lit_groups
+      WHERE id = '.$db->getEscaped($groupId) .';';
+    $db->setQuery($query);
+    $groupLeader = $db->loadResult();
+    if ($groupLeader != NULL && $groupLeader == $userId) {
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+
+  /**
+   *
+   * @param int $characterId
+   * @return array of array(int, text)
+   */
+  public function getAllGroupLeaderInfoForCharacter($characterId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT groupId, groupLeaderInfo FROM #__lit_group_members
+      WHERE characterId = '.$db->getEscaped($characterId) .';';
+    $db->setQuery($query);
+    $info = $db->loadObjectList();
+    return $info;
+  }
+
+  /**
+   *
+   * @param int $characterId
+   * @return array of array(int, text)
+   */
+  public function getAllGroupMemberInfoForCharacter($characterId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT groupId, groupMemberInfo FROM #__lit_group_members
+      WHERE characterId = '.$db->getEscaped($characterId) .';';
+    $db->setQuery($query);
+    $info = $db->loadObjectList();
+    return $info;
   }
 
   /**

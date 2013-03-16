@@ -4,6 +4,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 $canDoOnEvent = EventHelper::getActions($this->eventid);
+$user = JFactory::getUser();
 // $canDoOnCharacter = CharacterHelper::getActions($this->character->id);
 ?>
 
@@ -59,20 +60,25 @@ if (!is_null($this->character->image)) {
   <td></td>
 </tr>
 
-<?php  if ($canDoOnEvent->get('core.edit') ||
-    $this->groupLeaderForCharacter ||
-    $this->memberInSameGroup && $canDoOnEvent->get('lajvit.char.groupmember')) { ?>
+<?php
+foreach ($this->character->groupMemberInfos as $groupData) {
+  $group = $this->groupModel->getGroup($groupData->groupId);
+  if ($canDoOnEvent->get('core.edit') ||
+      ( $this->groupModel->isPersonGroupLeaderForGroup($user->id, $groupData->groupId) ||
+        $this->groupModel->hasPersonCharacterInGroup($user->id, $groupData->groupId) && $canDoOnEvent->get('lajvit.char.groupmember')
+      ) && $group) { ?>
   <tr>
-    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>:</td>
+    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>
+    (<?php echo $group['name']; ?>):</td>
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="description3" cols="70" rows="20" disabled="disabled">
-        <?php echo $this->character->description3; ?>
-      </textarea>
+      <textarea name="groupMemberInfo<?php echo $groupData->groupId?>" cols="70" rows="20"
+      disabled="disabled"><?php echo $groupData->groupMemberInfo; ?></textarea>
     </td>
-  </tr>
-<?php  } ?>
+  </tr><?php
+  }
+}?>
 
 <?php  if (FALSE && ($this->role->character_view_lvl2 ||
     $canDoOnEvent->get('core.edit'))) { ?>
@@ -81,9 +87,8 @@ if (!is_null($this->character->image)) {
     </tr>
     <tr>
       <td colspan="3">
-        <textarea name="description2" cols="70" rows="10" disabled="disabled">
-          <?php echo $this->character->description2; ?>
-        </textarea>
+        <textarea name="description2" cols="70" rows="10"
+        disabled="disabled"><?php echo $this->character->description2; ?></textarea>
       </td>
     </tr>
 <?php  } ?>
@@ -95,25 +100,28 @@ if (!is_null($this->character->image)) {
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="description1" cols="70" rows="5" disabled="disabled">
-        <?php echo $this->character->description1; ?>
-      </textarea>
+      <textarea name="description1" cols="70" rows="5"
+      disabled="disabled"><?php echo $this->character->description1; ?></textarea>
     </td>
   </tr>
 <?php  } ?>
 
-<?php  if ($this->groupLeaderForCharacter) { ?>
+<?php
+foreach ($this->character->groupLeaderInfos as $groupData) {
+  $group = $this->groupModel->getGroup($groupData->groupId);
+  if ($this->groupModel->isPersonGroupLeaderForGroup($user->id, $groupData->groupId)) { ?>
   <tr>
-    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER'); ?>:</td>
+    <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_INFO_FOR_GROUPLEADER');?>
+    (<?php echo $group['name'];?>):</td>
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="infoforgroupleader" cols="70" rows="10" disabled="disabled">
-        <?php echo $this->character->infoforgroupleader; ?>
-      </textarea>
+      <textarea name="groupLeaderInfo<?php echo $groupData->groupId?>" cols="70" rows="10"
+      disabled="disabled"><?php echo $groupData->groupLeaderInfo; ?></textarea>
     </td>
-  </tr>
-<?php  } ?>
+  </tr><?php
+  }
+} ?>
 
 <?php  if ($this->role->character_view_private ||
     $canDoOnEvent->get('core.edit')) { ?>
@@ -122,9 +130,8 @@ if (!is_null($this->character->image)) {
   </tr>
   <tr>
     <td colspan="3">
-      <textarea name="privateinfo" cols="70" rows="10" disabled="disabled">
-        <?php echo $this->character->privateinfo; ?>
-      </textarea>
+      <textarea name="privateinfo" cols="70" rows="10"
+      disabled="disabled"><?php echo $this->character->privateinfo; ?></textarea>
     </td>
 
   </tr>
