@@ -125,11 +125,6 @@ if ($this->cultureid > 0) { ?>
 </tr>
 
 <tr>
-<td><strong>Gruppsamordnare:</strong></td>
-<td><input type="text" name="groupleader" value="" size="40" ></td>
-</tr>
-
-<tr>
 <td></td >
 <td>
 <input type="submit" value="Skapa karaktär"/>
