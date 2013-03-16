@@ -66,13 +66,16 @@ if (isset($this->message) && $this->message != '') {
         </td>
       </tr>
       <tr>
-        <td><strong>Gruppstatus:</strong></td>
+        <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_STATUS');?>:</strong></td>
         <td>
           <select name="groupStatus"><?php
   if (!$canDo->get('core.edit')) {
     if ($this->groupStatus == 'created') {
       $groupStatuses = $groupStatusesCreated;
     } elseif ($this->groupStatus != 'created' && $this->groupStatus != 'rejected') {
+      if ($this->groupStatus == 'approved') {
+        $groupStatusesAccepted[] = 'approved';
+      }
       $groupStatuses = $groupStatusesAccepted;
     } else {
       $groupStatuses = $groupStatusesRejected;
@@ -85,7 +88,7 @@ if (isset($this->message) && $this->message != '') {
     if ($this->groupStatus == $status) {
       echo ' selected';
     }
-    echo ' >' . JText::_('COM_LAJVIT_GROUP_STATUS_' . strtoupper($status)) . '</option>\n';
+    echo ' >' . JText::_('COM_LAJVIT_GROUP_STATUS_' . strtoupper($status)) . '</option>';
   }
 ?>
         </select>
