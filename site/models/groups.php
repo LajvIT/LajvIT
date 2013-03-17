@@ -52,7 +52,13 @@ class LajvITModelGroups extends JModelList {
     }
 
     $event = $this->getUserStateFromRequest($this->context.'.filter.event', 'eid');
+    $visible = $this->getUserStateFromRequest($this->context.'.filter.visible', 'visible');
+    $faction = $this->getUserStateFromRequest($this->context.'.filter.faction', 'faction');
+    $status = $this->getUserStateFromRequest($this->context.'.filter.status', 'status');
     $this->setState('filter.event', $event);
+    $this->setState('filter.visible', $visible);
+    $this->setState('filter.faction', $faction);
+    $this->setState('filter.status', $status);
 
     // List state information.
     parent::populateState('g.name', 'asc');
@@ -106,6 +112,15 @@ class LajvITModelGroups extends JModelList {
 
     if ($event = $this->getState('filter.event')) {
       $query->where('g.eventId = ' . (int) $event);
+    }
+    if ($visible = $this->getState('filter.visible')) {
+      $query->where('g.visible = ' . (int) $visible);
+    }
+    if ($faction = $this->getState('filter.faction')) {
+      $query->where('g.factionId = ' . (int) $faction);
+    }
+    if ($status = $this->getState('filter.status')) {
+      $query->where('g.status = "' . $status . '"');
     }
     // Add the list ordering clause.
     //     $query->order($this->getState('list.ordering', 'g.ordering').' '.$this->getState('list.direction', 'ASC'));

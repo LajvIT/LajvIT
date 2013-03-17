@@ -31,6 +31,8 @@ class LajvITViewGroups extends JViewLegacy {
     $this->assignRef('eventId', JRequest::getInt('eid', 0));
     $this->assignRef('itemId', JRequest::getInt('Itemid', 0));
 
+    $this->state = $this->get('State');
+
     parent::display($tpl);
   }
 }
