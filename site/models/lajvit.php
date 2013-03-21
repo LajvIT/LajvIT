@@ -509,6 +509,18 @@ class LajvITModelLajvIT extends JModelLegacy {
     return FALSE;
   }
 
+  public function setRegistrationStatusToNotApproved($characterId, $eventId) {
+    $db = &JFactory::getDBO();
+
+    $query = 'UPDATE #__lit_registrationchara SET statusid=100 WHERE eventid='.
+        $db->getEscaped($eventId). ' AND charaid='.$db->getEscaped($characterId).';';
+    $db->setQuery($query);
+    if ($db->query() === FALSE) {
+      return FALSE;
+    }
+    return TRUE;
+  }
+
   function &getEvent($eventid) {
     /*
      $user = &JFactory::getUser($userid);

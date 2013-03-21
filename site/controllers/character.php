@@ -113,6 +113,12 @@ class LajvITControllerCharacter extends LajvITController {
         !$canDo->get('core.edit')) {
       echo '<h1>Not Allowed</h1>';
       return;
+    } elseif ($personId == $user->id) {
+      $success = $model->setRegistrationStatusToNotApproved($charid, $eventid);
+      if (!$success) {
+        echo '<h1>Error resetting approval status</h1>';
+        return;
+      }
     }
     $reg = $model->getRegistration($personId, $eventid, $charid);
     if (!$reg) {
