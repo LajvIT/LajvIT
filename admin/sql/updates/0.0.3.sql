@@ -27,6 +27,7 @@ CREATE TABLE IF NOT EXISTS #__lit_group_members (
  `characterId` int(11) NOT NULL DEFAULT '0',
  `groupLeaderInfo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
  `groupMemberInfo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+ `approvedMember` TINYINT(1) NOT NULL DEFAULT '0',
  PRIMARY KEY (`id`),
  KEY `person` (`characterId`),
  KEY `group` (`groupId`),
