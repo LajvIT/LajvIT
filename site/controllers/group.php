@@ -120,6 +120,33 @@ class LajvITControllerGroup extends LajvITController {
     }
   }
 
+  public function approveMembership() {
+    $this->initModels();
+    $data = $this->getGroupDataFromRequest();
+    $characterId = $data->characterId;
+    $groupId = $data->groupId;
+    JRequest::setVar('option', 'com_lajvit');
+    if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
+      JRequest::setVar('view', 'event');
+      JRequest::setVar('errorMsg', 'Not allowed to update group');
+       $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      return;
+    }
+    JRequest::setVar('groupId', $groupId);
+    JRequest::setVar('view', 'group');
+    JRequest::setVar('layout', 'edit');
+    $outcome = $this->groupModel->approveMemberInGroup($characterId, $groupId);
+
+    if ($outcome === TRUE) {
+      JRequest::setVar('message', 'COM_LAJVIT_GROUP_APPROVED_CHARACTER');
+      JRequest::setVar('character', $this->lajvitModel->getCharacter($characterId)->knownas);
+      parent::display();
+    } else {
+      JRequest::setVar('errorMsg', 'COM_LAJVIT_GROUP_COULD_NOT_APPROVE_CHARACTER');
+      parent::display();
+    }
+  }
+
   private function allowedToAddOrRemoveCharacterInGroup($data) {
     $canDo = GroupHelper::getActions($data->groupId);
     $characterId = $data->characterId;

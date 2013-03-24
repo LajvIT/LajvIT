@@ -14,6 +14,7 @@ class TableLIT_GroupMembers extends LITTable {
   var $characterId = 0;
   var $groupLeaderInfo = NULL;
   var $groupMemberInfo = NULL;
+  var $approvedMember = 0;
 
   function __construct(&$db) {
     parent::__construct(TableLIT_GroupMembers::$TABLE_NAME, 'id', $db);

@@ -153,6 +153,24 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
+  public function approveMemberInGroup($characterId, $groupId) {
+    if ($this->canAddOrRemoveCharacterToGroup($groupId, $characterId)) {
+      $db = &JFactory::getDBO();
+      $query = 'UPDATE #__lit_group_members SET approvedMember = 1
+          WHERE groupId = ' . $db->getEscaped($groupId) . ' AND
+              characterId = ' . $db->getEscaped($characterId) . ';';
+      $db->setQuery($query);
+
+      $updateSuccess = $db->query();
+      if ($updateSuccess) {
+        return TRUE;
+      } else {
+        return $db->getErrors();
+      }
+    }
+    return FALSE;
+  }
+
   public function removeCharFromGroup($characterId, $groupId) {
     if (!is_int($characterId) || !is_int($groupId)) {
       return FALSE;
@@ -215,7 +233,8 @@ class LajvITModelGroup extends JModelItem {
    */
   public function getCharactersInGroup($groupId) {
     $db = &JFactory::getDBO();
-    $query = 'SELECT chara.*, concept.name AS conceptName, culture.name AS cultureName
+    $query = 'SELECT chara.*, concept.name AS conceptName,
+        culture.name AS cultureName, approvedMember
     FROM #__lit_chara AS chara
     INNER JOIN #__lit_group_members ON characterId = chara.id
     INNER JOIN #__lit_characoncept AS concept ON concept.id = chara.conceptid
