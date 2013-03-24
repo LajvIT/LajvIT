@@ -311,6 +311,7 @@ class LajvITModelGroup extends JModelItem {
       return FALSE;
   }
 
+
   /**
    *
    * @param int $userId
@@ -322,6 +323,26 @@ class LajvITModelGroup extends JModelItem {
     $query = 'SELECT characterId FROM #__lit_group_members
       INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
       WHERE groupId = '.$db->getEscaped($groupId).' AND
+      personid = ' . $db->getEscaped($userId) . ';';
+    $db->setQuery($query);
+    if (count($db->loadObjectList()) > 0) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+
+  /**
+   * Returns TRUE if the person has a character in the group and that character is an
+   * approved member in said group
+   * @param int $userId
+   * @param int $groupId
+   * @return boolean
+   */
+  public function hasPersonCharacterWithApprovedMembershipInGroup($userId, $groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT characterId FROM #__lit_group_members
+      INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
+      WHERE approvedMember = 1 AND groupId = '.$db->getEscaped($groupId).' AND
       personid = ' . $db->getEscaped($userId) . ';';
     $db->setQuery($query);
     if (count($db->loadObjectList()) > 0) {

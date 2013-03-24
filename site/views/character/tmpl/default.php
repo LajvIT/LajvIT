@@ -84,7 +84,8 @@ foreach ($this->character->groupMemberInfos as $groupData) {
   $group = $this->groupModel->getGroup($groupData->groupId);
   if ($canDoOnEvent->get('core.edit') ||
       ( $this->groupModel->isPersonGroupLeaderForGroup($user->id, $groupData->groupId) ||
-        $this->groupModel->hasPersonCharacterInGroup($user->id, $groupData->groupId) && $canDoOnEvent->get('lajvit.char.groupmember')
+        $this->groupModel->hasPersonCharacterWithApprovedMembershipInGroup($user->id, $groupData->groupId) &&
+          $canDoOnEvent->get('lajvit.char.groupmember')
       ) && $group) { ?>
   <tr>
     <td colspan="3"><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?>
