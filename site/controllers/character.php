@@ -134,6 +134,16 @@ class LajvITControllerCharacter extends LajvITController {
     }
     $data['knownas'] = $data['fullname'];
 
+    if (is_null($data['fullname']) || strlen($data['fullname']) == 0) {
+      $name = "Inget namn angett";
+      $data['fullname'] = $name;
+      $data['knownas'] = $name;
+    }
+    if ($data['factionid'] == 0 || $data['cultureid'] == 0 || $data['conceptid'] == 0) {
+      echo '<h1>' . JText::_('COM_LAJVIT_CHARACTER_EDIT_FAILED_MISSING_FACTION_CULTURE_CONCEPT') . '</h1>';
+      return;
+    }
+
     // Bind the form fields to the record
     if (!$character->bind($data)) {
       echo '<h1>bind</h1>'.$character->getDBO()->getErrorMsg();
