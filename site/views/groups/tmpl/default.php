@@ -16,19 +16,19 @@ $status = $this->state->get('filter.status');
 ?>
 <div class="group">
   <div class="container">
-    <a href="index.php?option=com_lajvit&view=groups&visible=1&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $visible == 1 ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_VISIBLE'); ?></a>
-    <a href="index.php?option=com_lajvit&view=groups&visible=0&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $visible == 0 ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_HIDDEN'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&visible=1&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $visible == 1 ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_VISIBLE'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&visible=0&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $visible == 0 ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_HIDDEN'); ?></a>
   </div>
   <div class="container">
-    <a href="index.php?option=com_lajvit&view=groups&faction=100&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $faction == 100 ? 'selected':''; ?>">Cordovien</a>
-    <a href="index.php?option=com_lajvit&view=groups&faction=101&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $faction == 101 ? 'selected':''; ?>">Gillet</a>
+    <a href="index.php?option=com_lajvit&view=groups&faction=100&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $faction == 100 ? 'selected':''; ?>">Cordovien</a>
+    <a href="index.php?option=com_lajvit&view=groups&faction=101&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $faction == 101 ? 'selected':''; ?>">Gillet</a>
   </div>
   <div class="container">
-    <a href="index.php?option=com_lajvit&view=groups&status=created&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'created' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_CREATED'); ?></a>
-    <a href="index.php?option=com_lajvit&view=groups&status=approved&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'approved' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_APPROVED'); ?></a>
-    <a href="index.php?option=com_lajvit&view=groups&status=open&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'open' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_OPEN'); ?></a>
-    <a href="index.php?option=com_lajvit&view=groups&status=closed&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'closed' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_CLOSED'); ?></a>
-    <a href="index.php?option=com_lajvit&view=groups&status=rejected&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'rejected' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_REJECTED'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&status=created&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'created' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_CREATED'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&status=approved&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'approved' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_APPROVED'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&status=open&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'open' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_OPEN'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&status=closed&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'closed' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_CLOSED'); ?></a>
+    <a href="index.php?option=com_lajvit&view=groups&status=rejected&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" class="button <?php echo $status == 'rejected' ? 'selected':''; ?>"><?php echo JText::_('COM_LAJVIT_GROUP_STATUS_REJECTED'); ?></a>
   </div>
 </div>
 <?php
