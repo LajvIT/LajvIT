@@ -31,7 +31,8 @@ a.button:focus {color: #000;}
 a.button:active {color: #000;}
 
 .button.selected {
-  background-color: #858074;
+  background-color: #628BA6;
+  border: 1px solid black;
 }
 
 .event {
