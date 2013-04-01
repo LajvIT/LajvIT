@@ -1,10 +1,14 @@
 <?php
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access');
+$user = JFactory::getUser(); ?>
 
 <div class="group">
   <div class="container">
     <div class="eventName">Grupper</div><?php
-if ($this->eventId > 0) { ?>
+$canDoEvent = EventHelper::getActions($this->eventId);
+if ($this->eventId > 0 &&
+    ($canDoEvent->get('core.edit') ||
+        $this->groupModel->hasPersonApprovedCharacter($user->id, $this->eventId))) { ?>
     <div class="icon new_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=create&eid=<?php echo $this->eventId; ?>&Itemid=<?php echo $this->itemId; ?>" title="Ny grupp"></a></div><?php
 } ?>
   </div>
@@ -52,7 +56,6 @@ if (isset($this->message) && $this->message != '') {
   echo "<br><br>";
 }
 
-$user = JFactory::getUser();
 $visibleGroups = FALSE;
 foreach ($this->items as $item) {
   $assetName = "com_lajvit.group." . $item->id;

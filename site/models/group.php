@@ -291,7 +291,7 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
-  public function hasPersonApprovedCharacterInSameFaction($userId, $groupId) {
+  public function hasPersonApprovedCharacterInSameFaction($user, $groupId) {
     $eventId = $this->getEventForGroup($groupId);
     $groupData = $this->getGroup($groupId);
     if ($groupData == FALSE) {
@@ -299,16 +299,27 @@ class LajvITModelGroup extends JModelItem {
     }
     $groupFaction = $groupData['factionId'];
     $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
-    $charactersOnEvent = $lajvitModel->getCharactersOnEventForPerson($eventId, $userId->id);
+    $charactersOnEvent = $lajvitModel->getCharactersOnEventForPerson($eventId, $user->id);
     foreach ($charactersOnEvent as $character) {
       $faction = $character->factionid;
       if ($faction == $groupFaction &&
           ($character->statusid == 101 || $character->statusid == 102)) {
         return TRUE;
-      } else {
       }
     }
-      return FALSE;
+    return FALSE;
+  }
+
+  public function hasPersonApprovedCharacter($userId, $eventId) {
+    $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
+    $charactersOnEvent = $lajvitModel->getCharactersOnEventForPerson($eventId, $userId);
+    foreach ($charactersOnEvent as $character) {
+      $faction = $character->factionid;
+      if ($character->statusid == 101 || $character->statusid == 102) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
 
