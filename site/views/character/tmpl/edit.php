@@ -4,17 +4,16 @@
 
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<h1><?php echo $this->events[$this->eventid]->shortname; ?> - Uppdatera karaktär</h1>
+<h1><?php echo $this->events[$this->eventid]->shortname; ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_UPDATE_CHARACTER'); ?></h1>
 
-<p>Här kan du uppdatera din karaktär. För att ändra namn, rollkoncept och kultur måste du ta
- hjälp av arrangör eller radera din karaktär och skapa en ny.</p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_DESCRIPTION'); ?></p>
 
 <form action="index.php" method="post" enctype="multipart/form-data" name="characterEditForm">
 
 <table>
 <tbody>
 <tr>
-  <td>Karaktärens namn:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_NAME'); ?>:</td>
   <td>
     <div class="text"><?php echo $this->character->fullname; ?></div>
     <div class="icon edit_character"><a class="icon"
@@ -31,28 +30,28 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
-  <td>Faktion:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_FACTION'); ?>:</td>
   <td><?php echo $this->character->factionname; ?></td>
 </tr>
 
 <tr>
-  <td>Kultur:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_CULTURE'); ?>:</td>
   <td><?php echo $this->character->culturename; ?></td>
 </tr>
 
 <tr>
 
-  <td>Rollkoncept:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_CONCEPT'); ?>:</td>
   <td><?php echo $this->character->conceptname; ?></td>
 </tr>
 
 <tr>
-  <td>Specialiserat rollkoncept:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_SPECIALISED_CONCEPT'); ?>:</td>
   <td><?php echo $this->character->concepttext; ?></td>
 </tr>
 
 <tr>
-  <td>Ålder:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_AGE'); ?>:</td>
   <td>
     <input type="text" name="age" size="5" value="<?php echo $this->character->age; ?>"/>
   </td>
@@ -64,10 +63,10 @@ if (!is_null($this->character->image)) {
 </tr>
 
 <tr>
-  <td>Foto:</td>
+  <td><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_PHOTO'); ?>:</td>
   <td colspan="2">
     <input type="file" name="photo" size="25"/>
-    (Max 300x300 pixlar.)
+    (<?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_PHOTO_MAX_SIZE'); ?>.)
   </td>
 </tr>
 
@@ -138,14 +137,14 @@ foreach ($this->character->groupLeaderInfos as $groupData) {
 <tr>
   <td></td>
   <td>
-    <input type="submit" value="Spara ändringar" title="save" />
+    <input type="submit" value="<?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_SAVE'); ?>" title="save" />
   </td>
 </tr>
 
 <tr>
 <td colspan="2">
-<p><strong>Förklaring:</strong></p>
-<p>Ålder - Din karaktärs ålder</p>
+<p><strong><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_EXPLANATION'); ?>:</strong></p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_AGE'); ?></p>
 <p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS'); ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_FOR_GROUPMEMBERS_EXPLANATION'); ?></p>
 <p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS'); ?> - <?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_RUMOURS_EXPLANATION'); ?></p>
 <p><?php echo JText::_('COM_LAJVIT_CHARACTER_DESC_NOTE1'); ?></p>
