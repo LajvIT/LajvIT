@@ -98,7 +98,6 @@ class LajvITControllerCharacter extends LajvITController {
 
     $model = $this->getModel();
     $this->groupModel = $this->getModel('group');
-    $user = JFactory::getUser();
 
     $charid = JRequest::getInt('cid', -1);
     $character = &$model->getCharacter($charid);
@@ -107,19 +106,7 @@ class LajvITControllerCharacter extends LajvITController {
     $eventid = JRequest::getInt('eid', -1);
     $event = &$model->getEvent($eventid);
 
-    $canDo = EventHelper::getActions($eventid);
     $personId = $model->getPersonIdOwningCharacterOnEvent($charid, $eventid);
-    if ($personId != $user->id &&
-        !$canDo->get('core.edit')) {
-      echo '<h1>Not Allowed</h1>';
-      return;
-    } elseif ($personId == $user->id) {
-      $success = $model->setRegistrationStatusToNotApproved($charid, $eventid);
-      if (!$success) {
-        echo '<h1>Error resetting approval status</h1>';
-        return;
-      }
-    }
     $reg = $model->getRegistration($personId, $eventid, $charid);
     if (!$reg) {
       echo '<h1>not registered</h1>';
@@ -131,17 +118,6 @@ class LajvITControllerCharacter extends LajvITController {
 
     if (key_exists('age', $data) && strlen($data['age']) > 0 && (int) $data['age'] > 0) {
       $data['bornyear'] = $event->ingameyear - (int) $data['age'];
-    }
-    $data['knownas'] = $data['fullname'];
-
-    if (is_null($data['fullname']) || strlen($data['fullname']) == 0) {
-      $name = "Inget namn angett";
-      $data['fullname'] = $name;
-      $data['knownas'] = $name;
-    }
-    if ($data['factionid'] == 0 || $data['cultureid'] == 0 || $data['conceptid'] == 0) {
-      echo '<h1>' . JText::_('COM_LAJVIT_CHARACTER_EDIT_FAILED_MISSING_FACTION_CULTURE_CONCEPT') . '</h1>';
-      return;
     }
 
     // Bind the form fields to the record
@@ -178,6 +154,53 @@ class LajvITControllerCharacter extends LajvITController {
         $eventid.'&cid='.$charid;
     $oklink .= '&Itemid='.JRequest::getInt('Itemid', 0);
     $this->setRedirect($oklink);
+  }
+
+  public function saveConcept() {
+    $model = $this->getModel();
+    $user = JFactory::getUser();
+    $charid = JRequest::getInt('cid', -1);
+    $eventid = JRequest::getInt('eid', -1);
+    $canDo = EventHelper::getActions($eventid);
+    $personId = $model->getPersonIdOwningCharacterOnEvent($charid, $eventid);
+
+    $reg = $model->getRegistration($personId, $eventid, $charid);
+    if (!$reg) {
+      echo '<h1>not registered</h1>';
+      return;
+    }
+
+    if ($personId != $user->id &&
+        !$canDo->get('core.edit')) {
+      echo '<h1>Not Allowed</h1>';
+      return;
+    } elseif ($personId == $user->id) {
+      $success = $model->setRegistrationStatusToNotApproved($charid, $eventid);
+      if (!$success) {
+        echo '<h1>Error resetting approval status</h1>';
+        return;
+      }
+    }
+
+    $data = JRequest::get('post');
+
+    if (key_exists('fullname', $data)) {
+      $data['knownas'] = $data['fullname'];
+    }
+
+    if (is_null($data['fullname']) || strlen($data['fullname']) == 0) {
+      $name = "Inget namn angett";
+      $data['fullname'] = $name;
+      $data['knownas'] = $name;
+    }
+    if (key_exists('factionid', $data) && $data['factionid'] == 0 ||
+        key_exists('cultureid', $data) && $data['cultureid'] == 0 ||
+        key_exists('conceptid', $data) && $data['conceptid'] == 0) {
+      echo '<h1>' . JText::_('COM_LAJVIT_CHARACTER_EDIT_FAILED_MISSING_FACTION_CULTURE_CONCEPT') . '</h1>';
+      return;
+    }
+
+    $this->save();
   }
 
   private function storeGroupInfo($characterId, $data) {

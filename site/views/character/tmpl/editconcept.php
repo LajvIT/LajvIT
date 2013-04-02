@@ -29,8 +29,7 @@ echo "  }\n";
 
 <h1><?php echo $this->events[$this->eventid]->shortname; ?> - Uppdatera koncept</h1>
 
-<p>Här kan du uppdatera konceptet.
-Om karaktären är godkänd måste den godkännas igen om konceptet uppdateras.</p>
+<p><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_CONCEPT_DESC'); ?></p>
 
 <form action="index.php" method="post" enctype="multipart/form-data" name="characterEditConceptForm">
 
@@ -129,7 +128,7 @@ foreach ($this->cultures as $culture) { ?>
 </table>
 
 <input type="hidden" name="option" value="com_lajvit"/>
-<input type="hidden" name="task" value="save"/>
+<input type="hidden" name="task" value="saveConcept"/>
 <input type="hidden" name="controller" value="character"/>
 <input type="hidden" name="eid" value="<?php echo $this->eventid; ?>"/>
 <input type="hidden" name="cid" value="<?php echo $this->characterid; ?>"/>
