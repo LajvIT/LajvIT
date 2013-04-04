@@ -114,7 +114,7 @@ foreach ($this->cultures as $culture) { ?>
 
     <tr>
       <td><strong><?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_SPECIALISED_CONCEPT'); ?>:</strong></td>
-      <td><input type="text" name="concepttext" value="" size="25" ></td>
+      <td><input type="text" name="concepttext" value="<?php echo $this->character->concepttext; ?>" size="25" ></td>
     </tr>
 
     <tr>
