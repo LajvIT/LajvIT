@@ -142,8 +142,6 @@ if ($this->cultureid > 0) { ?>
 <p>Specialiserat koncept - Karaktärens specialiserade rollkoncept. Exempel på rollkoncept med
 specialisering inom parentes: Hantverkare (Snickare), Värnfalk (Artillerist), Annat
 (Dödgrävare)</p>
-<p>Gruppsamordnare - Om karaktären tillhör en offgrupp, ange namnet på gruppens
-kontaktperson/samordnare här.</p>
 </td>
 </tr>
 
