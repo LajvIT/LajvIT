@@ -73,7 +73,8 @@ if ($this->cultureid <= 0) { ?>
 >
   <?php echo JText::_('COM_LAJVIT_CHARACTER_EDIT_CHOOSE_MAIN_CULTURE'); ?>
 </option><?php
-foreach ($this->cultures as $culture) { ?>
+foreach ($this->cultures as $culture) {
+  if ($culture->id < 108) { continue; } ?>
     <option value="<?php echo $culture->id; ?>"<?php
   if ($this->cultureid == $culture->id) { ?>
       selected="selected"<?php

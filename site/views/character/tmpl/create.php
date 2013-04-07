@@ -82,7 +82,8 @@ if ($this->cultureid <= 0) { ?>
 >
   Välj huvudsaklig kultur
 </option><?php
-foreach ($this->cultures as $culture) { ?>
+foreach ($this->cultures as $culture) {
+  if ($culture->id < 108) { continue; } ?>
     <option value="<?php echo $culture->id; ?>"<?php
   if ($this->cultureid == $culture->id) { ?>
       selected="selected"<?php
