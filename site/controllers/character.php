@@ -124,7 +124,6 @@ class LajvITControllerCharacter extends LajvITController {
       $data['knownas'] = $data['fullname'];
     }
 
-
     if (key_exists('age', $data) && strlen($data['age']) > 0 && (int) $data['age'] > 0) {
       $data['bornyear'] = $event->ingameyear - (int) $data['age'];
     }
