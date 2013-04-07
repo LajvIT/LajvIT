@@ -116,6 +116,15 @@ class LajvITControllerCharacter extends LajvITController {
 
     $data = JRequest::get('post');
 
+    if (key_exists('fullname', $data)) {
+      if (is_null($data['fullname']) || strlen($data['fullname']) == 0) {
+        $name = "Inget namn angett";
+        $data['fullname'] = $name;
+      }
+      $data['knownas'] = $data['fullname'];
+    }
+
+
     if (key_exists('age', $data) && strlen($data['age']) > 0 && (int) $data['age'] > 0) {
       $data['bornyear'] = $event->ingameyear - (int) $data['age'];
     }
@@ -184,15 +193,6 @@ class LajvITControllerCharacter extends LajvITController {
 
     $data = JRequest::get('post');
 
-    if (key_exists('fullname', $data)) {
-      $data['knownas'] = $data['fullname'];
-    }
-
-    if (is_null($data['fullname']) || strlen($data['fullname']) == 0) {
-      $name = "Inget namn angett";
-      $data['fullname'] = $name;
-      $data['knownas'] = $name;
-    }
     if (key_exists('factionid', $data) && $data['factionid'] == 0 ||
         key_exists('cultureid', $data) && $data['cultureid'] == 0 ||
         key_exists('conceptid', $data) && $data['conceptid'] == 0) {
