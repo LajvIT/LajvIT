@@ -135,7 +135,8 @@ class LajvITControllerCharacter extends LajvITController {
       return;
     }
 
-    if (key_exists('photo', $data)) {
+    $photo = JRequest::getVar('photo', NULL, 'files', 'array');
+    if ($photo['size'] > 0) {
       $photo = $this->saveimage('photo');
       if ($photo) {
         $character->image = $photo;
