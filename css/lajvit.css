@@ -45,6 +45,12 @@ a.button:active {color: #000;}
   padding-right: 5px;
 }
 
+.heading {
+  font-size: 20px;
+  float: left;
+  padding-right: 5px;
+}
+
 .infoText {
   font-weight: bold;
   float: left;

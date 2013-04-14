@@ -82,8 +82,9 @@ class LajvITViewCharacter extends JView {
     $this->assignRef('itemid', JRequest::getInt('Itemid', 0));
 
     $reg = $model->getRegistration($person->id, $eventid, $charid);
+    $canDo = EventHelper::getActions($eventid);
     if ($this->getLayout() == 'edit') {
-      if (!$reg) {
+      if (!$canDo->get('core.edit') && !$reg) {
         $this->setLayout('default');
         /*
          $link = 'index.php?option=com_lajvit&view=character&eid='.$eventid.'&cid='.$charid;
@@ -94,7 +95,6 @@ class LajvITViewCharacter extends JView {
       }
     }
     if ($this->getLayout() == 'editconcept') {
-      $canDo = EventHelper::getActions($eventid);
       if (!$canDo->get('core.edit') && !$reg) {
         echo "LajvITViewCharacter.display changing to default <br>";
         $this->setLayout('default');
