@@ -20,7 +20,9 @@ class LajvITModelGroup extends JModelItem {
 
     $creationSuccess = $group->store();
     if ($creationSuccess) {
-      return $group->id;
+      $groupId = $group->id;
+      $this->addGroupLeaderToGroup($group->groupLeaderPersonId, $groupId);
+      return $groupId;
     } else {
       return $group->getErrors();
     }
@@ -87,6 +89,25 @@ class LajvITModelGroup extends JModelItem {
     } else {
       return FALSE;
     }
+  }
+
+  /**
+   *
+   * @param int $personId
+   * @param int $groupId
+   * @return boolean
+   */
+  public function addGroupLeaderToGroup($personId, $groupId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($this->canEditGroup($groupId)) {
+      $groupLeader = JTable::getInstance('lit_groupleaders', 'Table');
+      $groupLeader->groupId = $groupId;
+      $groupLeader->personId = $personId;
+      $result = $groupLeader->store();
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
