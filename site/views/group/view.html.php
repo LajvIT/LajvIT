@@ -101,6 +101,8 @@ class LajvITViewGroup extends JView {
     $this->assignRef('groupLeaderPersonId', $group['groupLeaderPersonId']);
     $this->assignRef('groupLeaderPersonName', $group['groupLeaderPersonName']);
     $this->assignRef('eventId', $group['eventId']);
+    $this->assignRef('groupLeaders', $group['groupLeaders']);
+
   }
 
   private function charactersForEvent($groupId) {

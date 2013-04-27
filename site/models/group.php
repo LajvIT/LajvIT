@@ -71,6 +71,7 @@ class LajvITModelGroup extends JModelItem {
     $groupData['groupLeaderPersonName'] = $personModel->getPersonNameFromId($personId);
     $factionName = $lajvitModel->getFactionName($groupData['factionId']);
     $groupData['groupFactionName'] = $lajvitModel->getFactionName($groupData['factionId']);
+    $groupData['groupLeaders'] = $this->getGroupLeadersForGroup($groupId);
     return $groupData;
   }
 
@@ -108,6 +109,26 @@ class LajvITModelGroup extends JModelItem {
       return TRUE;
     }
     return FALSE;
+  }
+
+  /**
+   *
+   * @param int $groupId
+   * @return mixed The array of int or null if the query failed
+   */
+  public function getGroupLeadersForGroup($groupId) {
+    $personModel =& JModel::getInstance('person', 'lajvitmodel');
+    $db = &JFactory::getDBO();
+    $query = 'SELECT personId FROM #__lit_group_leaders
+    WHERE groupId = '.$db->getEscaped($groupId).';';
+    $db->setQuery($query);
+
+    $groupLeaders = $db->loadObjectList();
+    foreach ($groupLeaders as $groupLeader) {
+      $groupLeader->groupLeaderPersonName
+          = $personModel->getPersonNameFromId($groupLeader->personId);
+    }
+    return $groupLeaders;
   }
 
   /**

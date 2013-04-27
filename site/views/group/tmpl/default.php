@@ -67,7 +67,15 @@ if (isset($this->message) && $this->message != '') {
       </tr>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>:</strong></td>
-        <td><?php echo $this->groupLeaderPersonName; ?></td>
+        <td><?php
+        $first = TRUE;
+        foreach ($this->groupLeaders as $groupLeader) {
+          if (!$first) { echo ", "; }
+          echo $groupLeader->groupLeaderPersonName;
+          $first = FALSE;
+        }
+        ?>
+        </td>
       </tr>
     </tbody>
   </table>
