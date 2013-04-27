@@ -157,7 +157,7 @@ class LajvITControllerGroup extends LajvITController {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->groupModel->getGroupOwner($groupId) == $personId) {
+        $this->groupModel->isPersonGroupLeaderForGroup($personId, $groupId)) {
       return TRUE;
     }
     if ($this->lajvitModel->isCharacterOwnedByPerson($characterId, $personId) &&
@@ -190,7 +190,7 @@ class LajvITControllerGroup extends LajvITController {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->groupModel->getGroupOwner($groupId) == $user->id) {
+        $this->groupModel->isPersonGroupLeaderForGroup($user->id, $groupId)) {
       return TRUE;
     }
     return FALSE;

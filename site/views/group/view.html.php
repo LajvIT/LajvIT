@@ -37,7 +37,7 @@ class LajvITViewGroup extends JView {
     $this->lajvitModel = $this->getModel("LajvIT");
     $this->groupModel = $this->getModel("Group");
     $layout = $this->getLayout();
-    $minusOne = -1;
+    $noGroupId = -1;
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
     $this->message = JRequest::getString('message', '');
@@ -58,7 +58,7 @@ class LajvITViewGroup extends JView {
       $group = $this->model->getGroup($groupId);
       if (!$group) {
         $this->errorMsg = "COM_LAJVIT_GET_GROUP_FAILED";
-        $this->assignRef('groupId', $minusOne);
+        $this->assignRef('groupId', $noGroupId);
         $this->setLayout('error');
       } else {
         $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
@@ -80,7 +80,7 @@ class LajvITViewGroup extends JView {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->model->getGroupOwner($groupId) == $user->id) {
+        $this->model->isPersonGroupLeaderForGroup($user->id, $groupId)) {
       return TRUE;
     }
     return FALSE;
@@ -117,7 +117,8 @@ class LajvITViewGroup extends JView {
     if ($canDo->get('core.edit')) {
       $characters = $this->lajvitModel->getCharactersForFaction(
           $eventId, $factionId, 'knownas', 'ASC', NULL, NULL);
-    } elseif ($canDo->get('core.edit.own') && $this->model->getGroupOwner($groupId) == $user->id) {
+    } elseif ($canDo->get('core.edit.own') &&
+        $this->model->isPersonGroupLeaderForGroup($user->id, $groupId)) {
       $characters = $this->lajvitModel->getCharactersForFaction(
           $eventId, $factionId, 'knownas', 'ASC', NULL, NULL);
     } elseif ($this->model->isGroupVisible($groupId) &&

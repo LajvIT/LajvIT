@@ -34,7 +34,8 @@ if (isset($this->message) && $this->message != '') {
         <td><?php echo $this->groupPublicDescription; ?></td>
       </tr><?php
   if ($canDo->get('core.edit') ||
-      $canDo->get('core.edit.own') && $this->groupLeaderPersonId == $user->id ||
+      $canDo->get('core.edit.own') &&
+      $this->groupModel->isPersonGroupLeaderForGroup($user->id, $this->groupId) ||
       $this->groupModel->hasPersonCharacterWithApprovedMembershipInGroup($user->id, $this->groupId)) { ?>
       <tr>
         <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_DESCRIPTION_PRIVATE');?>:</strong></td>

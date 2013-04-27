@@ -171,6 +171,10 @@ class LajvITModelGroup extends JModelItem {
     }
   }
 
+  /**
+   *
+   * @deprecated use isPersonGroupLeaderForGroup instead
+   */
   public function getGroupOwner($groupId) {
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
@@ -309,7 +313,7 @@ class LajvITModelGroup extends JModelItem {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->getGroupOwner($groupId) == $user->id) {
+        $this->isPersonGroupLeaderForGroup($user->id, $groupId)) {
       return TRUE;
     }
     return FALSE;
@@ -322,7 +326,7 @@ class LajvITModelGroup extends JModelItem {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->getGroupOwner($groupId) == $user->id) {
+        $this->isPersonGroupLeaderForGroup($user->id, $groupId)) {
       return TRUE;
     }
     $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
@@ -414,7 +418,7 @@ class LajvITModelGroup extends JModelItem {
   public function isPersonGroupLeaderForCharacter($userId, $characterId) {
     $groupIds = $this->getGroupsThatCharacterIsRegisteredIn($characterId);
     foreach ($groupIds as $groupId) {
-      if ($this->getGroupOwner($groupId) == $userId) {
+      if ($this->isPersonGroupLeaderForGroup($userId, $groupId)) {
         return TRUE;
       }
     }
@@ -429,11 +433,13 @@ class LajvITModelGroup extends JModelItem {
    */
   public function isPersonGroupLeaderForGroup($userId, $groupId) {
     $db = &JFactory::getDBO();
-    $query = 'SELECT groupLeaderPersonId FROM #__lit_groups
-      WHERE id = '.$db->getEscaped($groupId) .';';
+
+    $query = 'SELECT personId FROM #__lit_group_leaders
+      WHERE groupId = '.$db->getEscaped($groupId) .'
+      AND personId = '.$db->getEscaped($userId) .';';
     $db->setQuery($query);
     $groupLeader = $db->loadResult();
-    if ($groupLeader != NULL && $groupLeader == $userId) {
+    if (count($groupLeader) > 0) {
       return TRUE;
     } else {
       return FALSE;
