@@ -52,6 +52,7 @@ class LajvITModelGroup extends JModelItem {
     $canDo = GroupHelper::getActions($groupId);
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
+      echo "LajvITModelGroup.getGroup !load<br>";
       return FALSE;
     }
     $groupData = $group->getProperties();
@@ -101,7 +102,9 @@ class LajvITModelGroup extends JModelItem {
   public function addGroupLeaderToGroup($personId, $groupId) {
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
+    echo "LajvITModelGroup.addGroupLeaderToGroup <br>";
     if ($this->canEditGroup($groupId)) {
+      echo "LajvITModelGroup.addGroupLeaderToGroup can edit <br>";
       $groupLeader = JTable::getInstance('lit_groupleaders', 'Table');
       $groupLeader->groupId = $groupId;
       $groupLeader->personId = $personId;
@@ -313,7 +316,8 @@ class LajvITModelGroup extends JModelItem {
       return TRUE;
     }
     if ($canDo->get('core.edit.own') &&
-        $this->isPersonGroupLeaderForGroup($user->id, $groupId)) {
+        ($this->isPersonGroupLeaderForGroup($user->id, $groupId) ||
+         $this->hasGroupNoLeaders($groupId))) {
       return TRUE;
     }
     return FALSE;
@@ -433,7 +437,6 @@ class LajvITModelGroup extends JModelItem {
    */
   public function isPersonGroupLeaderForGroup($userId, $groupId) {
     $db = &JFactory::getDBO();
-
     $query = 'SELECT personId FROM #__lit_group_leaders
       WHERE groupId = '.$db->getEscaped($groupId) .'
       AND personId = '.$db->getEscaped($userId) .';';
@@ -444,6 +447,18 @@ class LajvITModelGroup extends JModelItem {
     } else {
       return FALSE;
     }
+  }
+
+  public function hasGroupNoLeaders($groupId) {
+    $db = &JFactory::getDBO();
+    $query = 'SELECT personId FROM #__lit_group_leaders
+      WHERE groupId = ' . $db->getEscaped($groupId) . ';';
+    $db->setQuery($query);
+    $groupLeader = $db->loadResult();
+    if (count($groupLeader) == 0) {
+      return TRUE;
+    }
+    return FALSE;
   }
 
   /**
