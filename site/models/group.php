@@ -113,6 +113,35 @@ class LajvITModelGroup extends JModelItem {
 
   /**
    *
+   * @param int $personId
+   * @param int $groupId
+   * @return mixed Returns TRUE if successful, FALSE if not allowed
+   * and database error message if query fails
+   */
+  public function removeGroupLeaderFromGroup($personId, $groupId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($this->canEditGroup($groupId)) {
+      if (count($this->getGroupLeadersForGroup($groupId)) == 1) {
+        return FALSE;
+      }
+      $db = &JFactory::getDBO();
+      $groupLeader = JTable::getInstance('lit_groupleaders', 'Table');
+      $tableName = $groupLeader->getTableName();
+      $sql = 'DELETE FROM ' . $tableName . ' WHERE groupId = ' . $groupId .
+      ' AND personId = ' . $personId;
+      $db->setQuery($sql);
+      if ($db->query()) {
+        return TRUE;
+      } else {
+        return $db->getErrorMsg();
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   *
    * @param int $groupId
    * @return mixed The array of int or null if the query failed
    */

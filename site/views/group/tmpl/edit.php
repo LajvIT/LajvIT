@@ -135,12 +135,12 @@ if (isset($this->message) && $this->message != '') {
         <a class="icon" href="index.php?option=com_lajvit&view=group&layout=addgroupleader&groupId=<?php echo $this->groupId; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_ADD_LEADER'); ?>"></a></div>
         </td>
         <td><?php
-        $first = TRUE;
         foreach ($this->groupLeaders as $groupLeader) {
-          echo '<div class="text">';
-          if (!$first) { echo ", "; }
-          echo $groupLeader->groupLeaderPersonName . '</div>';
-          $first = FALSE;
+          echo '<div class="text">' . $groupLeader->groupLeaderPersonName . '</div>';
+          echo '<div class="icon delete_character"><a class="icon" ';
+          echo 'href="index.php?option=com_lajvit&controller=group&task=removeLeaderFromGroup';
+          echo '&groupId=' . $this->groupId . '&personId=' . $groupLeader->personId;
+          echo '&Itemid=' . $this->itemId . '" title="' . JText::_('COM_LAJVIT_GROUP_REMOVE_LEADER') . '"></a></div>';
         }
         ?></td>
       </tr>
