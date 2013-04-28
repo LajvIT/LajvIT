@@ -17,6 +17,11 @@ class LajvITViewGroup extends JView {
    * @var LajvITModelLajvIT
    */
   protected $lajvitModel;
+    /**
+   *
+   * @var LajvITModelPerson
+   */
+  protected $personModel;
   /**
    *
    * @var LajvITModelGroup
@@ -35,6 +40,7 @@ class LajvITViewGroup extends JView {
     JHtml::stylesheet('com_lajvit/lajvit.css', array(), TRUE);
     $this->model = $this->getModel();
     $this->lajvitModel = $this->getModel("LajvIT");
+    $this->personModel = JModel::getInstance('person', 'lajvitmodel');
     $this->groupModel = $this->getModel("Group");
     $layout = $this->getLayout();
     $noGroupId = -1;
@@ -69,6 +75,8 @@ class LajvITViewGroup extends JView {
       }
     } elseif ($layout == 'addchartogroup') {
       $this->charactersForEvent($groupId);
+    } elseif ($layout == 'addgroupleader') {
+      $this->leadersForEvent($groupId);
     }
     parent::display($tpl);
   }
@@ -132,6 +140,25 @@ class LajvITViewGroup extends JView {
     $this->getPersonDataForCharacters($characters, $eventId);
 
     $this->assignRef('characters', $characters);
+  }
+
+  private function leadersForEvent($groupId) {
+    $user = &JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    $leadersInGroup = $this->model->getGroupLeadersForGroup($groupId);
+    $this->assignRef('leadersInGroup', $leadersInGroup);
+    $persons = Array();
+    if ($canDo->get('core.edit') ||
+        ($canDo->get('core.edit.own') &&
+         $this->model->isPersonGroupLeaderForGroup($user->id, $groupId))) {
+      $persons = $this->personModel->getPersons();
+    } else {
+      $this->errorMsg = "COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_LEADER_TO_GROUP";
+      $this->assignRef('groupId', $minusOne);
+      $this->setLayout('error');
+    }
+
+    $this->assignRef('persons', $persons);
   }
 
   private function getPersonDataForCharacters(&$characters, $eventId) {

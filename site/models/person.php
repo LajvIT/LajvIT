@@ -24,6 +24,17 @@ class LajvITModelPerson extends JModelItem {
     $db->setQuery($query);
     $data = $db->loadObject();
     return $data->givenname . " " . $data->surname;
+  }
 
+  public function getPersons() {
+    $db = $this->getDbo();
+    $query = $db->getQuery(TRUE);
+
+    $query->select('id, givenname, surname');
+    $query->from('#__lit_person');
+    $query->order('givenname, surname');
+    $db->setQuery($query);
+
+    return $db->loadObjectList();
   }
 }

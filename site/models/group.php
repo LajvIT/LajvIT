@@ -52,7 +52,6 @@ class LajvITModelGroup extends JModelItem {
     $canDo = GroupHelper::getActions($groupId);
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
-      echo "LajvITModelGroup.getGroup !load<br>";
       return FALSE;
     }
     $groupData = $group->getProperties();
@@ -102,9 +101,7 @@ class LajvITModelGroup extends JModelItem {
   public function addGroupLeaderToGroup($personId, $groupId) {
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
-    echo "LajvITModelGroup.addGroupLeaderToGroup <br>";
     if ($this->canEditGroup($groupId)) {
-      echo "LajvITModelGroup.addGroupLeaderToGroup can edit <br>";
       $groupLeader = JTable::getInstance('lit_groupleaders', 'Table');
       $groupLeader->groupId = $groupId;
       $groupLeader->personId = $personId;
