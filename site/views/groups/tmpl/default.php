@@ -62,7 +62,8 @@ foreach ($this->items as $item) {
   $canDo = GroupHelper::getActions($item->id);
   if ($item->visible == 1) {
     if ($canDo->get('core.edit') ||
-        $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) {
+        $canDo->get('core.edit.own') &&
+        $this->groupModel->isPersonGroupLeaderForGroup($user->id, $item->id)) {
 
     } elseif ($canDo->get('lajvit.view.visible') && $item->status != 'open') {
       continue;
@@ -91,7 +92,8 @@ foreach ($this->items as $item) {
         <?php echo $item->name; ?></a>
       </div><?php
   if ($canDo->get('core.edit') ||
-      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
+      $canDo->get('core.edit.own') &&
+      $this->groupModel->isPersonGroupLeaderForGroup($user->id, $item->id)) { ?>
       <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div>
       <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_REMOVE'); ?>"></a></div>
       <?php
@@ -101,7 +103,13 @@ foreach ($this->items as $item) {
       <div class="icon new_character"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=addchartogroup&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_ADD_CHARACTER'); ?>"></a></div>
     </div>
     <div class="container">
-      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>: <?php echo $item->groupLeaderPersonName;?></div><?php
+      <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>: <?php
+      $first = TRUE;
+      foreach ($item->groupLeaders as $groupLeader) {
+        if (!$first) { echo ", "; }
+        echo $groupLeader->groupLeaderPersonName;
+        $first = FALSE;
+      } ?></div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
       <div class="text"><?php echo JText::_('COM_LAJVIT_GROUP_MAX_NO_MEMBERS');?>: <?php echo $item->maxParticipants; ?></div>
@@ -110,7 +118,8 @@ foreach ($this->items as $item) {
 
     </div><?php
   if ($canDo->get('core.edit') ||
-      $canDo->get('core.edit.own') && $item->groupLeaderPersonId == $user->id) { ?>
+      $canDo->get('core.edit.own') &&
+      $this->groupModel->isPersonGroupLeaderForGroup($user->id, $item->id)) { ?>
     <div class="container">
       <div class="text"><?php echo $item->url; ?></div>
     </div><?php

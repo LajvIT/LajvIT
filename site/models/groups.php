@@ -133,7 +133,7 @@ class LajvITModelGroups extends JModelList {
    * @param int $groupId
    * @return boolean|array
    */
-  public function getGroups() {
+  public function getGroups($groupId) {
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
       return FALSE;
@@ -147,9 +147,11 @@ class LajvITModelGroups extends JModelList {
     $userId = $user->get('id');
     $guest = $user->get('guest');
     $groups = $user->getAuthorisedViewLevels();
+    $groupModel = JModel::getInstance('group', 'lajvitmodel');
 
     foreach ($items as &$item) {
       if (!$guest) {
+        $item->groupLeaders = $groupModel->getGroupLeadersForGroup($item->id);
         $asset = 'com_lajvit.group.'.$item->id;
 
         // Check general edit permission first.
