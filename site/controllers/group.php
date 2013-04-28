@@ -106,7 +106,7 @@ class LajvITControllerGroup extends LajvITController {
     if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
       JRequest::setVar('view', 'event');
       JRequest::setVar('errorMsg', 'Not allowed to update group');
-      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      $this->setRedirect($this->defaultViewGroupLink($groupId), 'Not allowed');
       return;
     }
     JRequest::setVar('groupId', $groupId);
@@ -133,7 +133,7 @@ class LajvITControllerGroup extends LajvITController {
     if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
       JRequest::setVar('view', 'event');
       JRequest::setVar('errorMsg', 'Not allowed to update group');
-      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      $this->setRedirect($this->defaultViewGroupLink($groupId), 'Not allowed');
       return;
     }
     JRequest::setVar('groupId', $groupId);
