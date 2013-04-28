@@ -63,7 +63,7 @@ class LajvITViewGroup extends JView {
     if (($layout == 'edit' || $layout == 'default') && $groupId > 0) {
       $group = $this->model->getGroup($groupId);
       if (!$group) {
-        $this->errorMsg = "COM_LAJVIT_GET_GROUP_FAILED";
+        $this->errorMsg = JText::_('COM_LAJVIT_GROUP_GET_FAILED');
         $this->assignRef('groupId', $noGroupId);
         $this->setLayout('error');
       } else {

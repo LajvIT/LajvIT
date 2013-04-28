@@ -14,7 +14,7 @@ class LajvITModelGroup extends JModelItem {
    * @return int|array
    */
   public function createGroup($data) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $group = JTable::getInstance('lit_groups', 'Table');
     $group->bind($data);
 
@@ -34,7 +34,7 @@ class LajvITModelGroup extends JModelItem {
    */
   public function deleteGroup($groupId) {
     if ($this->canEditGroup($groupId)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $group = JTable::getInstance('lit_groups', 'Table');
       $group->delete($groupId);
     }
@@ -46,7 +46,7 @@ class LajvITModelGroup extends JModelItem {
    * @return boolean|array
    */
   public function getGroup($groupId) {
-    $personModel =& JModel::getInstance('person', 'lajvitmodel');
+    $personModel = JModel::getInstance('person', 'lajvitmodel');
     $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
     $user = JFactory::getUser();
     $canDo = GroupHelper::getActions($groupId);
@@ -113,12 +113,41 @@ class LajvITModelGroup extends JModelItem {
 
   /**
    *
+   * @param int $personId
+   * @param int $groupId
+   * @return mixed Returns TRUE if successful, FALSE if not allowed
+   * and database error message if query fails
+   */
+  public function removeGroupLeaderFromGroup($personId, $groupId) {
+    $user = JFactory::getUser();
+    $canDo = GroupHelper::getActions($groupId);
+    if ($this->canEditGroup($groupId)) {
+      if (count($this->getGroupLeadersForGroup($groupId)) == 1) {
+        return FALSE;
+      }
+      $db = JFactory::getDBO();
+      $groupLeader = JTable::getInstance('lit_groupleaders', 'Table');
+      $tableName = $groupLeader->getTableName();
+      $sql = 'DELETE FROM ' . $tableName . ' WHERE groupId = ' . $groupId .
+      ' AND personId = ' . $personId;
+      $db->setQuery($sql);
+      if ($db->query()) {
+        return TRUE;
+      } else {
+        return $db->getErrorMsg();
+      }
+    }
+    return FALSE;
+  }
+
+  /**
+   *
    * @param int $groupId
    * @return mixed The array of int or null if the query failed
    */
   public function getGroupLeadersForGroup($groupId) {
-    $personModel =& JModel::getInstance('person', 'lajvitmodel');
-    $db = &JFactory::getDBO();
+    $personModel = JModel::getInstance('person', 'lajvitmodel');
+    $db = JFactory::getDBO();
     $query = 'SELECT personId FROM #__lit_group_leaders
     WHERE groupId = '.$db->getEscaped($groupId).';';
     $db->setQuery($query);
@@ -141,7 +170,7 @@ class LajvITModelGroup extends JModelItem {
     $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
     $user = JFactory::getUser();
     if ($lajvitModel->isCharacterOwnedByPerson($characterId, $user->id)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $query = 'UPDATE #__lit_group_members
         SET groupLeaderInfo = "' . $db->getEscaped($info) .'"
         WHERE groupId = '.$db->getEscaped($groupId) .' AND
@@ -161,7 +190,7 @@ class LajvITModelGroup extends JModelItem {
     $lajvitModel = JModel::getInstance('lajvit', 'lajvitmodel');
     $user = JFactory::getUser();
     if ($lajvitModel->isCharacterOwnedByPerson($characterId, $user->id)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $query = 'UPDATE #__lit_group_members
         SET groupMemberInfo = "' . $db->getEscaped($info) .'"
         WHERE groupId = '.$db->getEscaped($groupId) .' AND
@@ -186,7 +215,7 @@ class LajvITModelGroup extends JModelItem {
 
   public function addCharacterToGroup($data) {
     if ($this->canAddOrRemoveCharacterToGroup($data->groupId, $data->characterId)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
       $groupMember->bind($data);
       $creationSuccess = $groupMember->store();
@@ -201,7 +230,7 @@ class LajvITModelGroup extends JModelItem {
 
   public function approveMemberInGroup($characterId, $groupId) {
     if ($this->canAddOrRemoveCharacterToGroup($groupId, $characterId)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $query = 'UPDATE #__lit_group_members SET approvedMember = 1
           WHERE groupId = ' . $db->getEscaped($groupId) . ' AND
               characterId = ' . $db->getEscaped($characterId) . ';';
@@ -222,7 +251,7 @@ class LajvITModelGroup extends JModelItem {
       return FALSE;
     }
     if ($this->canAddOrRemoveCharacterToGroup($groupId, $characterId)) {
-      $db = &JFactory::getDBO();
+      $db = JFactory::getDBO();
       $groupMember = JTable::getInstance('lit_groupmembers', 'Table');
       $tableName = $groupMember->getTableName();
       $sql = 'DELETE FROM ' . $tableName . ' WHERE groupId = ' . $groupId .
@@ -278,7 +307,7 @@ class LajvITModelGroup extends JModelItem {
    * @return array characterObjects
    */
   public function getCharactersInGroup($groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT chara.*, concept.name AS conceptName,
         culture.name AS cultureName, approvedMember
     FROM #__lit_chara AS chara
@@ -297,7 +326,7 @@ class LajvITModelGroup extends JModelItem {
    * @return array int
    */
   public function getCharacterIdsInGroup($groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT chara.id FROM #__lit_chara AS chara
     INNER JOIN #__lit_group_members ON characterId = chara.id
     WHERE groupId = '.$db->getEscaped($groupId).';';
@@ -377,7 +406,7 @@ class LajvITModelGroup extends JModelItem {
    * @return boolean
    */
   public function hasPersonCharacterInGroup($userId, $groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT characterId FROM #__lit_group_members
       INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
       WHERE groupId = '.$db->getEscaped($groupId).' AND
@@ -397,7 +426,7 @@ class LajvITModelGroup extends JModelItem {
    * @return boolean
    */
   public function hasPersonCharacterWithApprovedMembershipInGroup($userId, $groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT characterId FROM #__lit_group_members
       INNER JOIN #__lit_vcharacterregistrations AS charreg ON charreg.id = characterId
       WHERE approvedMember = 1 AND groupId = '.$db->getEscaped($groupId).' AND
@@ -433,7 +462,7 @@ class LajvITModelGroup extends JModelItem {
    * @return boolean
    */
   public function isPersonGroupLeaderForGroup($userId, $groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT personId FROM #__lit_group_leaders
       WHERE groupId = '.$db->getEscaped($groupId) .'
       AND personId = '.$db->getEscaped($userId) .';';
@@ -447,7 +476,7 @@ class LajvITModelGroup extends JModelItem {
   }
 
   public function hasGroupNoLeaders($groupId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT personId FROM #__lit_group_leaders
       WHERE groupId = ' . $db->getEscaped($groupId) . ';';
     $db->setQuery($query);
@@ -464,7 +493,7 @@ class LajvITModelGroup extends JModelItem {
    * @return array of array(int, text)
    */
   public function getAllGroupLeaderInfoForCharacter($characterId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT groupId, groupLeaderInfo FROM #__lit_group_members
       WHERE characterId = '.$db->getEscaped($characterId) .';';
     $db->setQuery($query);
@@ -478,7 +507,7 @@ class LajvITModelGroup extends JModelItem {
    * @return array of array(int, text)
    */
   public function getAllGroupMemberInfoForCharacter($characterId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT groupId, groupMemberInfo FROM #__lit_group_members
       WHERE characterId = '.$db->getEscaped($characterId) .';';
     $db->setQuery($query);
@@ -509,7 +538,7 @@ class LajvITModelGroup extends JModelItem {
    * @return mixed: NULL, array(int)
    */
   public function getGroupsThatCharacterIsRegisteredIn($characterId) {
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     $query = 'SELECT groupId FROM #__lit_group_members
     WHERE characterId = '.$db->getEscaped($characterId).';';
     $db->setQuery($query);

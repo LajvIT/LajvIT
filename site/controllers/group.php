@@ -25,14 +25,14 @@ class LajvITControllerGroup extends LajvITController {
     $this->initModels();
     $data = $this->getGroupDataFromPostedForm();
     if (!$this->verifyGroupData($data)) {
-      $this->setRedirect($this->defaultGroupsLink());
+      $this->setRedirect($this->showGroupList());
       return;
     }
     $groupId = $this->groupModel->createGroup($data);
     if (is_int($groupId) && $groupId > 0) {
       $this->setRedirect($this->showEditGroupLink($groupId));
     } else {
-      $this->setRedirect($this->defaultGroupsLink());
+      $this->setRedirect($this->showGroupList());
     }
   }
 
@@ -40,7 +40,7 @@ class LajvITControllerGroup extends LajvITController {
     $this->initModels();
     $data = $this->getGroupDataFromPostedForm();
     if (!$this->verifyGroupData($data)) {
-      $this->setRedirect($this->showEditGroupLink());
+      $this->setRedirect($this->showGroupList());
       return;
     }
     $updateResult = $this->groupModel->updateGroup($data);
@@ -49,7 +49,7 @@ class LajvITControllerGroup extends LajvITController {
     if ($updateResult === NULL || $updateResult == "" || $updateResult == 1) {
       $this->setRedirect($this->showEditGroupLink($data->id));
     } else {
-      $this->setRedirect($this->defaultGroupsLink());
+      $this->setRedirect($this->defaultViewGroupLink($data->id));
     }
   }
 
@@ -79,7 +79,7 @@ class LajvITControllerGroup extends LajvITController {
     if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
       JRequest::setVar('view', 'event');
       JRequest::setVar('errorMsg', 'Not allowed to update group');
-      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      $this->setRedirect($this->defaultViewGroupLink($data->groupId), 'Not allowed');
       return;
     }
     JRequest::setVar('groupId', $data->groupId);
@@ -156,8 +156,9 @@ class LajvITControllerGroup extends LajvITController {
     $data = $this->getGroupDataFromRequest();
     if (!$this->allowedToEditGroup($data->groupId)) {
       JRequest::setVar('view', 'event');
-      JRequest::setVar('errorMsg', JText::_('COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_LEADER_TO_GROUP'));
-      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      $errorMessage = JText::_('COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_LEADER_TO_GROUP');
+      JRequest::setVar('errorMsg', $errorMessage);
+      $this->setRedirect($this->defaultViewGroupLink(), 'Not allowed');
       return;
     }
     JRequest::setVar('groupId', $data->groupId);
@@ -171,6 +172,30 @@ class LajvITControllerGroup extends LajvITController {
       parent::display();
     } else {
       JRequest::setVar('errorMsg', 'COM_LAJVIT_COULD_NOT_ADD_CHARACTER');
+      parent::display();
+    }
+  }
+
+  public function removeLeaderFromGroup() {
+    $this->initModels();
+    $data = $this->getGroupDataFromRequest();
+    if (!$this->allowedToEditGroup($data->groupId)) {
+      JRequest::setVar('view', 'event');
+      JRequest::setVar('errorMsg', JText::_('COM_LAJVIT_NOT_AUTHORIZED_TO_REMOVE_LEADER_FROM_GROUP'));
+      $this->setRedirect($this->defaultViewGroupLink($data->groupId), 'Not allowed');
+      return;
+    }
+    JRequest::setVar('groupId', $data->groupId);
+    JRequest::setVar('view', 'group');
+    JRequest::setVar('layout', 'edit');
+    $success = $this->groupModel->removeGroupLeaderFromGroup($data->personId, $data->groupId);
+
+    if ($success) {
+      JRequest::setVar('message', 'COM_LAJVIT_GROUP_REMOVED_LEADER');
+      JRequest::setVar('name', $this->personModel->getPersonNameFromId($data->personId));
+      parent::display();
+    } else {
+      JRequest::setVar('errorMsg', 'COM_LAJVIT_GROUP_COULD_NOT_REMOVE_LEADER');
       parent::display();
     }
   }
@@ -286,15 +311,21 @@ class LajvITControllerGroup extends LajvITController {
     return $link;
   }
 
-  private function defaultGroupsLink() {
+  private function defaultGroupLink() {
     $link = 'index.php?option=com_lajvit&view=group';
     $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
     return $link;
   }
 
   private function defaultViewGroupLink($groupId) {
-    $link = $this->defaultGroupsLink();
+    $link = $this->defaultGroupLink();
     $link .= '&groupId=' . $groupId;
+    return $link;
+  }
+
+  private function showGroupList() {
+    $link = 'index.php?option=com_lajvit&view=groups';
+    $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
     return $link;
   }
 
