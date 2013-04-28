@@ -8,8 +8,8 @@ if (isset($this->errorMsg) && $this->errorMsg != '') {
   echo '<div style="color: red; font-weight: bold;">' . JText::_($this->errorMsg) . '</div><br><br>';
 }
 if (isset($this->message) && $this->message != '') {
-  if (isset($this->character)) {
-    echo JText::_($this->message) . ": " . $this->character;
+  if (isset($this->name)) {
+    echo JText::_($this->message) . ": " . $this->name;
   } else {
     echo JText::_($this->message);
   }

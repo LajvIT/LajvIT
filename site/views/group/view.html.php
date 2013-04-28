@@ -47,7 +47,7 @@ class LajvITViewGroup extends JView {
     $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
     $this->message = JRequest::getString('message', '');
-    $this->character = JRequest::getString('character', '');
+    $this->name = JRequest::getString('name', '');
     $this->errorMsg = JRequest::getString('errorMsg', '');
     $canDo = GroupHelper::getActions($groupId);
     $factions = $this->lajvitModel->getCharacterFactions();

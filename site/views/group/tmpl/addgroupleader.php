@@ -6,17 +6,6 @@ defined('_JEXEC') or die('Restricted access');
 
 <h1><?php echo JText::_('COM_LAJVIT_GROUP_ADD_LEADER'); ?></h1>
 
-<?php
-if (array_key_exists('personName', $this) && $this->personName != "") {
-  if ($this->errorMsg == TRUE) {
-    echo "Det gick inte att lägga till " . $this->personName;
-  } else {
-    echo $this->personName . " adderad till gruppen";
-  }
-  echo "<br/>\n";
-}
-?>
-
   <table>
     <tbody>
       <?php

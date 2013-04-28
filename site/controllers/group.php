@@ -14,6 +14,10 @@ class LajvITControllerGroup extends LajvITController {
    * @var LajvITModelLajvIT
    */
   private $lajvitModel = NULL;
+  /**
+   * @var LajvITModelPerson
+   */
+  private $personModel = NULL;
   private $person = NULL;
   const ADMINISTRATOR = "Super Administrator";
 
@@ -129,7 +133,7 @@ class LajvITControllerGroup extends LajvITController {
     if (!$this->allowedToAddOrRemoveCharacterInGroup($data)) {
       JRequest::setVar('view', 'event');
       JRequest::setVar('errorMsg', 'Not allowed to update group');
-       $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
       return;
     }
     JRequest::setVar('groupId', $groupId);
@@ -143,6 +147,30 @@ class LajvITControllerGroup extends LajvITController {
       parent::display();
     } else {
       JRequest::setVar('errorMsg', 'COM_LAJVIT_GROUP_COULD_NOT_APPROVE_CHARACTER');
+      parent::display();
+    }
+  }
+
+  public function addLeaderToGroup() {
+    $this->initModels();
+    $data = $this->getGroupDataFromRequest();
+    if (!$this->allowedToEditGroup($data->groupId)) {
+      JRequest::setVar('view', 'event');
+      JRequest::setVar('errorMsg', JText::_('COM_LAJVIT_NOT_AUTHORIZED_TO_ADD_LEADER_TO_GROUP'));
+      $this->setRedirect($this->defaultGroupsLink(), 'Not allowed');
+      return;
+    }
+    JRequest::setVar('groupId', $data->groupId);
+    JRequest::setVar('view', 'group');
+    JRequest::setVar('layout', 'edit');
+    $success = $this->groupModel->addGroupLeaderToGroup($data->personId, $data->groupId);
+
+    if ($success) {
+      JRequest::setVar('message', 'COM_LAJVIT_GROUP_ADDED_LEADER');
+      JRequest::setVar('name', $this->personModel->getPersonNameFromId($data->personId));
+      parent::display();
+    } else {
+      JRequest::setVar('errorMsg', 'COM_LAJVIT_COULD_NOT_ADD_CHARACTER');
       parent::display();
     }
   }
@@ -178,8 +206,13 @@ class LajvITControllerGroup extends LajvITController {
     if ($characterId <= 0) {
       $characterId = NULL;
     }
+    $personId = JRequest::getInt('personId', '');
+    if ($personId <= 0) {
+      $personId = NULL;
+    }
     $data->groupId = $groupId;
     $data->characterId = $characterId;
+    $data->personId = $personId;
     return $data;
   }
 
@@ -266,8 +299,10 @@ class LajvITControllerGroup extends LajvITController {
   }
 
   private function initModels() {
-    $this->groupModel = &$this->getModel('group');
-    $this->lajvitModel =&$this->getModel('lajvit');
+    $this->groupModel = $this->getModel('group');
+    $this->lajvitModel = $this->getModel('lajvit');
+    $this->personModel = $this->getModel('person');
+    //     JModel::getInstance('person', 'lajvitmodel');
     $this->person = &$this->lajvitModel->getPerson();
   }
 }

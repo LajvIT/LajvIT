@@ -12,8 +12,8 @@ if (isset($this->errorMsg) && $this->errorMsg != '') {
  echo '<div style="color: red; font-weight: bold;">' . JText::_($this->errorMsg) . '</div><br><br>';
 }
 if (isset($this->message) && $this->message != '') {
- if (isset($this->character)) {
-  echo JText::_($this->message) . ": " . $this->character;
+ if (isset($this->name)) {
+  echo JText::_($this->message) . ": " . $this->name;
  } else {
     echo JText::_($this->message);
   }
@@ -129,13 +129,17 @@ if (isset($this->message) && $this->message != '') {
         </select></td>
       </tr>
       <tr>
-        <td><strong><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>:</strong>
+        <td>
+        <div class="infoText"><?php echo JText::_('COM_LAJVIT_GROUP_LEADER'); ?>:</div>
+        <div class="icon new_character">
+        <a class="icon" href="index.php?option=com_lajvit&view=group&layout=addgroupleader&groupId=<?php echo $this->groupId; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_ADD_LEADER'); ?>"></a></div>
         </td>
         <td><?php
         $first = TRUE;
         foreach ($this->groupLeaders as $groupLeader) {
+          echo '<div class="text">';
           if (!$first) { echo ", "; }
-          echo $groupLeader->groupLeaderPersonName;
+          echo $groupLeader->groupLeaderPersonName . '</div>';
           $first = FALSE;
         }
         ?></td>
