@@ -306,7 +306,7 @@ class LajvITControllerGroup extends LajvITController {
   }
 
   private function showEditGroupLink($groupId) {
-    $link = $this->defaultGroupsLink();
+    $link = $this->defaultGroupLink();
     $link .= '&layout=edit&groupId=' . $groupId;
     return $link;
   }
