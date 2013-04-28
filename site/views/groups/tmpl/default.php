@@ -88,14 +88,14 @@ foreach ($this->items as $item) {
   <div class="group">
     <div class="container">
       <div class="infoText">
-        <a href="index.php?option=com_lajvit&view=group&groupId=<?php echo $item->id?>&Itemid=<?php echo $this->itemId; ?>">
+        <a href="index.php?option=com_lajvit&view=group&eid=<?php echo $this->eventId; ?>&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>">
         <?php echo $item->name; ?></a>
       </div><?php
   if ($canDo->get('core.edit') ||
       $canDo->get('core.edit.own') &&
       $this->groupModel->isPersonGroupLeaderForGroup($user->id, $item->id)) { ?>
-      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div>
-      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_REMOVE'); ?>"></a></div>
+      <div class="icon edit_group"><a class="icon" href="index.php?option=com_lajvit&view=group&layout=edit&eid=<?php echo $this->eventId; ?>&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_EDIT'); ?>"></a></div>
+      <div class="icon delete_group"><a class="icon" href="index.php?option=com_lajvit&controller=group&task=delete&eid=<?php echo $this->eventId; ?>&groupId=<?php echo $item->id; ?>&Itemid=<?php echo $this->itemId; ?>" title="<?php echo JText::_('COM_LAJVIT_GROUP_REMOVE'); ?>"></a></div>
       <?php
   }
   ?>

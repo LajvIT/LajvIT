@@ -67,6 +67,7 @@ class LajvITViewGroup extends JView {
         $this->assignRef('groupId', $noGroupId);
         $this->setLayout('error');
       } else {
+        $eventId = $this->model->getEventForGroup($groupId);
         $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
         $this->getPersonDataForCharacters($this->charactersInGroup, $group['eventId']);
         $currentGroupStatus = '';
@@ -78,6 +79,7 @@ class LajvITViewGroup extends JView {
     } elseif ($layout == 'addgroupleader') {
       $this->leadersForEvent($groupId);
     }
+    $this->displayBreadcrumb($eventId, $groupId);
     parent::display($tpl);
   }
 
@@ -168,6 +170,46 @@ class LajvITViewGroup extends JView {
       $character->personId = $personId;
       $character->personGivenName = $person->givenname;
       $character->personLastName = $person->surname;
+    }
+  }
+
+  private function displayBreadcrumb($eventId, $groupId) {
+    $app = JFactory::getApplication();
+    $pathway = $app->getPathway();
+    $layout = $this->getLayout();
+    $events = $this->lajvitModel->getEventsForPerson();
+    $linkToGroupList = 'index.php?option=com_lajvit&view=groups';
+    $linkToGroupList .= '&eid=' . $eventId . '&Itemid='.JRequest::getInt('Itemid', 0);
+    EventHelper::getEventBreadcrumb($eventId, $linkToGroupList);
+    //     if ($eventId > 0) {
+    //       $currentEventName = $events[$eventId]->shortname;
+    //       $pathway->addItem($currentEventName, '');
+    //     }
+    if ($layout != 'default') {
+      $group = $this->groupModel->getGroup($groupId);
+      $groupName = $group['name'];
+      $link = 'index.php?option=com_lajvit&view=group';
+      $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
+      $link .= '&groupId=' . $groupId;
+      $pathway->addItem($groupName, $link);
+    }
+    switch ($layout) {
+      case 'add':
+        $pathway->addItem('Skapa', '');
+        break;
+      case 'delete':
+        $pathway->addItem('Ta bort', '');
+        break;
+      case 'edit':
+        $pathway->addItem('Redigera', '');
+        break;
+      case 'register':
+        $pathway->addItem('Registrera', '');
+        break;
+      case 'registered':
+        break;
+      default:
+        break;
     }
   }
 }

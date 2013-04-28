@@ -31,4 +31,15 @@ abstract class EventHelper
 
     return $result;
   }
+
+  public static function getEventBreadcrumb($eventId, $link = '') {
+    $app = JFactory::getApplication();
+    $pathway = $app->getPathway();
+    $model = JModel::getInstance('lajvit', 'lajvitmodel');
+    $events = $model->getEventsForPerson();
+    if ($eventId > 0) {
+      $currentEventName = $events[$eventId]->shortname;
+      $pathway->addItem($currentEventName, $link);
+    }
+  }
 }
