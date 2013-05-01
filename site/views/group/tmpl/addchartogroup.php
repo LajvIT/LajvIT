@@ -4,7 +4,7 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 
-<h1>Lägg till karaktär till gruppen</h1>
+<h1><?php echo JText::_('COM_LAJVIT_GROUP_ADD_CHAR_TO_GROUP')?></h1>
 
 <?php
 if (array_key_exists('charName', $this) && $this->charName != "") {
