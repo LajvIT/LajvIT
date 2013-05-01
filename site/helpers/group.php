@@ -30,4 +30,14 @@ abstract class GroupHelper
 
     return $result;
   }
+
+  public static function getGroupsBreadcrumb($eventId) {
+    $app = JFactory::getApplication();
+    $pathway = $app->getPathway();
+    $model = JModel::getInstance('lajvit', 'lajvitmodel');
+    $linkToGroupList = 'index.php?option=com_lajvit&view=groups';
+    $linkToGroupList .= '&eid=' . $eventId . '&Itemid='.JRequest::getInt('Itemid', 0);
+    EventHelper::getEventBreadcrumb($eventId);
+    $pathway->addItem(JText::_('COM_LAJVIT_GROUPS'), $linkToGroupList);
+  }
 }

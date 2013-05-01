@@ -44,13 +44,17 @@ class LajvITViewGroup extends JView {
     $this->groupModel = $this->getModel("Group");
     $layout = $this->getLayout();
     $noGroupId = -1;
-    $eventId = JRequest::getInt('eid', -1);
     $groupId = JRequest::getInt('groupId', -1);
     $this->message = JRequest::getString('message', '');
     $this->name = JRequest::getString('name', '');
     $this->errorMsg = JRequest::getString('errorMsg', '');
     $canDo = GroupHelper::getActions($groupId);
     $factions = $this->lajvitModel->getCharacterFactions();
+    if ($layout == 'create') {
+      $eventId = JRequest::getInt('eid', -1);
+    } else {
+      $eventId = $this->model->getEventForGroup($groupId);
+    }
 
     $this->assignRef('eventId', $eventId);
     $this->assignRef('groupId', $groupId);
@@ -67,7 +71,6 @@ class LajvITViewGroup extends JView {
         $this->assignRef('groupId', $noGroupId);
         $this->setLayout('error');
       } else {
-        $eventId = $this->model->getEventForGroup($groupId);
         $this->charactersInGroup = $this->model->getCharactersInGroup($groupId);
         $this->getPersonDataForCharacters($this->charactersInGroup, $group['eventId']);
         $currentGroupStatus = '';
@@ -178,35 +181,32 @@ class LajvITViewGroup extends JView {
     $pathway = $app->getPathway();
     $layout = $this->getLayout();
     $events = $this->lajvitModel->getEventsForPerson();
-    $linkToGroupList = 'index.php?option=com_lajvit&view=groups';
-    $linkToGroupList .= '&eid=' . $eventId . '&Itemid='.JRequest::getInt('Itemid', 0);
-    EventHelper::getEventBreadcrumb($eventId, $linkToGroupList);
-    //     if ($eventId > 0) {
-    //       $currentEventName = $events[$eventId]->shortname;
-    //       $pathway->addItem($currentEventName, '');
-    //     }
-    if ($layout != 'default') {
+    GroupHelper::getGroupsBreadcrumb($eventId);
+    $link = '';
+    if ($groupId > 0) {
       $group = $this->groupModel->getGroup($groupId);
       $groupName = $group['name'];
       $link = 'index.php?option=com_lajvit&view=group';
       $link .= '&Itemid='.JRequest::getInt('Itemid', 0);
       $link .= '&groupId=' . $groupId;
-      $pathway->addItem($groupName, $link);
     }
+    //     $pathway->addItem($groupName, $link);
+    $pathway->addItem(JText::_('COM_LAJVIT_OVERVIEW'), $link);
     switch ($layout) {
-      case 'add':
-        $pathway->addItem('Skapa', '');
-        break;
-      case 'delete':
-        $pathway->addItem('Ta bort', '');
+      case 'create':
+        $pathway->addItem(JText::_('COM_LAJVIT_CREATE'), '');
         break;
       case 'edit':
-        $pathway->addItem('Redigera', '');
+        $pathway->addItem(JText::_('COM_LAJVIT_EDIT'), '');
         break;
-      case 'register':
-        $pathway->addItem('Registrera', '');
+      case 'addchartogroup':
+        $pathway->addItem(JText::_('COM_LAJVIT_ADD_CHARACTER'), '');
         break;
-      case 'registered':
+      case 'addgroupleader':
+        $pathway->addItem(JText::_('COM_LAJVIT_ADD_LEADER'), '');
+        break;
+      case 'error':
+        $pathway->addItem(JText::_('COM_LAJVIT_ERROR'), '');
         break;
       default:
         break;
