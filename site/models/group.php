@@ -266,10 +266,15 @@ class LajvITModelGroup extends JModelItem {
     return FALSE;
   }
 
+  /**
+   *
+   * @param int $groupId
+   * @return int Returns the group id if group exists, or -1 if not
+   */
   public function getEventForGroup($groupId) {
     $group = JTable::getInstance('lit_groups', 'Table');
     if (!$group->load($groupId)) {
-      return FALSE;
+      return -1;
     }
     $groupData = $group->getProperties();
     return $groupData['eventId'];
