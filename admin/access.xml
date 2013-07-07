@@ -16,6 +16,7 @@
     <action name="core.edit.own" title="JACTION_EDITOWN" description="COM_LAJVIT_ACCESS_EVENT_EDIT_OWN_DESC" />
     <action name="lajvit.view.visible" title="COM_LAJVIT_LIST_VISIBLE" description="COM_LAJVIT_ACCESS_EVENT_LIST_VISIBLE_DESC" />
     <action name="lajvit.view.hidden" title="COM_LAJVIT_LIST_HIDDEN" description="COM_LAJVIT_ACCESS_EVENT_LIST_HIDDEN_DESC" />
+    <action name="lajvit.view.medical" title="COM_LAJVIT_LIST_MEDICAL" description="COM_LAJVIT_ACCESS_EVENT_LIST_MEDICAL_DESC" />
     <action name="lajvit.plot.enabled" title="COM_LAJVIT_PLOT_ENABLED" description="COM_LAJVIT_PLOT_ENABLED_DESC" />
     <action name="lajvit.char.groupmember" title="COM_LAJVIT_CHARACTER_GROUPMEMBER" description="COM_LAJVIT_CHARACTER_GROUPMEMBER_DESC" />
   </section>

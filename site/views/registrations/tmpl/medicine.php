@@ -2,6 +2,9 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+$user = JFactory::getUser();
+$canDo = EventHelper::getActions($this->event->id);
+
 $knownasSortOrder = ($this->orderBy == 'knownas' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
 $cultureSortOrder = ($this->orderBy == 'culture' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
 $conceptSortOrder = ($this->orderBy == 'concept' && $this->sortOrder == 'ASC') ? 'DESC' : 'ASC';
@@ -27,8 +30,7 @@ function getLink($event, $item, $orderBy, $sortOrder, $characterStatus, $confirm
   }
   return $link;
 }
-
-if ($this->mergedrole->registration_list && $this->mergedrole->person_viewmedical) { ?>
+if ($canDo->get('lajvit.view.medical')) { ?>
     <table>
       <tr>
         <td colspan="5">Filtrering:&nbsp;
@@ -64,17 +66,9 @@ if ($this->mergedrole->registration_list && $this->mergedrole->person_viewmedica
   foreach ($this->factions as $faction) {
     $personrow = array();
     echo $faction->name."\n";
-    ?>Rollnamn;Förnamn;Efternamn;Personnummer;Kön<?php
-    if ($this->mergedrole->person_viewcontactinfo) {
-      ?>;Gatuadress;Postnr;Ort;E-postadress;Telefon 1;Telefon 2<?php
-    }
-    ?>;Publik epost;Allergier;Medicinsk info<?php
+    ?>Förnamn;Efternamn;Personnummer;Kön;Gatuadress;Postnr;Ort;E-postadress;Telefon 1;Telefon 2;Publik epost;Allergier;Medicinsk info;Beskrivning;Rollnamn;Fraktion;Kultur;Koncept;Specialiserat koncept;Grupper<?php
     echo "\n";
     foreach ($faction->characters as $char) {
-
-      if (!$char->role->registration_list || !$char->role->person_viewcontactinfo) {
-        continue;
-      }
       if (array_key_exists($char->personid, $personrow)) {
         continue;
       }
@@ -91,22 +85,28 @@ if ($this->mergedrole->registration_list && $this->mergedrole->person_viewmedica
       $char->person->allergies = str_replace("\r", "| ", $char->person->allergies);
       $char->person->medicine = str_replace("\r", "| ", $char->person->medicine);
 
-      echo $char->fullname.';';
       echo $char->person->givenname.';';
       echo $char->person->surname.';';
       echo $char->person->pnumber.';';
       echo $char->person->sex.';';
-      if ($this->mergedrole->person_viewcontactinfo) {
-        echo $char->person->street.';';
-        echo $char->person->zip.';';
-        echo $char->person->town.';';
-        echo $char->person->email.';';
-        echo $char->person->phone1.';';
-        echo $char->person->phone2.';';
-      }
+      echo $char->person->street.';';
+      echo $char->person->zip.';';
+      echo $char->person->town.';';
+      echo $char->person->email.';';
+      echo $char->person->phone1.';';
+      echo $char->person->phone2.';';
       echo $char->person->publicemail.';';
       echo $char->person->allergies.';';
-      echo $char->person->medicine."\n";
+      echo $char->person->medicine.';';
+      echo $char->person->info.';';
+
+      echo $char->fullname.';';
+      echo $faction->name.';';
+      echo $char->culturename.';';
+      echo $char->conceptname.';';
+      echo $char->concepttext.';';
+
+      echo $char->groupNames."\n";
 
       $personrow[$char->personid] = TRUE;
     }

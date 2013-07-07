@@ -16,6 +16,7 @@ class LajvITViewRegistrations extends JView {
 
   function display($tpl = NULL) {
     $model = &$this->getModel();
+    $groupModel = JModel::getInstance('group', 'lajvitmodel');
 
     $eventid = JRequest::getInt('eid', -1);
     $this->assignRef('eventid', $eventid);
@@ -43,6 +44,9 @@ class LajvITViewRegistrations extends JView {
     $mergedrole = $role;
     $factions = $model->getCharacterFactions();
 
+    $user = JFactory::getUser();
+    $canDo = EventHelper::getActions($eventid);
+
     foreach ($factions as $faction) {
       if ($factionid == NULL || $factionid == $faction->id) {
         $faction->characters = $model->getCharactersForFaction($eventid, $faction->id, $orderBy,
@@ -55,15 +59,29 @@ class LajvITViewRegistrations extends JView {
         $crole = $model->getRoleForChara($eventid, $char->id);
         $mergedrole = $model->mergeRoles($mergedrole, $crole);
         $char->role = $model->mergeRoles($role, $crole);
+        $char->groupNames = '';
 
-        if (!$char->role->registration_list &&
+        if ($canDo->get('lajvit.view.medical') && $this->getLayout() == 'medicine') {
+          $char->person = $model->getPerson($char->personid);
+          $groups = $groupModel->getGroupsThatCharacterIsRegisteredIn($char->id);
+          if ($groups != NULL) {
+            foreach ($groups as $groupId) {
+              $group = $groupModel->getGroup($groupId);
+              if ($group == FALSE) {
+                continue;
+              }
+              $char->groupNames .= $group['name'] . ',';
+            }
+          }
+
+        } else if (!$char->role->registration_list &&
             !($char->role->character_list && !$char->hidden) &&
             !$char->role->character_list_hidden) {
           unset($faction->characters[$i]);
         } else if ($char->role->registration_list && $char->role->person_viewcontactinfo) {
-          $char->person = &$model->getPerson($char->personid);
+          $char->person = $model->getPerson($char->personid);
         } else {
-          $char->person = &$model->getPerson($char->personid);
+          $char->person = $model->getPerson($char->personid);
         }
       }
     }
